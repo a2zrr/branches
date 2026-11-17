@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 
 // En production (npm run preview), les routes /dev/* n'existent pas : elles tombent sur « Introuvable ».
 const ROUTES: { route: string; h1: string }[] = [
-  { route: '/', h1: 'Git, version jeu vidéo' },
+  { route: '/', h1: 'Apprends Git en sauvant la démo de ce soir.' },
   { route: '/carte', h1: 'Carte des missions' },
   { route: '/mission/c1-m1', h1: 'Ton premier commit' },
   { route: '/mission/c1-m1/fin', h1: 'Carte des missions' },

@@ -1,3 +1,5 @@
+/* Accueil : maquette Accueil.png. Tout est centré dans le conteneur de 1180 px. */
+
 .page {
   display: flex;
   flex-direction: column;
@@ -5,42 +7,111 @@
   background: var(--color-bg);
 }
 
-main {
+.principal {
   display: flex;
   flex-direction: column;
   gap: var(--space-7);
-  padding: var(--space-7);
+  padding-top: var(--space-7);
+  padding-bottom: 0;
 }
+
+/* ---- Héros ---- */
 
 .hero {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 516px minmax(0, 1fr);
   align-items: center;
-  gap: var(--space-7);
+  gap: 40px;
 }
 
 .illustration {
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: var(--space-6);
-  border-radius: var(--radius-xl);
-  background: var(--color-warm-bg);
+  gap: var(--space-4);
+  padding-top: var(--space-4);
 }
 
 .bulle {
   position: relative;
-  margin: 0 0 var(--space-4);
-  max-width: 420px;
+  margin: 0;
+  max-width: 490px;
   padding: var(--space-3) var(--space-5);
   border: 2px solid var(--color-border);
-  border-radius: 20px;
+  border-radius: 18px;
   background: var(--color-surface);
   font: var(--text-body);
+  color: var(--color-text);
+  text-align: center;
+}
+
+/* Queue de la bulle, pointée vers Hédi. */
+.bulle::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -11px;
+  width: 18px;
+  height: 18px;
+  background: var(--color-surface);
+  border-right: 2px solid var(--color-border);
+  border-bottom: 2px solid var(--color-border);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.scene {
+  position: relative;
+  width: 420px;
+  height: 420px;
+}
+
+.formes {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Les formes flottent : bob, 4 s, déphasé. */
+.formes :global(.deco) {
+  animation: bob 4s ease-in-out infinite;
+}
+.formes :global(.d2) {
+  animation-duration: 3.4s;
+  animation-delay: -1.3s;
+}
+.formes :global(.d3) {
+  animation-duration: 4.6s;
+  animation-delay: -2.2s;
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.cercle {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: var(--color-warm-bg);
 }
 
 .hedi {
+  z-index: 2;
+  position: absolute;
+  top: 50px;
+  left: 50px;
   display: flex;
   justify-content: center;
 }
@@ -48,34 +119,62 @@ main {
 .texte {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: var(--space-4);
 }
 
-.surtitre {
+.pastille {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-info-bg);
+  color: var(--color-primary);
   font: var(--text-label);
   font-size: 14px;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--color-primary);
+  letter-spacing: 0.06em;
 }
 
 .titre {
+  margin: 0;
   font: var(--text-display);
   font-size: 56px;
+  line-height: 1.05;
   letter-spacing: -0.02em;
+  color: var(--color-text);
+}
+
+.mot {
+  position: relative;
+  display: inline-block;
+  color: var(--color-primary);
+}
+
+.souligne {
+  position: absolute;
+  left: 0;
+  bottom: -12px;
+  width: 100%;
+  height: 12px;
+  overflow: visible;
 }
 
 .intro {
+  max-width: 520px;
   margin: 0;
-  max-width: 560px;
   font: var(--text-body);
   font-size: 18px;
+  line-height: 1.5;
   color: var(--color-text-muted);
 }
 
 .actions {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: var(--space-4);
 }
 
@@ -98,7 +197,8 @@ main {
 .commencer {
   background: var(--color-primary);
   color: var(--color-on-primary);
-  box-shadow: var(--edge-md) var(--color-primary-edge);
+  box-shadow: var(--edge-lg) var(--color-primary-edge);
+  min-width: 240px;
 }
 
 .secondaire {
@@ -106,6 +206,7 @@ main {
   color: var(--color-primary);
   border: 2px solid var(--color-border);
   box-shadow: var(--edge-md) var(--color-border);
+  min-width: 196px;
 }
 
 .commencer:hover,
@@ -124,14 +225,17 @@ main {
   outline-offset: 4px;
 }
 
-.bloc {
+/* ---- « Ton Git » : une seule carte, deux colonnes ---- */
+
+.tonGit {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: var(--space-6);
   padding: var(--space-6);
   border: 2px solid var(--color-border);
   border-radius: var(--radius-xl);
   background: var(--color-surface);
+  box-shadow: var(--edge-lg) var(--color-border);
 }
 
 .colonne {
@@ -140,26 +244,41 @@ main {
   gap: var(--space-4);
 }
 
+.entete {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
 .h2 {
-  font: var(--text-h2);
-}
-
-.h3 {
-  font: var(--text-h3);
-  font-size: 20px;
-}
-
-.legende {
   margin: 0;
+  font: var(--text-h3);
+  font-size: 22px;
+  color: var(--color-text);
+}
+
+.compte {
   font: var(--text-small);
-  font-weight: 600;
+  font-size: 15px;
   color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.puces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .suite {
   margin: 0;
   font: var(--text-small);
-  color: var(--color-primary);
+  font-size: 15px;
+  color: var(--color-text-muted);
 }
 
 .badges {
@@ -168,34 +287,127 @@ main {
   gap: var(--space-4);
 }
 
+.legende {
+  margin: 0;
+  font: var(--text-small);
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+/* ---- Présentation : pas de carte autour, cartes sur toute la largeur ---- */
+
+.presentation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  text-align: center;
+}
+
+.grandTitre {
+  margin: 0;
+  font: var(--text-h1);
+  font-size: 42px;
+  color: var(--color-text);
+}
+
+.sousTitre {
+  max-width: 580px;
+  margin: 0 0 var(--space-4);
+  font: var(--text-body);
+  font-size: 18px;
+  color: var(--color-text-muted);
+}
+
 .cartes {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: var(--space-5);
+  width: 100%;
 }
 
 .carte {
+  flex: 1 1 300px;
   display: flex;
   flex-direction: column;
+  align-items: stretch;
   gap: var(--space-3);
-  padding: var(--space-5);
+  padding: var(--space-4);
+  text-align: left;
   border: 2px solid var(--color-border);
   border-radius: var(--radius-xl);
-  background: var(--color-bg-subtle);
+  background: var(--color-surface);
+  box-shadow: var(--edge-lg) var(--color-border);
+  transition:
+    transform var(--dur-base) var(--ease-bounce),
+    box-shadow var(--dur-base) ease;
+}
+
+.carte:hover {
+  transform: translateY(-8px) rotate(-1deg);
+}
+
+.illustrationCarte {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 170px;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.fondBleu {
+  background: var(--color-info-bg);
+}
+
+.fondJaune {
+  background: var(--color-hint-bg);
+}
+
+.fondRose {
+  background: var(--color-danger-bg);
 }
 
 .terminal {
-  margin: 0;
-  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-md);
   background: var(--term-bg);
+  box-shadow: var(--edge-sm) var(--term-edge);
   color: var(--term-text);
   font: var(--text-code);
   font-size: 14px;
+  line-height: 1.5;
   white-space: pre;
+  font-variant-ligatures: none;
 }
 
-.petiteMascotte {
-  display: flex;
-  justify-content: center;
+.invite {
+  color: var(--term-prompt);
+}
+
+.curseur {
+  display: inline-block;
+  width: 8px;
+  height: 14px;
+  margin-left: 2px;
+  background: var(--term-prompt);
+  vertical-align: middle;
+}
+
+.h3 {
+  margin: 0;
+  font: var(--text-h3);
+  font-size: 22px;
+  color: var(--color-text);
+}
+
+.texteCarte {
+  margin: 0;
+  font: var(--text-body);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-text-muted);
 }

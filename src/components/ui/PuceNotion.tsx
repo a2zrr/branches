@@ -10,7 +10,7 @@ export interface PuceNotionProps {
 
 const ICONE: Record<EtatNotion, NomIcone> = {
   maitrisee: 'coche',
-  'en-cours': 'retour',
+  'en-cours': 'terminal',
   'a-decouvrir': 'cadenas',
 };
 

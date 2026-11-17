@@ -1,11 +1,15 @@
+/* En-tête de l'application : contenu centré dans le conteneur de 1180 px (classe « conteneur » de global.css). */
 .entete {
+  border-bottom: 2px solid var(--color-border);
+}
+
+.interieur {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
-  padding: var(--space-4) var(--space-7);
-  background: var(--color-surface);
-  border-bottom: 2px solid var(--color-border);
+  padding-top: var(--space-4);
+  padding-bottom: var(--space-4);
 }
 
 .logo {
@@ -19,12 +23,13 @@
   gap: var(--space-3);
 }
 
+/* Bouton Paramètres : carré 46 px, blanc, bordure et bord 3D, roue dentée. */
 .parametres {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
+  width: 46px;
+  height: 46px;
   border: 2px solid var(--color-border);
   border-radius: var(--radius-lg);
   background: var(--color-surface);

@@ -55,3 +55,8 @@
     transform: scaleY(1.35);
   }
 }
+
+/* Barre haute (accueil) : 22 px, remplissage bleu Hédi, reflet blanc. */
+.haute {
+  height: 22px;
+}
