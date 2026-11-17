@@ -8,7 +8,7 @@ import { REGISTRE, type ReponseChoix } from '../exercises/registre';
 import { depotInitial } from '../game/solution';
 import { trouverMission, MISSIONS } from '../game/missions';
 import { useProgression } from '../game/store';
-import { estJouable, progressionChapitre } from '../game/regles';
+import { estJouable, etoilesPour, progressionChapitre } from '../game/regles';
 import { useEtatJeu } from '../game/useEtatJeu';
 import { evaluerReussite } from '../game/reussite';
 import { Introuvable } from './Introuvable';
@@ -73,9 +73,9 @@ export function CoqueMission({ mission }: { mission: MissionJouableValidee }) {
   };
 
   const continuer = () => {
-    const resultat = terminerMission(mission.id, commandes);
+    terminerMission(mission.id, commandes);
     void navigate(`/mission/${mission.id}/fin`, {
-      state: { id: mission.id, commandes, etoiles: resultat?.etoiles ?? 1 },
+      state: { id: mission.id, commandes, etoiles: etoilesPour(commandes, mission.optimal) },
     });
   };
 

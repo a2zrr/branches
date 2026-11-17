@@ -4,8 +4,8 @@ import { expect, test } from '@playwright/test';
 const ROUTES: { route: string; h1: string }[] = [
   { route: '/', h1: 'Git, version jeu vidéo' },
   { route: '/carte', h1: 'Carte des missions' },
-  { route: '/mission/c1-m1', h1: 'Mission' },
-  { route: '/mission/c1-m1/fin', h1: 'Fin de mission' },
+  { route: '/mission/c1-m1', h1: 'Ton premier commit' },
+  { route: '/mission/c1-m1/fin', h1: 'Carte des missions' },
   { route: '/parametres', h1: 'Paramètres' },
   { route: '/dev/design-system', h1: 'Introuvable' },
   { route: '/dev/graphe', h1: 'Introuvable' },
