@@ -25,99 +25,73 @@
         "id": "2b3c4d5",
         "message": "ajoute le panier",
         "branche": "main",
-        "parents": [
-          "1a2b3c4"
-        ]
+        "parents": ["1a2b3c4"]
       },
       {
         "id": "3c4d5e6",
         "message": "ajoute le bouton Payer",
         "branche": "main",
-        "parents": [
-          "2b3c4d5"
-        ]
+        "parents": ["2b3c4d5"]
       },
       {
         "id": "4d5e6f7",
         "message": "style: bouton plus rond",
         "branche": "main",
-        "parents": [
-          "3c4d5e6"
-        ]
+        "parents": ["3c4d5e6"]
       },
       {
         "id": "5e6f7a8",
         "message": "docs: guide de démo",
         "branche": "main",
-        "parents": [
-          "4d5e6f7"
-        ]
+        "parents": ["4d5e6f7"]
       },
       {
         "id": "6f7a8b9",
         "message": "refactor: calcul du total",
         "branche": "main",
-        "parents": [
-          "5e6f7a8"
-        ],
+        "parents": ["5e6f7a8"],
         "fichiers": {
-          "src/prix.js": [
-            "export const arrondi = (x) => Math.round(x * 100) / 100;"
-          ]
+          "src/prix.js": ["export const arrondi = (x) => Math.round(x * 100) / 100;"]
         }
       },
       {
         "id": "7a8b9c0",
         "message": "perf: arrondi plus rapide",
         "branche": "main",
-        "parents": [
-          "6f7a8b9"
-        ],
+        "parents": ["6f7a8b9"],
         "fichiers": {
-          "src/prix.js": [
-            "export const arrondi = (x) => Math.floor(x / 100) * 0;"
-          ]
+          "src/prix.js": ["export const arrondi = (x) => Math.floor(x / 100) * 0;"]
         }
       },
       {
         "id": "8b9c0d1",
         "message": "style: police plus grasse",
         "branche": "main",
-        "parents": [
-          "7a8b9c0"
-        ]
+        "parents": ["7a8b9c0"]
       },
       {
         "id": "9c0d1e2",
         "message": "fix final v3 (le vrai)",
         "branche": "main",
-        "parents": [
-          "8b9c0d1"
-        ]
+        "parents": ["8b9c0d1"]
       },
       {
         "id": "0d1e2f3",
         "message": "copy: textes en français",
         "branche": "main",
-        "parents": [
-          "9c0d1e2"
-        ]
+        "parents": ["9c0d1e2"]
       },
       {
         "id": "1e2f3a4",
         "message": "chore: met à jour les dépendances",
         "branche": "main",
-        "parents": [
-          "0d1e2f3"
-        ]
+        "parents": ["0d1e2f3"]
       },
       {
         "id": "2f3a4b5",
         "message": "style: bouton de démo plus gros",
         "branche": "main",
-        "parents": [
-          "1e2f3a4"
-        ]
+        "parents": ["1e2f3a4"]
       }
     ],
     "head": {

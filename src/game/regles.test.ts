@@ -22,7 +22,7 @@ const ligne = (
   brouillon = false,
 ): MissionValidee =>
   brouillon
-    ? ({ id, chapitre, ordre, titre: id, notion, brouillon: true })
+    ? { id, chapitre, ordre, titre: id, notion, brouillon: true }
     : ({
         id,
         chapitre,
@@ -40,7 +40,11 @@ const ligne = (
         solution: [],
       } as unknown as MissionValidee);
 
-const ok = (etoiles: 0 | 1 | 2 | 3, commandes: number = etoiles) => ({ etoiles, commandes, reussie: etoiles > 0 });
+const ok = (etoiles: 0 | 1 | 2 | 3, commandes: number = etoiles) => ({
+  etoiles,
+  commandes,
+  reussie: etoiles > 0,
+});
 
 describe('étoiles (optimal = 2)', () => {
   it.each([

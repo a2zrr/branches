@@ -1,0 +1,38 @@
+.entete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-7);
+  background: var(--color-surface);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.logo {
+  text-decoration: none;
+  color: inherit;
+}
+
+.outils {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.parametres {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--edge-md) var(--color-border);
+  text-decoration: none;
+}
+
+.parametres:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}

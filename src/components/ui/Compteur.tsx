@@ -31,7 +31,7 @@ export function Compteur({ type, valeur, total }: CompteurProps) {
       <Icone nom="etoile" taille={18} trait={1.5} remplie couleur="var(--color-hint)" />
       <span className={styles.nombre}>
         {valeur}
-        {total !== undefined && ` / ${total}`} étoiles
+        {total !== undefined && ` / ${total}`}
       </span>
     </span>
   );

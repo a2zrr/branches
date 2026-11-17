@@ -33,7 +33,7 @@ describe('GrapheCommits', () => {
     const onSelect = vi.fn();
     const utilisateur = userEvent.setup();
     render(<GrapheCommits donnees={donnees} onSelect={onSelect} />);
-    const bouton = screen.getAllByRole("button")[1] as HTMLElement;
+    const bouton = screen.getAllByRole('button')[1] as HTMLElement;
     bouton.focus();
     await utilisateur.keyboard('{Enter}');
     expect(onSelect).toHaveBeenCalledWith('c1');

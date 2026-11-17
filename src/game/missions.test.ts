@@ -12,7 +12,8 @@ describe('fiches de mission', () => {
   });
 
   it('aucune fiche ne contient « aCompleter », les id sont uniques, le couple (chapitre, ordre) aussi', () => {
-    for (const m of MISSIONS) expect((m as unknown as Record<string, unknown>)['aCompleter'], m.id).toBeUndefined();
+    for (const m of MISSIONS)
+      expect((m as unknown as Record<string, unknown>)['aCompleter'], m.id).toBeUndefined();
     expect(new Set(MISSIONS.map((m) => m.id)).size).toBe(MISSIONS.length);
     expect(new Set(MISSIONS.map((m) => `${m.chapitre}:${m.ordre}`)).size).toBe(MISSIONS.length);
   });
@@ -23,19 +24,22 @@ describe('fiches de mission', () => {
   });
 });
 
-describe.each(MISSIONS.filter(estJouable).map((m) => [m.id, m] as const))('mission jouable %s', (_id, mission) => {
-  it("l'état initial ne satisfait pas la réussite", () => {
-    expect(evaluerReussite(depotInitial(mission), mission.reussite).ok).toBe(false);
-  });
+describe.each(MISSIONS.filter(estJouable).map((m) => [m.id, m] as const))(
+  'mission jouable %s',
+  (_id, mission) => {
+    it("l'état initial ne satisfait pas la réussite", () => {
+      expect(evaluerReussite(depotInitial(mission), mission.reussite).ok).toBe(false);
+    });
 
-  it('exécuter la solution satisfait la réussite', () => {
-    const fin = appliquerSolution(mission, depotInitial(mission));
-    const resultat = evaluerReussite(fin, mission.reussite);
-    expect(resultat.messageDuPremierEchec).toBeUndefined();
-    expect(resultat.ok).toBe(true);
-  });
+    it('exécuter la solution satisfait la réussite', () => {
+      const fin = appliquerSolution(mission, depotInitial(mission));
+      const resultat = evaluerReussite(fin, mission.reussite);
+      expect(resultat.messageDuPremierEchec).toBeUndefined();
+      expect(resultat.ok).toBe(true);
+    });
 
-  it('solution.length === optimal', () => {
-    expect(mission.solution.length).toBe(mission.optimal);
-  });
-});
+    it('solution.length === optimal', () => {
+      expect(mission.solution.length).toBe(mission.optimal);
+    });
+  },
+);

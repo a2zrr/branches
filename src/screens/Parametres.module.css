@@ -1,0 +1,84 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--color-bg-subtle);
+}
+
+.principal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  width: min(880px, 100%);
+  margin: 0 auto;
+  padding: var(--space-7) var(--space-5);
+}
+
+.titre {
+  font: var(--text-h1);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+}
+
+.h2 {
+  font: var(--text-h3);
+}
+
+.legende {
+  margin: 0;
+  font: var(--text-small);
+  color: var(--color-text-muted);
+}
+
+.rangee {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.importer {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 var(--space-5);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  color: var(--color-primary);
+  font: var(--text-label);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+}
+
+.importer:focus-within {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.fichier {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.message {
+  margin: 0;
+  font: var(--text-small);
+  color: var(--color-success-text);
+}
+
+.lien {
+  font: var(--text-small);
+  color: var(--color-info);
+}

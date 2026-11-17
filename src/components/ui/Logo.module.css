@@ -25,3 +25,8 @@
 .l .mot {
   font-size: 36px;
 }
+
+/* Fond bleu nuit (pied de page) : le mot reprend la couleur claire des titres du pied. */
+.sombre .mot {
+  color: var(--color-night-title);
+}

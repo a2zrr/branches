@@ -1,0 +1,123 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--color-bg-subtle);
+}
+
+.visuellementCache {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.corps {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: var(--space-6);
+  padding: var(--space-6) var(--space-7);
+}
+
+.chemin {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+}
+
+.chapitre {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.pastilles {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  margin: 0;
+  padding: var(--space-5) 0 var(--space-6);
+  list-style: none;
+}
+
+.noeud {
+  display: flex;
+  justify-content: center;
+}
+
+.bientot {
+  margin: 0;
+  font: var(--text-small);
+  color: var(--color-text-muted);
+}
+
+.colonne {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.bloc {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+}
+
+.hedi {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-3);
+}
+
+.bulle {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border: 2px solid var(--color-border);
+  border-radius: 18px;
+  font: var(--text-small);
+  font-size: 15px;
+}
+
+.reprendre {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  box-shadow: var(--edge-md) var(--color-primary-edge);
+  font: var(--text-label);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+}
+
+.reprendre:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 4px;
+}
+
+.legende {
+  margin: 0;
+  font: var(--text-small);
+  color: var(--color-text-muted);
+}
+
+.h2 {
+  font: var(--text-h3);
+}
+
+@media (max-width: 1280px) {
+  .corps {
+    grid-template-columns: minmax(0, 1fr) 320px;
+  }
+}

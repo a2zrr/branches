@@ -1,0 +1,64 @@
+.pied {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-7) var(--space-7) var(--space-5);
+  background: var(--color-night);
+  color: var(--color-night-text);
+}
+
+.haut {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+}
+
+.marque {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.accroche {
+  margin: 0;
+  font: var(--text-body);
+  color: var(--color-night-text);
+}
+
+.liens {
+  display: flex;
+  gap: var(--space-7);
+}
+
+.titre {
+  margin: 0 0 var(--space-2);
+  font: var(--text-label);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-night-title);
+}
+
+.lien {
+  font: var(--text-small);
+  color: var(--color-night-text);
+  text-decoration: none;
+}
+
+.lien:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.lien:focus-visible {
+  outline: 3px solid var(--color-night-title);
+  outline-offset: 3px;
+}
+
+.bas {
+  margin: 0;
+  font: var(--text-small);
+  font-weight: 600;
+  color: var(--color-night-text);
+}

@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 
 // En production (npm run preview), les routes /dev/* n'existent pas : elles tombent sur « Introuvable ».
 const ROUTES: { route: string; h1: string }[] = [
-  { route: '/', h1: 'Accueil' },
+  { route: '/', h1: 'Git, version jeu vidéo' },
   { route: '/carte', h1: 'Carte des missions' },
   { route: '/mission/c1-m1', h1: 'Mission' },
   { route: '/mission/c1-m1/fin', h1: 'Fin de mission' },
@@ -30,7 +30,7 @@ test.describe('étape 1 : socle', () => {
   test('le mode sombre met data-theme="sombre" et survit à un rechargement', async ({ page }) => {
     await page.goto('/parametres');
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'clair');
-    await page.getByRole('button', { name: 'Passer en mode sombre' }).click();
+    await page.getByRole('button', { name: 'Sombre' }).click();
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'sombre');
     await page.reload();
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'sombre');
