@@ -31,7 +31,9 @@ beforeEach(() => {
 describe('nouveau visiteur', () => {
   it('accueil : 0 / N notions, bulle de première visite, COMMENCER vers c1-m1', () => {
     rendre('/', <Accueil />);
-    expect(screen.getByRole('heading', { level: 1, name: 'Apprends Git en sauvant la démo de ce soir.' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Apprends Git en sauvant la démo de ce soir.' }),
+    ).toBeInTheDocument();
     expect(screen.getByText(`0 commandes maîtrisées sur ${NOTIONS_TOTAL}`)).toBeInTheDocument();
     expect(screen.getByText('Salut ! Ce soir on a une démo… et le projet est cassé.')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Commencer' })).toHaveAttribute('href', '/mission/c1-m1');
@@ -80,7 +82,9 @@ describe('partie injectée (c1-m1 à c1-m3 réussies avec 3, 2 et 3 étoiles)', 
   it('accueil : 3 notions maîtrisées et git revert en cours', () => {
     rendre('/', <Accueil />);
     expect(screen.getByText(`3 commandes maîtrisées sur ${NOTIONS_TOTAL}`)).toBeInTheDocument();
-    expect(screen.getByText('Prochaine commande : git revert, dans la mission « La clé qui fuit ».')).toBeInTheDocument();
+    expect(
+      screen.getByText('Prochaine commande : git revert, dans la mission « La clé qui fuit ».'),
+    ).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Commencer' })).toHaveAttribute('href', '/mission/c1-m4');
     expect(screen.getByText('Bon. On reprend « La clé qui fuit » ?')).toBeInTheDocument();
   });

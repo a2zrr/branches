@@ -1,8 +1,11 @@
+/* Carte : maquette Carte.png. Contenu centré dans le conteneur de 1180 px, colonne de droite de 338 px. */
+
 .page {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   background: var(--color-bg-subtle);
+  padding-bottom: var(--space-7);
 }
 
 .visuellementCache {
@@ -16,21 +19,22 @@
 
 .corps {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 360px;
-  gap: var(--space-6);
-  padding: var(--space-6) var(--space-7);
+  grid-template-columns: minmax(0, 1fr) 338px;
+  gap: 40px;
+  padding-top: var(--space-6);
+  align-items: start;
 }
 
 .chemin {
   display: flex;
   flex-direction: column;
-  gap: var(--space-7);
+  gap: var(--space-5);
 }
 
 .chapitre {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: var(--space-4);
 }
 
 .pastilles {
@@ -39,7 +43,7 @@
   align-items: center;
   gap: var(--space-5);
   margin: 0;
-  padding: var(--space-5) 0 var(--space-6);
+  padding: var(--space-5) 0 var(--space-4);
   list-style: none;
 }
 
@@ -50,7 +54,9 @@
 
 .bientot {
   margin: 0;
-  font: var(--text-small);
+  text-align: center;
+  font: var(--text-body);
+  font-size: 16px;
   color: var(--color-text-muted);
 }
 
@@ -60,7 +66,7 @@
   gap: var(--space-5);
 }
 
-.bloc {
+.carte {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
@@ -68,34 +74,39 @@
   border: 2px solid var(--color-border);
   border-radius: var(--radius-xl);
   background: var(--color-surface);
+  box-shadow: var(--edge-md) var(--color-border);
 }
 
 .hedi {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   gap: var(--space-3);
 }
 
 .bulle {
+  position: relative;
   margin: 0;
   padding: var(--space-3) var(--space-4);
   border: 2px solid var(--color-border);
   border-radius: 18px;
+  background: var(--color-bg-subtle);
   font: var(--text-small);
-  font-size: 15px;
+  font-size: 16px;
+  line-height: 1.35;
+  color: var(--color-text);
 }
 
 .reprendre {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 48px;
-  padding: 0 var(--space-5);
+  min-height: 52px;
   border-radius: var(--radius-lg);
   background: var(--color-primary);
   color: var(--color-on-primary);
   box-shadow: var(--edge-md) var(--color-primary-edge);
   font: var(--text-label);
+  font-size: 15px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   text-decoration: none;
@@ -106,18 +117,39 @@
   outline-offset: 4px;
 }
 
-.legende {
-  margin: 0;
-  font: var(--text-small);
-  color: var(--color-text-muted);
+.entete {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
 }
 
 .h2 {
+  margin: 0;
   font: var(--text-h3);
+  font-size: 22px;
+  color: var(--color-text);
 }
 
-@media (max-width: 1280px) {
-  .corps {
-    grid-template-columns: minmax(0, 1fr) 320px;
-  }
+.compte {
+  font: var(--text-small);
+  font-size: 15px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.puces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.legende {
+  margin: 0;
+  font: var(--text-small);
+  font-size: 14px;
+  color: var(--color-text-muted);
 }

@@ -34,3 +34,12 @@ test('capture accueil', async ({ page }) => {
   await page.waitForTimeout(800);
   await page.screenshot({ path: resolve(DOSSIER, 'Accueil-app.png'), fullPage: true });
 });
+
+test('capture carte', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await injecter(page);
+  await page.goto('/carte');
+  await page.evaluate(() => document.fonts.ready);
+  await page.waitForTimeout(800);
+  await page.screenshot({ path: resolve(DOSSIER, 'Carte-app.png'), fullPage: true });
+});

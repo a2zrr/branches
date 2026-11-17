@@ -1,5 +1,6 @@
 /* En-tête de l'application : contenu centré dans le conteneur de 1180 px (classe « conteneur » de global.css). */
 .entete {
+  background: var(--color-surface);
   border-bottom: 2px solid var(--color-border);
 }
 

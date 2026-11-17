@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import { Icone } from './Icone';
 import styles from './EnTeteChapitre.module.css';
 
 export interface EnTeteChapitreProps {
@@ -14,6 +15,10 @@ export interface EnTeteChapitreProps {
   couleurArete?: string;
 }
 
+/**
+ * En-tête de chapitre (maquette Carte.png). Ouvert : couleur du chapitre, pastille « x / n · e ★ ».
+ * Verrouillé : gris, cadenas, « Termine le chapitre n-1 pour débloquer ». Bientôt : pointillés, « Patience ».
+ */
 export function EnTeteChapitre({
   numero,
   titre,
@@ -31,21 +36,24 @@ export function EnTeteChapitre({
   } as CSSProperties;
 
   const libelle = etat === 'verrouille' ? `Chapitre ${numero} · verrouillé` : `Chapitre ${numero}`;
-  const droite =
-    etat === 'bientot'
-      ? 'Patience'
-      : etat === 'verrouille'
-        ? `${faites} / ${total}`
-        : `${faites} / ${total} · ${etoiles} ★`;
+  const soustitre =
+    etat === 'verrouille'
+      ? `Termine le chapitre ${numero - 1} pour débloquer`
+      : etat === 'ouvert'
+        ? sousTitre
+        : undefined;
 
   return (
     <header className={`${styles.entete} ${styles[etat]}`} style={style} data-etat={etat}>
       <div className={styles.textes}>
         <span className={styles.libelle}>{libelle}</span>
         <h3 className={styles.titre}>{titre}</h3>
-        {sousTitre && <p className={styles.sousTitre}>{sousTitre}</p>}
+        {soustitre !== undefined && <p className={styles.sousTitre}>{soustitre}</p>}
       </div>
-      <span className={styles.pastille}>{droite}</span>
+      <span className={styles.pastille}>
+        {etat === 'verrouille' && <Icone nom="cadenas" taille={14} trait={2.8} couleur="currentColor" />}
+        {etat === 'bientot' ? 'Patience' : `${faites} / ${total} · ${etoiles} ★`}
+      </span>
     </header>
   );
 }

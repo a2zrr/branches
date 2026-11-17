@@ -8,6 +8,8 @@ export interface BarreProgressionProps {
   sansEtiquette?: boolean;
   /** Barre haute (22 px), comme la barre de l’accueil. */
   haute?: boolean;
+  /** Texte affiché à droite à la place du pourcentage (ex. « 3 / 6 »). */
+  libelleValeur?: string;
 }
 
 export function BarreProgression({
@@ -16,6 +18,7 @@ export function BarreProgression({
   etiquette,
   sansEtiquette = false,
   haute = false,
+  libelleValeur,
 }: BarreProgressionProps) {
   const borne = Math.min(Math.max(valeur, 0), max);
   const pourcentage = max > 0 ? Math.round((borne / max) * 100) : 0;
@@ -25,7 +28,7 @@ export function BarreProgression({
       {!sansEtiquette && (
         <div className={styles.entete}>
           <span>{etiquette}</span>
-          <span>{pourcentage} %</span>
+          <span>{libelleValeur ?? `${pourcentage} %`}</span>
         </div>
       )}
       <div

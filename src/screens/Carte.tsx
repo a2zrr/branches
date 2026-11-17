@@ -3,13 +3,11 @@ import { EnTeteAppli } from '../components/ui/EnTeteAppli';
 import { EnTeteChapitre } from '../components/ui/EnTeteChapitre';
 import { PastilleMission } from '../components/ui/PastilleMission';
 import { BarreProgression } from '../components/ui/BarreProgression';
-import { TonGit } from '../components/ui/TonGit';
-import { PiedPage } from '../components/ui/PiedPage';
+import { PuceNotion } from '../components/ui/PuceNotion';
 import { Mascotte } from '../components/mascotte/Mascotte';
 import { CHAPITRES, MISSIONS } from '../game/missions';
 import { estJouable, progressionChapitre } from '../game/regles';
 import { useEtatJeu } from '../game/useEtatJeu';
-import type { EtatMission } from '../game/regles';
 import styles from './Carte.module.css';
 
 /** Décalages en zigzag des pastilles (spec §9). */
@@ -26,13 +24,14 @@ export function Carte() {
     <div className={styles.page}>
       <h1 className={styles.visuellementCache}>Carte des missions</h1>
       <EnTeteAppli
+        variante="carte"
         notionsMaitrisees={e.notionsMaitrisees}
         notionsTotal={e.notionsTotal}
         xp={e.xp}
         etoiles={{ valeur: e.etoiles }}
       />
 
-      <div className={styles.corps}>
+      <div className={`conteneur ${styles.corps}`}>
         <main className={styles.chemin}>
           {CHAPITRES.map((chapitre) => {
             const missions = MISSIONS.filter((m) => m.chapitre === chapitre.numero);
@@ -62,13 +61,11 @@ export function Carte() {
                 {etat !== 'bientot' && (
                   <ol className={styles.pastilles}>
                     {missions.map((m, i) => {
-                      const etatM: EtatMission =
-                        m.id in e.etats ? (e.etats[m.id] ?? 'verrouillee') : 'verrouillee';
-                      const pastille = etatM === 'verrouillee' ? 'verrouillee' : etatM;
+                      const etatM = e.etats[m.id] ?? 'verrouillee';
                       return (
                         <li key={m.id} className={styles.noeud}>
                           <PastilleMission
-                            etat={pastille}
+                            etat={etatM}
                             etoiles={e.progression[m.id]?.etoiles ?? 0}
                             numero={m.ordre}
                             titre={m.titre}
@@ -82,13 +79,14 @@ export function Carte() {
                     })}
                   </ol>
                 )}
+                {chapitre.bientot === true && <p className={styles.bientot}>{chapitre.sousTitre}</p>}
               </section>
             );
           })}
         </main>
 
         <aside className={styles.colonne} aria-label="Hédi et progression">
-          <div className={styles.bloc}>
+          <section className={styles.carte} aria-label="Hédi">
             <div className={styles.hedi}>
               <Mascotte expression="accueillant" taille={96} />
               <p className={styles.bulle}>Bon. Démo à 20 h, et main est encore tout cassé. On s’y remet ?</p>
@@ -100,29 +98,46 @@ export function Carte() {
             ) : (
               <p className={styles.legende}>Toutes les missions jouables sont terminées.</p>
             )}
-          </div>
+          </section>
 
-          <div className={styles.bloc}>
-            <TonGit notions={e.notions} />
-          </div>
+          <section className={styles.carte} aria-labelledby="carte-ton-git">
+            <div className={styles.entete}>
+              <h2 id="carte-ton-git" className={styles.h2}>
+                Ton Git
+              </h2>
+              <span className={styles.compte}>
+                {e.notionsMaitrisees} / {e.notionsTotal} commandes
+              </span>
+            </div>
+            <ul className={styles.puces}>
+              {e.notions.map((n) => (
+                <li key={n.nom}>
+                  <PuceNotion nom={n.nom} etat={n.etat} />
+                </li>
+              ))}
+            </ul>
+            <p className={styles.legende}>Ici on compte les commandes que tu maîtrises, pas les jours.</p>
+          </section>
 
-          <div className={styles.bloc}>
-            <h2 className={styles.h2}>Chapitre {chapitreCourant}</h2>
+          <section className={styles.carte} aria-labelledby="carte-chapitre">
+            <h2 id="carte-chapitre" className={styles.h2}>
+              Chapitre {chapitreCourant}
+            </h2>
             <BarreProgression
               valeur={progChapitre.faites}
               max={jouablesChapitre}
-              etiquette={`Missions terminées du chapitre ${chapitreCourant}`}
+              etiquette="Missions"
+              libelleValeur={`${progChapitre.faites} / ${jouablesChapitre}`}
             />
             <BarreProgression
               valeur={progChapitre.etoiles}
               max={jouablesChapitre * 3}
-              etiquette={`Étoiles du chapitre ${chapitreCourant}`}
+              etiquette="Étoiles"
+              libelleValeur={`${progChapitre.etoiles} / ${jouablesChapitre * 3}`}
             />
-          </div>
+          </section>
         </aside>
       </div>
-
-      <PiedPage />
     </div>
   );
 }

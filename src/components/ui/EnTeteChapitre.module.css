@@ -1,4 +1,4 @@
-/* En-tête de chapitre : ouvert (couleur du chapitre), verrouillé (gris), bientôt (bordure en pointillés). */
+/* En-tête de chapitre : ouvert (couleur du chapitre), verrouillé (gris), bientôt (pointillés). */
 
 .entete {
   display: flex;
@@ -22,7 +22,7 @@
 }
 
 .verrouille {
-  background: var(--color-bg-subtle);
+  background: var(--color-surface);
   border-color: var(--color-border);
   box-shadow: var(--edge-lg) var(--color-border);
   color: var(--color-text);
@@ -58,11 +58,16 @@
   margin: 0;
   font: var(--text-small);
   font-weight: 600;
+  color: inherit;
 }
 
+/* Pastille de droite : fond sombre translucide sur les chapitres ouverts (comme la maquette). */
 .pastille {
+  display: inline-flex;
   flex: none;
-  padding: 6px 12px;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 6px 14px;
   border-radius: var(--radius-pill);
   background: var(--color-surface);
   color: var(--color-text);
@@ -71,18 +76,14 @@
 }
 
 .ouvert .pastille {
-  background: var(--color-hint-bg);
-  color: var(--color-hint-text);
+  background: var(--chapitre-arete, var(--color-primary-edge));
+  color: var(--color-on-primary);
 }
 
 .verrouille .pastille,
 .bientot .pastille {
-  background: var(--color-border);
-  color: var(--color-text);
-}
-
-.bientot .pastille {
   background: var(--color-bg-subtle);
+  color: var(--color-text-muted);
 }
 
 /* En sombre, la couleur du chapitre est assombrie par le fond (60 %) pour que le texte clair reste lisible. */
@@ -93,5 +94,9 @@
 }
 
 :global([data-theme='sombre']) .ouvert .libelle {
+  color: var(--color-text);
+}
+
+:global([data-theme='sombre']) .ouvert .pastille {
   color: var(--color-text);
 }
