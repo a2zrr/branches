@@ -1,0 +1,26 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  min-height: 720px;
+  background: var(--color-bg-subtle);
+}
+
+.exercice {
+  flex: 1;
+  min-height: 0;
+}
+
+.bandeau {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-6);
+  background: var(--color-bg);
+  border-top: 2px solid var(--color-border);
+}
+
+.aide {
+  font: var(--text-small);
+  color: var(--color-text-muted);
+}

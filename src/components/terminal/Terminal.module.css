@@ -1,0 +1,91 @@
+.terminal {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background: var(--term-bg);
+  box-shadow: var(--edge-lg) var(--term-edge);
+  color: var(--term-text);
+  font: var(--text-code);
+  font-size: 14px;
+}
+
+.barre {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--term-bar);
+  color: var(--term-muted);
+  font-size: 12px;
+}
+
+.titre,
+.aide {
+  white-space: nowrap;
+}
+
+.ecran {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: var(--space-4);
+}
+
+.ligne {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.commande {
+  color: var(--term-prompt);
+}
+
+.sortie {
+  color: var(--term-text);
+}
+
+.erreur {
+  color: var(--term-error);
+}
+
+.info {
+  color: var(--term-muted);
+}
+
+.invite {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-top: var(--space-2);
+}
+
+.etiquette {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.prompt {
+  color: var(--term-prompt);
+  white-space: pre;
+}
+
+.saisie {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--term-text);
+  font: inherit;
+}
+
+.invite:focus-within .saisie {
+  caret-color: var(--term-text);
+}

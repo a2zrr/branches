@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router';
 import { Accueil } from './screens/Accueil';
 import { Carte } from './screens/Carte';
-import { MissionEcran } from './screens/MissionEcran';
+import { CoqueJeu } from './screens/CoqueJeu';
 import { FinMission } from './screens/FinMission';
 import { Parametres } from './screens/Parametres';
 import { Introuvable } from './screens/Introuvable';
@@ -18,7 +18,7 @@ const routesDeveloppement = import.meta.env.DEV
 export const routeur = createBrowserRouter([
   { path: '/', Component: Accueil },
   { path: '/carte', Component: Carte },
-  { path: '/mission/:id', Component: MissionEcran },
+  { path: '/mission/:id', Component: CoqueJeu },
   { path: '/mission/:id/fin', Component: FinMission },
   { path: '/parametres', Component: Parametres },
   ...routesDeveloppement,

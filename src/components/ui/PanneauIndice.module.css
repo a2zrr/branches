@@ -1,0 +1,65 @@
+.fond {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-5);
+  background: var(--color-text);
+}
+
+.panneau {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: min(560px, 100%);
+  padding: var(--space-6);
+  border: 2px solid var(--color-hint);
+  border-radius: var(--radius-xl);
+  background: var(--color-hint-bg);
+  color: var(--color-text);
+  box-shadow: var(--edge-lg) var(--color-hint-edge);
+}
+
+.entete {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.textes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.titre {
+  font: var(--text-h3);
+  color: var(--color-hint-text);
+}
+
+.note {
+  margin: 0;
+  font: var(--text-small);
+  color: var(--color-text-muted);
+}
+
+.liste {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0 0 0 var(--space-5);
+  font: var(--text-body);
+}
+
+.indice {
+  padding-left: var(--space-1);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}

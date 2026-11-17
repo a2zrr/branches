@@ -76,9 +76,16 @@ export function evaluerCondition(depot: Depot, c: Condition): boolean {
   }
 }
 
+// Les interdits (réécrire l'historique, bouger la branche) sont vérifiés en premier : leur message est le plus utile.
+const PRIORITAIRES: Condition['type'][] = ['historiqueIntact', 'pointeInchangee'];
+
 /** Toutes les conditions doivent être vraies. Renvoie le message de la première fausse. */
 export function evaluerReussite(depot: Depot, conditions: Condition[]): ResultatReussite {
-  for (const c of conditions) {
+  const ordre = [
+    ...conditions.filter((c) => PRIORITAIRES.includes(c.type)),
+    ...conditions.filter((c) => !PRIORITAIRES.includes(c.type)),
+  ];
+  for (const c of ordre) {
     if (!evaluerCondition(depot, c)) return { ok: false, messageDuPremierEchec: c.message };
   }
   return { ok: true };
