@@ -1,0 +1,97 @@
+/* Graphe + rangées côte à côte : chaque rangée fait exactement ROW (50 px), comme le graphe. */
+
+.conteneur {
+  overflow: auto;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+}
+
+.corps {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+}
+
+.svg {
+  flex: none;
+  display: block;
+  overflow: visible;
+}
+
+.lignes {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ligne {
+  display: flex;
+  align-items: center;
+  padding-right: var(--space-4);
+}
+
+.bouton {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  padding: 0 var(--space-3);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text);
+  font: var(--text-small);
+  text-align: left;
+  cursor: pointer;
+}
+
+.bouton:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: -3px;
+}
+
+.selection .bouton {
+  background: var(--color-info-bg);
+  color: var(--color-primary);
+}
+
+.nouveau {
+  animation: nouveau 1.2s ease-out 1;
+}
+
+@keyframes nouveau {
+  from {
+    background: var(--color-success-bg);
+  }
+  to {
+    background: transparent;
+  }
+}
+
+.hash {
+  flex: none;
+  font: var(--text-code);
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.etiquettes {
+  display: inline-flex;
+  flex: none;
+  gap: var(--space-1);
+}
+
+.message {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.annule {
+  color: var(--color-text-muted);
+}

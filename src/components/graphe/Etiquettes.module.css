@@ -1,0 +1,55 @@
+.head,
+.branche,
+.tag,
+.puce {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  font: var(--text-small);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.head {
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
+.branche {
+  border: 2px solid transparent;
+  color: var(--branch-ink);
+}
+
+.tag {
+  border: 2px solid var(--color-hint);
+  background: var(--color-hint-bg);
+  color: var(--color-hint-text);
+}
+
+.puce {
+  border: 2px solid transparent;
+}
+
+.ok {
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+}
+
+.ko {
+  background: var(--color-danger-bg);
+  color: var(--color-danger-text);
+}
+
+.info {
+  background: var(--color-info-bg);
+  color: var(--color-primary);
+}
+
+.indice {
+  background: var(--color-hint-bg);
+  color: var(--color-hint-text);
+}
