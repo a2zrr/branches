@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" overflow="visible" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="Hédi, le chef de projet, accueillant">
+  <ellipse cx="100" cy="190" rx="54" ry="7" fill="#3C3C3C" opacity="0.12"></ellipse>
+  <ellipse cx="78" cy="180" rx="18" ry="10" fill="#FF9600"></ellipse>
+  <ellipse cx="122" cy="180" rx="18" ry="10" fill="#FF9600"></ellipse>
+  <path d="M96 42C92 24 112 18 116 30C110 26 102 30 104 42Z" fill="#1689C7"></path>
+  <circle cx="100" cy="114" r="68" fill="#1689C7"></circle>
+  <circle cx="100" cy="108" r="68" fill="#22A8F0"></circle>
+  <ellipse cx="72" cy="64" rx="16" ry="8" fill="#FFFFFF" opacity="0.28" transform="rotate(-32 72 64)"></ellipse>
+  <ellipse cx="38" cy="146" rx="11" ry="20" fill="#1689C7" transform="rotate(30 38 146)"></ellipse>
+  <ellipse cx="176" cy="70" rx="11" ry="22" fill="#1689C7" transform="rotate(35 176 70)"></ellipse>
+  <path d="M36 104C36 8 164 8 164 104" fill="none" stroke="#3C3C3C" stroke-width="7" stroke-linecap="round"></path>
+  <rect x="26" y="88" width="20" height="34" rx="9" fill="#3C3C3C"></rect>
+  <rect x="154" y="88" width="20" height="34" rx="9" fill="#3C3C3C"></rect>
+  <path d="M36 120C40 146 56 154 72 150" fill="none" stroke="#3C3C3C" stroke-width="5" stroke-linecap="round"></path>
+  <circle cx="74" cy="149" r="6" fill="#3C3C3C"></circle>
+  <path d="M93 152H107L104 160H96Z" fill="#C62828"></path>
+  <path d="M96 160H104L109 172L100 180L91 172Z" fill="#FF5A5A"></path>
+  <ellipse cx="60" cy="124" rx="11" ry="7" fill="#FF8FA8" opacity="0.65"></ellipse>
+  <ellipse cx="140" cy="124" rx="11" ry="7" fill="#FF8FA8" opacity="0.65"></ellipse>
+  <path d="M62 68Q78 60 92 68M108 68Q122 60 138 68" fill="none" stroke="#3C3C3C" stroke-width="5" stroke-linecap="round"></path>
+  <ellipse cx="78" cy="96" rx="17" ry="20" fill="#FFFFFF"></ellipse>
+  <ellipse cx="122" cy="96" rx="17" ry="20" fill="#FFFFFF"></ellipse>
+  <circle cx="81" cy="100" r="9.5" fill="#3C3C3C"></circle>
+  <circle cx="125" cy="100" r="9.5" fill="#3C3C3C"></circle>
+  <circle cx="84.5" cy="95.5" r="3.5" fill="#FFFFFF"></circle>
+  <circle cx="128.5" cy="95.5" r="3.5" fill="#FFFFFF"></circle>
+  <path d="M84 124Q100 148 116 124Z" fill="#3C3C3C"></path>
+  <path d="M93 133Q100 140 107 133Q100 129 93 133Z" fill="#FF5A5A"></path>
+</svg>

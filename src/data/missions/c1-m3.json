@@ -1,0 +1,99 @@
+{
+  "id": "c1-m3",
+  "chapitre": 1,
+  "ordre": 3,
+  "titre": "Une branche pour la démo",
+  "type": "terminal-graphe",
+  "notion": "git switch",
+  "histoire": "Bon. Je veux tester un nouveau titre pour la démo, mais sans toucher à main. Si ça casse, je ne veux pas le savoir.",
+  "objectif": "Crée une branche demo, place-toi dessus et commite la modification de src/Accueil.jsx qui t'attend.",
+  "depot": {
+    "branches": [
+      {
+        "nom": "main",
+        "pointe": "2d3e4f5"
+      }
+    ],
+    "commits": [
+      {
+        "id": "1a2b3c4",
+        "message": "init: premier commit",
+        "branche": "main",
+        "parents": [],
+        "fichiers": {
+          "README.md": ["# Pivot & Co — démo"],
+          "src/config.js": ["export const API_URL = \"https://api.pivot.co\";"],
+          "src/Accueil.jsx": ["export function Accueil() {", "  return <h1>Pivot & Co</h1>;", "}"]
+        }
+      },
+      {
+        "id": "6a1b2c3",
+        "message": "ajoute le bouton de démo",
+        "branche": "main",
+        "parents": ["1a2b3c4"],
+        "fichiers": {
+          "src/Bouton.jsx": [
+            "export function Bouton() {",
+            "  return <button className=\"demo\">Démo</button>;",
+            "}"
+          ]
+        }
+      },
+      {
+        "id": "2d3e4f5",
+        "message": "style: page d'accueil en bleu",
+        "branche": "main",
+        "parents": ["6a1b2c3"],
+        "fichiers": {
+          "src/accueil.css": ["h1 { color: #0F72B2; }"]
+        }
+      }
+    ],
+    "head": {
+      "branche": "main"
+    },
+    "travail": {
+      "src/Accueil.jsx": [
+        "export function Accueil() {",
+        "  return <h1>Pivot & Co, la démo qui déchire</h1>;",
+        "}"
+      ]
+    },
+    "prochainsHash": ["d7e8f90"]
+  },
+  "indices": [
+    "Une branche, c'est une ligne de travail parallèle. git switch -c crée une branche et s'y place d'un coup.",
+    "git switch -c demo, puis git add et git commit comme d'habitude."
+  ],
+  "reussite": [
+    {
+      "type": "brancheExiste",
+      "nom": "demo",
+      "message": "La branche demo n'existe pas encore."
+    },
+    {
+      "type": "headSur",
+      "branche": "demo",
+      "message": "Tu n'es pas sur la branche demo."
+    },
+    {
+      "type": "commitsDepuis",
+      "branche": "demo",
+      "depuis": "2d3e4f5",
+      "min": 1,
+      "message": "La branche demo n'a pas encore de nouveau commit."
+    },
+    {
+      "type": "pointeInchangee",
+      "branche": "main",
+      "message": "main a bougé ! Le test devait rester sur demo."
+    }
+  ],
+  "optimal": 3,
+  "appris": [
+    "git switch -c <nom> crée une branche et s'y place.",
+    "Les modifications non commitées te suivent quand tu changes de branche.",
+    "main n'a pas bougé : la démo reste à l'abri."
+  ],
+  "solution": ["git switch -c demo", "git add src/Accueil.jsx", "git commit -m \"titre de démo\""]
+}

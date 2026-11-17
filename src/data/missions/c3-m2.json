@@ -1,0 +1,10 @@
+{
+  "id": "c3-m2",
+  "chapitre": 3,
+  "ordre": 2,
+  "titre": "Hotfix express",
+  "notion": "git commit --amend",
+  "brouillon": true,
+  "histoire": "Bon. Le dernier commit a une faute dans le message. Le client va le lire. Si si.",
+  "objectif": "Corrige le dernier commit sans en créer un nouveau."
+}

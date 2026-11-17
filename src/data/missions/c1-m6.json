@@ -1,0 +1,132 @@
+{
+  "id": "c1-m6",
+  "chapitre": 1,
+  "ordre": 6,
+  "titre": "Le bug fantôme",
+  "type": "terminal-graphe",
+  "notion": "git bisect",
+  "histoire": "Bon. Le bouton Payer affiche 0 € depuis… un moment. Neuf commits depuis la v0.9, qui marchait. Je n'ai pas le temps de tous les lire, et toi non plus.",
+  "objectif": "Trouve avec git bisect le commit qui a cassé le prix. La v0.9 marchait, la version actuelle non. Teste chaque étape avec npm run test:prix.",
+  "depot": {
+    "branches": [
+      {
+        "nom": "main",
+        "pointe": "2f3a4b5"
+      }
+    ],
+    "commits": [
+      {
+        "id": "1a2b3c4",
+        "message": "init: premier commit",
+        "branche": "main",
+        "parents": []
+      },
+      {
+        "id": "2b3c4d5",
+        "message": "ajoute le panier",
+        "branche": "main",
+        "parents": ["1a2b3c4"]
+      },
+      {
+        "id": "3c4d5e6",
+        "message": "ajoute le bouton Payer",
+        "branche": "main",
+        "parents": ["2b3c4d5"]
+      },
+      {
+        "id": "4d5e6f7",
+        "message": "style: bouton plus rond",
+        "branche": "main",
+        "parents": ["3c4d5e6"]
+      },
+      {
+        "id": "5e6f7a8",
+        "message": "docs: guide de démo",
+        "branche": "main",
+        "parents": ["4d5e6f7"]
+      },
+      {
+        "id": "6f7a8b9",
+        "message": "refactor: calcul du total",
+        "branche": "main",
+        "parents": ["5e6f7a8"],
+        "fichiers": {
+          "src/prix.js": ["export const arrondi = (x) => Math.round(x * 100) / 100;"]
+        }
+      },
+      {
+        "id": "7a8b9c0",
+        "message": "perf: arrondi plus rapide",
+        "branche": "main",
+        "parents": ["6f7a8b9"],
+        "fichiers": {
+          "src/prix.js": ["export const arrondi = (x) => Math.floor(x / 100) * 0;"]
+        }
+      },
+      {
+        "id": "8b9c0d1",
+        "message": "style: police plus grasse",
+        "branche": "main",
+        "parents": ["7a8b9c0"]
+      },
+      {
+        "id": "9c0d1e2",
+        "message": "fix final v3 (le vrai)",
+        "branche": "main",
+        "parents": ["8b9c0d1"]
+      },
+      {
+        "id": "0d1e2f3",
+        "message": "copy: textes en français",
+        "branche": "main",
+        "parents": ["9c0d1e2"]
+      },
+      {
+        "id": "1e2f3a4",
+        "message": "chore: met à jour les dépendances",
+        "branche": "main",
+        "parents": ["0d1e2f3"]
+      },
+      {
+        "id": "2f3a4b5",
+        "message": "style: bouton de démo plus gros",
+        "branche": "main",
+        "parents": ["1e2f3a4"]
+      }
+    ],
+    "head": {
+      "branche": "main"
+    },
+    "tags": [
+      {
+        "nom": "v0.9",
+        "commit": "3c4d5e6"
+      }
+    ],
+    "testeur": {
+      "commande": "npm run test:prix",
+      "fautif": "7a8b9c0",
+      "sortieOk": "✔ prix affiché : 42,00 €",
+      "sortieKo": "✘ prix affiché : 0,00 €"
+    }
+  },
+  "indices": [
+    "git bisect coupe l'historique en deux à chaque étape : tu dis juste si le commit testé est bon ou mauvais.",
+    "git bisect start, git bisect bad (la version actuelle), git bisect good v0.9, puis npm run test:prix et git bisect good ou bad."
+  ],
+  "reussite": [
+    {
+      "type": "bisectTrouve",
+      "commit": "7a8b9c0",
+      "message": "Le coupable n'est pas encore démasqué."
+    }
+  ],
+  "optimal": 0,
+  "appris": [
+    "git bisect retrouve le commit fautif en coupant l'historique en deux à chaque étape.",
+    "Neuf commits se règlent en quatre tests au lieu de neuf.",
+    "git bisect reset te ramène où tu étais."
+  ],
+  "solution": [],
+  "aCompleter": "Étape 5 : écrire la séquence exacte de solution (git bisect start, git bisect bad, git bisect good v0.9, puis alterner npm run test:prix et git bisect good|bad selon le commit choisi par TON moteur) et mettre optimal = solution.length."
+}

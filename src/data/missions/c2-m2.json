@@ -1,0 +1,123 @@
+{
+  "id": "c2-m2",
+  "chapitre": 2,
+  "ordre": 2,
+  "titre": "Conflit sur le bouton Payer",
+  "type": "conflit",
+  "notion": "conflits de merge",
+  "histoire": "Bon. Kévin et toi avez modifié le même bouton. Git ne sait pas qui croire. Moi non plus, d'ailleurs.",
+  "objectif": "Lis les marqueurs de conflit et choisis ce que doit contenir src/BoutonPayer.jsx.",
+  "depot": {
+    "branches": [
+      {
+        "nom": "main",
+        "pointe": "8e9f0a1"
+      },
+      {
+        "nom": "feature/paiement",
+        "pointe": "4b5c6d7"
+      }
+    ],
+    "commits": [
+      {
+        "id": "1a2b3c4",
+        "message": "init: premier commit",
+        "branche": "main",
+        "parents": [],
+        "fichiers": {
+          "README.md": ["# Pivot & Co — démo"],
+          "src/config.js": ["export const API_URL = \"https://api.pivot.co\";"]
+        }
+      },
+      {
+        "id": "3c4d5e6",
+        "message": "ajoute le bouton Payer",
+        "branche": "main",
+        "parents": ["1a2b3c4"],
+        "fichiers": {
+          "src/BoutonPayer.jsx": [
+            "export function BoutonPayer({ total }) {",
+            "  return (",
+            "    <button className=\"btn\">",
+            "      Payer",
+            "    </button>",
+            "  );",
+            "}"
+          ]
+        }
+      },
+      {
+        "id": "4b5c6d7",
+        "message": "PAYER VITE (pour la démo)",
+        "branche": "feature/paiement",
+        "parents": ["3c4d5e6"],
+        "auteur": "Kévin",
+        "fichiers": {
+          "src/BoutonPayer.jsx": [
+            "export function BoutonPayer({ total }) {",
+            "  return (",
+            "    <button className=\"btn-rouge clignote\">",
+            "      PAYER VITE AVANT LA DÉMO",
+            "    </button>",
+            "  );",
+            "}"
+          ]
+        }
+      },
+      {
+        "id": "8e9f0a1",
+        "message": "style: bouton vert avec le montant",
+        "branche": "main",
+        "parents": ["3c4d5e6"],
+        "fichiers": {
+          "src/BoutonPayer.jsx": [
+            "export function BoutonPayer({ total }) {",
+            "  return (",
+            "    <button className=\"btn-vert\">",
+            "      Payer {total} €",
+            "    </button>",
+            "  );",
+            "}"
+          ]
+        }
+      }
+    ],
+    "head": {
+      "branche": "main"
+    },
+    "prochainsHash": ["9d8c7b6"]
+  },
+  "exercice": {
+    "commandeDeDepart": "git merge feature/paiement",
+    "fichier": "src/BoutonPayer.jsx",
+    "choixAcceptes": ["mienne", "autre", "deux"],
+    "reactions": {
+      "mienne": "Propre et lisible. Hédi approuve.",
+      "autre": "Un bouton qui clignote en pleine démo… courageux.",
+      "deux": "Deux boutons Payer ? Vérifie que c'est voulu."
+    }
+  },
+  "indices": [
+    "Entre <<<<<<< HEAD et ======= : ta version (main). Entre ======= et >>>>>>> : celle de feature/paiement.",
+    "Pour une démo, mieux vaut un bouton lisible qui affiche le montant. Quelle version fait ça ?"
+  ],
+  "reussite": [
+    {
+      "type": "fusionTerminee",
+      "branche": "main",
+      "avec": "feature/paiement",
+      "message": "La fusion n'est pas terminée."
+    },
+    {
+      "type": "aucunConflit",
+      "message": "Il reste des marqueurs de conflit dans le fichier."
+    }
+  ],
+  "optimal": 1,
+  "appris": [
+    "Un conflit arrive quand deux branches modifient les mêmes lignes.",
+    "<<<<<<< HEAD, ======= et >>>>>>> délimitent les deux versions en concurrence.",
+    "Résoudre, c'est garder ce qu'on veut, retirer les marqueurs, puis git add et git commit."
+  ],
+  "solution": ["choix:mienne"]
+}

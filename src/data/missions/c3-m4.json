@@ -1,0 +1,10 @@
+{
+  "id": "c3-m4",
+  "chapitre": 3,
+  "ordre": 4,
+  "titre": "Le rollback du vendredi",
+  "notion": "git reset",
+  "brouillon": true,
+  "histoire": "Bon. Tes deux derniers commits locaux sont une mauvaise idée. Personne ne les a vus. Profitons-en.",
+  "objectif": "Supprime tes deux derniers commits locaux avec git reset."
+}

@@ -1,0 +1,129 @@
+{
+  "id": "c1-m4",
+  "chapitre": 1,
+  "ordre": 4,
+  "titre": "La clé qui fuit",
+  "type": "terminal-graphe",
+  "notion": "git revert",
+  "histoire": "Bon. Quelqu'un a commité notre clé API sur main. La démo est dans deux heures. Et on ne réécrit pas l'historique, hein !",
+  "objectif": "Annule le commit qui contient la clé API sans réécrire l'historique.",
+  "depot": {
+    "branches": [
+      {
+        "nom": "main",
+        "pointe": "e4d5f6a"
+      },
+      {
+        "nom": "feature/paiement",
+        "pointe": "b2c3d4e"
+      }
+    ],
+    "commits": [
+      {
+        "id": "1a2b3c4",
+        "message": "init: premier commit",
+        "branche": "main",
+        "parents": [],
+        "fichiers": {
+          "README.md": ["# Pivot & Co — démo"],
+          "src/config.js": ["export const API_URL = \"https://api.pivot.co\";"]
+        }
+      },
+      {
+        "id": "5d6e7f8",
+        "message": "ajoute la page d'accueil",
+        "branche": "main",
+        "parents": ["1a2b3c4"],
+        "fichiers": {
+          "src/Accueil.jsx": ["export function Accueil() {", "  return <h1>Pivot & Co</h1>;", "}"]
+        }
+      },
+      {
+        "id": "9b8c7d6",
+        "message": "fix final v3 (le vrai)",
+        "branche": "main",
+        "parents": ["5d6e7f8"],
+        "fichiers": {
+          "src/Accueil.jsx": [
+            "export function Accueil() {",
+            "  return <h1 className=\"titre\">Pivot & Co</h1>;",
+            "}"
+          ]
+        }
+      },
+      {
+        "id": "7c1d2e3",
+        "message": "paiement: formulaire carte",
+        "branche": "feature/paiement",
+        "parents": ["9b8c7d6"],
+        "auteur": "Kévin",
+        "fichiers": {
+          "src/Paiement.jsx": ["export function Paiement() {", "  return <form>…</form>;", "}"]
+        }
+      },
+      {
+        "id": "a3f9c2e",
+        "message": "config: ajoute la clé API (temporaire promis)",
+        "branche": "main",
+        "parents": ["9b8c7d6"],
+        "fichiers": {
+          "src/config.js": [
+            "export const API_URL = \"https://api.pivot.co\";",
+            "export const API_KEY = \"cle-super-secrete-123\";"
+          ]
+        }
+      },
+      {
+        "id": "b2c3d4e",
+        "message": "paiement: ça marche chez moi",
+        "branche": "feature/paiement",
+        "parents": ["7c1d2e3"],
+        "auteur": "Kévin",
+        "fichiers": {
+          "src/Paiement.jsx": [
+            "export function Paiement() {",
+            "  return <form onSubmit={payer}>…</form>;",
+            "}"
+          ]
+        }
+      },
+      {
+        "id": "e4d5f6a",
+        "message": "style: bouton de démo plus gros",
+        "branche": "main",
+        "parents": ["a3f9c2e"],
+        "fichiers": {
+          "src/Bouton.css": [".demo { font-size: 32px; }"]
+        }
+      }
+    ],
+    "head": {
+      "branche": "main"
+    },
+    "prochainsHash": ["f0e1d2c"]
+  },
+  "indices": [
+    "Pour annuler sans toucher au passé, Git ajoute un nouveau commit qui fait exactement l'inverse de l'ancien.",
+    "Repère le hash du commit fautif avec git log --oneline, puis donne-le à git revert."
+  ],
+  "reussite": [
+    {
+      "type": "commitAnnule",
+      "cible": "a3f9c2e",
+      "branche": "main",
+      "message": "Le commit a3f9c2e est toujours actif sur main."
+    },
+    {
+      "type": "historiqueIntact",
+      "branche": "main",
+      "message": "Tu as réécrit l'historique de main. Interdit à deux heures de la démo !"
+    }
+  ],
+  "optimal": 2,
+  "appris": [
+    "git revert <hash> crée un nouveau commit qui fait l'inverse d'un ancien, sans réécrire l'historique.",
+    "C'est la bonne méthode sur une branche partagée comme main : personne n'a à resynchroniser son dépôt.",
+    "Le commit annulé reste visible dans l'historique : une clé publiée doit aussi être révoquée."
+  ],
+  "solution": ["git log --oneline", "git revert a3f9c2e"]
+}

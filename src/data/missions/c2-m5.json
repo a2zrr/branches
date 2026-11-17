@@ -1,0 +1,10 @@
+{
+  "id": "c2-m5",
+  "chapitre": 2,
+  "ordre": 5,
+  "titre": "Range ton bazar",
+  "notion": "git stash",
+  "brouillon": true,
+  "histoire": "Bon. Urgence en prod, mais ton travail en cours n'est pas prêt. On le met de côté.",
+  "objectif": "Mets ton travail de côté avec git stash, corrige, puis reprends-le."
+}

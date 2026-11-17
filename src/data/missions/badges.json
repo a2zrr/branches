@@ -1,0 +1,50 @@
+[
+  {
+    "id": "premier-commit",
+    "nom": "Premier commit",
+    "notion": "git commit",
+    "couleur": "#22A8F0",
+    "couleurArete": "#1689C7",
+    "icone": "M8.5 12a3.5 3.5 0 1 0 7 0a3.5 3.5 0 1 0-7 0M2 12h6.5M15.5 12H22"
+  },
+  {
+    "id": "brancheur",
+    "nom": "Brancheur",
+    "notion": "git switch",
+    "couleur": "#9A60EE",
+    "couleurArete": "#7240C4",
+    "icone": "M4 5a2 2 0 1 0 4 0a2 2 0 1 0-4 0M4 19a2 2 0 1 0 4 0a2 2 0 1 0-4 0M16 7a2 2 0 1 0 4 0a2 2 0 1 0-4 0M6 7v10M18 9c0 5-7 4-11 8.5"
+  },
+  {
+    "id": "annuleur",
+    "nom": "Annuleur",
+    "notion": "git revert",
+    "couleur": "#FF9600",
+    "couleurArete": "#D97E00",
+    "icone": "M9 13L4 8l5-5M4 8h11a5 5 0 0 1 0 10h-4"
+  },
+  {
+    "id": "fusionneur",
+    "nom": "Fusionneur",
+    "notion": "git merge",
+    "couleur": "#0E9C96",
+    "couleurArete": "#0A746F",
+    "icone": "M4 5a2 2 0 1 0 4 0a2 2 0 1 0-4 0M4 19a2 2 0 1 0 4 0a2 2 0 1 0-4 0M16 15a2 2 0 1 0 4 0a2 2 0 1 0-4 0M6 7v10M6 7c0 6 12 2 12 6"
+  },
+  {
+    "id": "detective",
+    "nom": "Détective",
+    "notion": "git bisect",
+    "couleur": "#E0458C",
+    "couleurArete": "#B02A69",
+    "icone": "M4.5 11a6.5 6.5 0 1 0 13 0a6.5 6.5 0 1 0-13 0M16 16l5 5"
+  },
+  {
+    "id": "pacificateur",
+    "nom": "Pacificateur",
+    "notion": "conflits de merge",
+    "couleur": "#3DA00A",
+    "couleurArete": "#2B7A00",
+    "icone": "M5 12.5l4.5 4.5L19 7"
+  }
+]

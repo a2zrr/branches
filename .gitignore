@@ -1,0 +1,13 @@
+# dépendances et builds
+node_modules/
+dist/
+coverage/
+playwright-report/
+test-results/
+*.log
+.DS_Store
+
+# captures des vérifications (les rapports .md restent versionnés)
+verifications/**/*.png
+
+# fichiers de travail locaux : jamais versionnés

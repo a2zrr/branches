@@ -1,0 +1,45 @@
+/* Styles globaux : uniquement des variables de tokens.css, jamais de couleur en dur. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+}
+
+html[data-theme='sombre'] {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-width: 1280px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font: var(--text-body);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+}
+
+a {
+  color: var(--color-info);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+#root {
+  min-height: 100vh;
+}

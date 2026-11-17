@@ -1,0 +1,82 @@
+{
+  "id": "c1-m1",
+  "chapitre": 1,
+  "ordre": 1,
+  "titre": "Ton premier commit",
+  "type": "terminal-graphe",
+  "notion": "git commit",
+  "histoire": "Bon. Premier jour, et la correction du titre de l'accueil traîne dans ton dossier depuis ce matin. Enregistre-la avant que je l'oublie. Moi, j'oublie tout.",
+  "objectif": "Enregistre la modification de src/Accueil.jsx dans un nouveau commit sur main.",
+  "depot": {
+    "branches": [
+      {
+        "nom": "main",
+        "pointe": "6a1b2c3"
+      }
+    ],
+    "commits": [
+      {
+        "id": "1a2b3c4",
+        "message": "init: premier commit",
+        "branche": "main",
+        "parents": [],
+        "fichiers": {
+          "README.md": ["# Pivot & Co — démo"],
+          "src/config.js": ["export const API_URL = \"https://api.pivot.co\";"],
+          "src/Accueil.jsx": ["export function Accueil() {", "  return <h1>Pivto & Co</h1>;", "}"]
+        }
+      },
+      {
+        "id": "6a1b2c3",
+        "message": "ajoute le bouton de démo",
+        "branche": "main",
+        "parents": ["1a2b3c4"],
+        "fichiers": {
+          "src/Bouton.jsx": [
+            "export function Bouton() {",
+            "  return <button className=\"demo\">Démo</button>;",
+            "}"
+          ]
+        }
+      }
+    ],
+    "head": {
+      "branche": "main"
+    },
+    "travail": {
+      "src/Accueil.jsx": ["export function Accueil() {", "  return <h1>Pivot & Co</h1>;", "}"]
+    },
+    "prochainsHash": ["c0d1e2f"]
+  },
+  "indices": [
+    "Un commit se fait en deux temps : on choisit les fichiers avec git add, puis on les enregistre avec git commit.",
+    "git add src/Accueil.jsx, puis git commit -m \"ton message\"."
+  ],
+  "reussite": [
+    {
+      "type": "commitsDepuis",
+      "branche": "main",
+      "depuis": "6a1b2c3",
+      "min": 1,
+      "message": "Aucun nouveau commit sur main pour l'instant."
+    },
+    {
+      "type": "fichierContient",
+      "fichier": "src/Accueil.jsx",
+      "ligne": "  return <h1>Pivot & Co</h1>;",
+      "branche": "main",
+      "message": "La correction du titre n'est pas dans le commit."
+    },
+    {
+      "type": "fichierPropre",
+      "message": "Il reste des modifications non enregistrées. Pense à git add."
+    }
+  ],
+  "optimal": 2,
+  "appris": [
+    "git add prépare les fichiers à enregistrer (la zone de préparation).",
+    "git commit -m \"…\" enregistre une photo du projet avec un message.",
+    "Un bon message dit ce que fait le commit. Pas « fix final v3 »."
+  ],
+  "solution": ["git add src/Accueil.jsx", "git commit -m \"fix: corrige le nom sur l'accueil\""]
+}

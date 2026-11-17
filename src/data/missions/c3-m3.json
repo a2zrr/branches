@@ -1,0 +1,10 @@
+{
+  "id": "c3-m3",
+  "chapitre": 3,
+  "ordre": 3,
+  "titre": "Rebase sans larmes",
+  "notion": "git rebase",
+  "brouillon": true,
+  "histoire": "Bon. Ta branche a trois jours de retard sur main. On la remet à jour proprement.",
+  "objectif": "Rejoue ta branche au-dessus de main avec git rebase."
+}

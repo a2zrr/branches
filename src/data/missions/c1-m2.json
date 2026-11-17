@@ -1,0 +1,90 @@
+{
+  "id": "c1-m2",
+  "chapitre": 1,
+  "ordre": 2,
+  "titre": "Qui a cassé quoi ?",
+  "type": "terminal-graphe",
+  "notion": "git log",
+  "histoire": "Bon. Le bouton de démo a disparu. Quelqu'un l'a supprimé, mais qui, et quand ? On n'accuse personne, hein. Pas encore.",
+  "objectif": "Retrouve le commit qui a supprimé src/Bouton.jsx et place HEAD dessus avec git checkout.",
+  "depot": {
+    "branches": [
+      {
+        "nom": "main",
+        "pointe": "4c5d6e7"
+      }
+    ],
+    "commits": [
+      {
+        "id": "1a2b3c4",
+        "message": "init: premier commit",
+        "branche": "main",
+        "parents": [],
+        "fichiers": {
+          "README.md": ["# Pivot & Co — démo"],
+          "src/config.js": ["export const API_URL = \"https://api.pivot.co\";"]
+        }
+      },
+      {
+        "id": "6a1b2c3",
+        "message": "ajoute le bouton de démo",
+        "branche": "main",
+        "parents": ["1a2b3c4"],
+        "fichiers": {
+          "src/Bouton.jsx": [
+            "export function Bouton() {",
+            "  return <button className=\"demo\">Démo</button>;",
+            "}"
+          ]
+        }
+      },
+      {
+        "id": "2d3e4f5",
+        "message": "style: page d'accueil en bleu",
+        "branche": "main",
+        "parents": ["6a1b2c3"],
+        "fichiers": {
+          "src/accueil.css": ["h1 { color: #0F72B2; }"]
+        }
+      },
+      {
+        "id": "8f9a0b1",
+        "message": "nettoyage (rien d'important)",
+        "branche": "main",
+        "parents": ["2d3e4f5"],
+        "auteur": "Kévin",
+        "supprimes": ["src/Bouton.jsx"]
+      },
+      {
+        "id": "4c5d6e7",
+        "message": "docs: README à jour",
+        "branche": "main",
+        "parents": ["8f9a0b1"],
+        "fichiers": {
+          "README.md": ["# Pivot & Co — démo", "", "Lancer : npm run dev"]
+        }
+      }
+    ],
+    "head": {
+      "branche": "main"
+    }
+  },
+  "indices": [
+    "git log --oneline affiche un commit par ligne : le hash puis le message. Un message te semble louche ?",
+    "git checkout suivi du hash place HEAD sur ce commit."
+  ],
+  "reussite": [
+    {
+      "type": "headDetacheSur",
+      "commit": "8f9a0b1",
+      "message": "HEAD n'est pas sur le commit qui a supprimé le bouton."
+    }
+  ],
+  "optimal": 2,
+  "appris": [
+    "git log --oneline résume l'historique : un commit par ligne.",
+    "git checkout <hash> place HEAD sur un ancien commit pour l'inspecter : c'est un HEAD détaché.",
+    "Pour revenir sur ta branche : git switch main."
+  ],
+  "solution": ["git log --oneline", "git checkout 8f9a0b1"]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "c3-m1",
+  "chapitre": 3,
+  "ordre": 1,
+  "titre": "Tague la version",
+  "notion": "git tag",
+  "brouillon": true,
+  "histoire": "Bon. On livre. Il faut pouvoir retrouver cette version dans six mois. Ou dans six minutes.",
+  "objectif": "Pose l'étiquette v1.0 sur le bon commit."
+}

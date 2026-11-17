@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" overflow="visible" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="Hédi, le chef de projet, paniqué">
+  <ellipse cx="100" cy="190" rx="54" ry="7" fill="#3C3C3C" opacity="0.12"></ellipse>
+  <ellipse cx="78" cy="180" rx="18" ry="10" fill="#FF9600"></ellipse>
+  <ellipse cx="122" cy="180" rx="18" ry="10" fill="#FF9600"></ellipse>
+  <path d="M96 42C92 24 112 18 116 30C110 26 102 30 104 42Z" fill="#1689C7"></path>
+  <circle cx="100" cy="114" r="68" fill="#1689C7"></circle>
+  <circle cx="100" cy="108" r="68" fill="#22A8F0"></circle>
+  <ellipse cx="72" cy="64" rx="16" ry="8" fill="#FFFFFF" opacity="0.28" transform="rotate(-32 72 64)"></ellipse>
+  <ellipse cx="26" cy="70" rx="11" ry="22" fill="#1689C7" transform="rotate(-30 26 70)"></ellipse>
+  <ellipse cx="174" cy="70" rx="11" ry="22" fill="#1689C7" transform="rotate(30 174 70)"></ellipse>
+  <path d="M36 104C36 8 164 8 164 104" fill="none" stroke="#3C3C3C" stroke-width="7" stroke-linecap="round"></path>
+  <rect x="26" y="88" width="20" height="34" rx="9" fill="#3C3C3C"></rect>
+  <rect x="154" y="88" width="20" height="34" rx="9" fill="#3C3C3C"></rect>
+  <path d="M36 120C40 146 56 154 72 150" fill="none" stroke="#3C3C3C" stroke-width="5" stroke-linecap="round"></path>
+  <circle cx="74" cy="149" r="6" fill="#3C3C3C"></circle>
+  <path d="M93 152H107L104 160H96Z" fill="#C62828"></path>
+  <path d="M96 160H104L109 172L100 180L91 172Z" fill="#FF5A5A"></path>
+  <path d="M62 70Q76 70 90 60M110 60Q124 70 138 70" fill="none" stroke="#3C3C3C" stroke-width="5" stroke-linecap="round"></path>
+  <ellipse cx="78" cy="96" rx="19" ry="23" fill="#FFFFFF"></ellipse>
+  <ellipse cx="122" cy="96" rx="19" ry="23" fill="#FFFFFF"></ellipse>
+  <circle cx="78" cy="98" r="6" fill="#3C3C3C"></circle>
+  <circle cx="122" cy="98" r="6" fill="#3C3C3C"></circle>
+  <ellipse cx="100" cy="135" rx="10" ry="13" fill="#3C3C3C"></ellipse>
+  <path d="M186 16C191 25 193 29 193 33A7 7 0 0 1 179 33C179 29 181 25 186 16Z" fill="#E8F7FF" stroke="#1689C7" stroke-width="3" stroke-linejoin="round"></path>
+  <path d="M14 26C18 33 19 36 19 38A5 5 0 0 1 9 38C9 36 10 33 14 26Z" fill="#E8F7FF" stroke="#1689C7" stroke-width="2.5" stroke-linejoin="round"></path>
+</svg>

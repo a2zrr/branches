@@ -1,0 +1,10 @@
+{
+  "id": "c2-m4",
+  "chapitre": 2,
+  "ordre": 4,
+  "titre": "Cherry-pick party",
+  "notion": "git cherry-pick",
+  "brouillon": true,
+  "histoire": "Bon. Il nous faut UN seul commit de la branche de Kévin. Pas les quarante autres.",
+  "objectif": "Récupère seulement le correctif avec git cherry-pick."
+}

@@ -1,0 +1,10 @@
+{
+  "id": "c2-m3",
+  "chapitre": 2,
+  "ordre": 3,
+  "titre": "Rends-moi ma branche",
+  "notion": "git reflog",
+  "brouillon": true,
+  "histoire": "Bon. Kévin a supprimé une branche. Avec trois jours de travail dessus. Pas les siens.",
+  "objectif": "Retrouve la branche supprimée grâce à git reflog."
+}

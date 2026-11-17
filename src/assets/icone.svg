@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 68" width="64" height="68" role="img" aria-label="Branchés">
+  <rect x="0" y="5" width="64" height="63" rx="18" fill="#1689C7"/>
+  <rect x="0" y="0" width="64" height="63" rx="18" fill="#22A8F0"/>
+  <path d="M22 46V18M22 40C22 30 42 34 42 24" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="22" cy="17" r="6.5" fill="#FFFFFF"/>
+  <circle cx="22" cy="47" r="6.5" fill="#FFFFFF"/>
+  <circle cx="42" cy="22" r="6.5" fill="#FFFFFF"/>
+</svg>

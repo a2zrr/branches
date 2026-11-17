@@ -1,0 +1,26 @@
+import { createBrowserRouter } from 'react-router';
+import { Accueil } from './screens/Accueil';
+import { Carte } from './screens/Carte';
+import { MissionEcran } from './screens/MissionEcran';
+import { FinMission } from './screens/FinMission';
+import { Parametres } from './screens/Parametres';
+import { Introuvable } from './screens/Introuvable';
+import { DesignSystem } from './screens/dev/DesignSystem';
+import { Graphe } from './screens/dev/Graphe';
+
+const routesDeveloppement = import.meta.env.DEV
+  ? [
+      { path: '/dev/design-system', Component: DesignSystem },
+      { path: '/dev/graphe', Component: Graphe },
+    ]
+  : [];
+
+export const routeur = createBrowserRouter([
+  { path: '/', Component: Accueil },
+  { path: '/carte', Component: Carte },
+  { path: '/mission/:id', Component: MissionEcran },
+  { path: '/mission/:id/fin', Component: FinMission },
+  { path: '/parametres', Component: Parametres },
+  ...routesDeveloppement,
+  { path: '*', Component: Introuvable },
+]);

@@ -1,0 +1,165 @@
+/* ==========================================================================
+   Branchés — tokens.css
+   Source de vérité des couleurs, espacements, rayons, bords 3D, typo, mouvement.
+   Les composants n'utilisent QUE ces variables. Mode sombre : <html data-theme="sombre">
+   ========================================================================== */
+
+:root {
+  /* ---- Fonds et texte ---- */
+  --color-bg: #FFFFFF;
+  --color-bg-subtle: #F7F7F7;
+  --color-surface: #FFFFFF;
+  --color-border: #E5E5E5;
+  --color-border-strong: #CFCFCF;
+  --color-text: #3C3C3C;
+  --color-text-muted: #6B6B6B;
+
+  /* ---- Bleus : un bleu = un rôle ----
+     Bleu Hédi   : surfaces SANS texte (mascotte, icône du logo, pastilles, barres)
+     Bleu profond: tout ce qui PORTE ou EST du texte (boutons, liens, focus, nom du logo)
+     Bleu pâle   : fonds teintés (texte posé dessus = bleu profond)
+     Bleu nuit   : grandes zones foncées (pied de page) */
+  --color-brand: #22A8F0;          /* bleu Hédi */
+  --color-brand-edge: #1689C7;     /* bord 3D du bleu Hédi */
+  --color-primary: #0F72B2;        /* bleu profond, texte blanc 5,2:1 */
+  --color-primary-edge: #0A5689;
+  --color-on-primary: #FFFFFF;
+  --color-info: #0F72B2;           /* liens, boutons secondaires */
+  --color-info-bg: #E8F7FF;        /* bleu pâle */
+  --color-night: #0B4F7A;          /* pied de page */
+  --color-night-text: #D6EEFC;
+  --color-night-title: #A9DDFA;
+  --color-focus: #0F72B2;          /* anneau de focus, ≥ 3:1 sur blanc */
+
+  /* ---- Retours : vert = réussi, rouge = raté, jaune = indice ---- */
+  --color-success: #2B8500;
+  --color-success-edge: #1E6000;
+  --color-success-bg: #E9F8DC;
+  --color-success-text: #2B7A00;
+  --color-danger: #C62828;
+  --color-danger-edge: #8E1B1B;
+  --color-on-danger: #FFFFFF;
+  --color-danger-bg: #FFE5E5;
+  --color-danger-text: #B3261E;
+  --color-hint: #FFC21A;           /* bouton d'indice, XP, étoiles */
+  --color-hint-edge: #E0A000;
+  --color-on-hint: #3C3C3C;
+  --color-hint-bg: #FFF6D6;
+  --color-hint-text: #7A5A00;
+  --color-orange: #FF9600;         /* badges, pieds de Hédi */
+  --color-orange-edge: #D97E00;
+  --color-warm-bg: #FFF1DC;        /* fond chaud derrière Hédi */
+
+  /* ---- Désactivé ---- */
+  --color-disabled-bg: #E5E5E5;
+  --color-disabled-text: #8F8F8F;
+  --color-disabled-edge: #CFCFCF;
+
+  /* ---- Terminal (sombre dans les deux thèmes) ---- */
+  --term-bg: #16232B;
+  --term-edge: #0C151A;
+  --term-bar: #1E2E37;
+  --term-text: #E6EDF0;
+  --term-muted: #9FB3BD;
+  --term-prompt: #8EDB4E;
+  --term-hash: #FFD45C;
+  --term-ref: #6CCFF6;
+  --term-error: #FF9A9A;
+
+  /* ---- Branches : identiques en clair et en sombre (≥ 3:1 sur les deux fonds) ----
+     index i → couleur = branch-[(i % 6) + 1], motif = Math.floor(i / 6) : 0 plein, 1 tirets, 2 pointillés */
+  --branch-1: #3DA00A; --branch-1-edge: #2B7A00; /* cercle   */
+  --branch-2: #1E8FE0; --branch-2-edge: #156DAD; /* carré    */
+  --branch-3: #9A60EE; --branch-3-edge: #7240C4; /* losange  */
+  --branch-4: #E07000; --branch-4-edge: #A85400; /* triangle */
+  --branch-5: #E0458C; --branch-5-edge: #B02A69; /* croix    */
+  --branch-6: #0E9C96; --branch-6-edge: #0A746F; /* étoile   */
+  --branch-ink: #10181C;                          /* texte des étiquettes de branche */
+  --graph-halo: #5AC40F;                          /* halo « nouveau commit » */
+
+  /* ---- Espacements (base 4) ---- */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+
+  /* ---- Rayons ---- */
+  --radius-sm: 8px;    /* touches, petites pastilles carrées */
+  --radius-md: 12px;   /* champs, blocs de code */
+  --radius-lg: 16px;   /* boutons */
+  --radius-xl: 24px;   /* cartes */
+  --radius-pill: 999px;
+
+  /* ---- Bords 3D : ombre pleine, jamais floue ----
+     usage : box-shadow: var(--edge-md) var(--color-primary-edge); */
+  --edge-sm: 0 2px 0;  /* étiquettes */
+  --edge-md: 0 4px 0;  /* boutons */
+  --edge-lg: 0 6px 0;  /* cartes, pastilles de mission */
+
+  /* ---- Typographie ---- */
+  --font-ui: "Nunito", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --text-display: 900 56px/1.05 var(--font-ui);
+  --text-h1: 900 40px/1.1 var(--font-ui);
+  --text-h2: 900 28px/1.2 var(--font-ui);
+  --text-h3: 900 22px/1.25 var(--font-ui);
+  --text-body: 600 17px/1.5 var(--font-ui);
+  --text-small: 700 14px/1.4 var(--font-ui);
+  --text-label: 800 15px/1 var(--font-ui);   /* + text-transform: uppercase; letter-spacing: .06em */
+  --text-code: 400 15px/1.65 var(--font-mono);
+
+  /* ---- Mouvement ---- */
+  --ease-bounce: cubic-bezier(.34, 1.56, .64, 1);
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+  --dur-press: 60ms;
+  --dur-fast: 150ms;
+  --dur-base: 250ms;
+  --dur-slow: 450ms;
+}
+
+/* ---- Mode sombre : seules les couleurs changent ---- */
+[data-theme="sombre"] {
+  --color-bg: #131F24;
+  --color-bg-subtle: #0F181C;
+  --color-surface: #1B2A31;
+  --color-border: #2E434D;
+  --color-border-strong: #3D5560;
+  --color-text: #F1F5F7;
+  --color-text-muted: #A8BAC2;
+
+  --color-primary: #22A8F0;
+  --color-primary-edge: #1689C7;
+  --color-on-primary: #062033;
+  --color-info: #8CD3FF;
+  --color-info-bg: #10324A;
+  --color-focus: #8CD3FF;
+
+  --color-success: #5AC40F;
+  --color-success-edge: #3D8A08;
+  --color-success-bg: #1E3A12;
+  --color-success-text: #A6EB73;
+  --color-danger: #FF6B6B;
+  --color-danger-edge: #C94545;
+  --color-on-danger: #3A0A0A;
+  --color-danger-bg: #3A1A1C;
+  --color-danger-text: #FFA3A3;
+  --color-hint-edge: #C99500;
+  --color-on-hint: #2A2000;
+  --color-hint-bg: #3A3012;
+  --color-hint-text: #FFD866;
+  --color-warm-bg: #3A2A16;
+
+  --color-disabled-bg: #2E434D;
+  --color-disabled-text: #8FA3AC;
+  --color-disabled-edge: #22333B;
+
+  --term-bg: #0B1317;
+  --term-edge: #05090B;
+  --term-bar: #142027;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "id": "c2-m1",
+  "chapitre": 2,
+  "ordre": 1,
+  "titre": "Mais qui est Kévin ?",
+  "notion": "git blame",
+  "brouillon": true,
+  "histoire": "Bon. Une ligne mystère casse le panier. Qui l'a écrite ? (Je crois savoir.)",
+  "objectif": "Trouve l'auteur de la ligne fautive avec git blame."
+}

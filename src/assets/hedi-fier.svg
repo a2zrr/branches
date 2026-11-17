@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" overflow="visible" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="Hédi, le chef de projet, fier">
+  <ellipse cx="100" cy="190" rx="54" ry="7" fill="#3C3C3C" opacity="0.12"></ellipse>
+  <ellipse cx="78" cy="180" rx="18" ry="10" fill="#FF9600"></ellipse>
+  <ellipse cx="122" cy="180" rx="18" ry="10" fill="#FF9600"></ellipse>
+  <path d="M96 42C92 24 112 18 116 30C110 26 102 30 104 42Z" fill="#1689C7"></path>
+  <circle cx="100" cy="114" r="68" fill="#1689C7"></circle>
+  <circle cx="100" cy="108" r="68" fill="#22A8F0"></circle>
+  <ellipse cx="72" cy="64" rx="16" ry="8" fill="#FFFFFF" opacity="0.28" transform="rotate(-32 72 64)"></ellipse>
+  <ellipse cx="36" cy="150" rx="11" ry="20" fill="#1689C7" transform="rotate(50 36 150)"></ellipse>
+  <ellipse cx="172" cy="74" rx="11" ry="22" fill="#1689C7" transform="rotate(20 172 74)"></ellipse>
+  <circle cx="177" cy="52" r="11" fill="#1689C7"></circle>
+  <path d="M36 104C36 8 164 8 164 104" fill="none" stroke="#3C3C3C" stroke-width="7" stroke-linecap="round"></path>
+  <rect x="26" y="88" width="20" height="34" rx="9" fill="#3C3C3C"></rect>
+  <rect x="154" y="88" width="20" height="34" rx="9" fill="#3C3C3C"></rect>
+  <path d="M36 120C40 146 56 154 72 150" fill="none" stroke="#3C3C3C" stroke-width="5" stroke-linecap="round"></path>
+  <circle cx="74" cy="149" r="6" fill="#3C3C3C"></circle>
+  <path d="M93 152H107L104 160H96Z" fill="#C62828"></path>
+  <path d="M96 160H104L109 172L100 180L91 172Z" fill="#FF5A5A"></path>
+  <ellipse cx="60" cy="122" rx="12" ry="8" fill="#FF8FA8" opacity="0.8"></ellipse>
+  <ellipse cx="140" cy="122" rx="12" ry="8" fill="#FF8FA8" opacity="0.8"></ellipse>
+  <path d="M62 62Q78 54 92 62M108 62Q122 54 138 62" fill="none" stroke="#3C3C3C" stroke-width="5" stroke-linecap="round"></path>
+  <path d="M64 100Q78 84 92 100M108 100Q122 84 136 100" fill="none" stroke="#3C3C3C" stroke-width="6" stroke-linecap="round"></path>
+  <path d="M78 120Q100 156 122 120Z" fill="#3C3C3C"></path>
+  <path d="M91 133Q100 142 109 133Q100 128 91 133Z" fill="#FF5A5A"></path>
+  <path d="M28 30C29.5 39 30 39.5 39 41C30 42.5 29.5 43 28 52C26.5 43 26 42.5 17 41C26 39.5 26.5 39 28 30Z" fill="#FFC21A"></path>
+  <path d="M144 0C145.2 7 145.6 7.4 152 8.5C145.6 9.6 145.2 10 144 17C142.8 10 142.4 9.6 136 8.5C142.4 7.4 142.8 7 144 0Z" fill="#FFC21A"></path>
+  <path d="M190 112C191.2 119 191.6 119.4 198 120.5C191.6 121.6 191.2 122 190 129C188.8 122 188.4 121.6 182 120.5C188.4 119.4 188.8 119 190 112Z" fill="#FFC21A"></path>
+</svg>
