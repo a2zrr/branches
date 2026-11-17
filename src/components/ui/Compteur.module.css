@@ -1,0 +1,33 @@
+.compteur {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  font: var(--text-small);
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.notions {
+  background: var(--color-info-bg);
+  color: var(--color-primary);
+}
+
+.xp {
+  background: var(--color-hint-bg);
+  color: var(--color-hint-text);
+}
+
+.etoiles {
+  background: var(--color-hint-bg);
+  color: var(--color-hint-text);
+}
+
+.nombre {
+  font-variant-numeric: tabular-nums;
+}
+
+.unite {
+  font-weight: 700;
+}

@@ -1,0 +1,87 @@
+/* En-tête de chapitre : ouvert (couleur du chapitre), verrouillé (gris), bientôt (bordure en pointillés). */
+
+.entete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-6);
+  border-radius: var(--radius-xl);
+  border: 2px solid transparent;
+}
+
+.ouvert {
+  background: var(--chapitre-couleur, var(--color-primary));
+  border-color: var(--chapitre-couleur, var(--color-primary));
+  box-shadow: var(--edge-lg) var(--chapitre-arete, var(--color-primary-edge));
+  color: var(--color-on-primary);
+}
+
+.ouvert .libelle {
+  color: var(--color-on-primary);
+}
+
+.verrouille {
+  background: var(--color-bg-subtle);
+  border-color: var(--color-border);
+  box-shadow: var(--edge-lg) var(--color-border);
+  color: var(--color-text);
+}
+
+.bientot {
+  background: var(--color-surface);
+  border: 2px dashed var(--color-border-strong);
+  color: var(--color-text-muted);
+}
+
+.textes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.libelle {
+  font: var(--text-label);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.titre {
+  font: var(--text-h3);
+  color: inherit;
+}
+
+.sousTitre {
+  margin: 0;
+  font: var(--text-small);
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.pastille {
+  flex: none;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: var(--text-small);
+  font-weight: 900;
+}
+
+.ouvert .pastille {
+  background: var(--color-hint-bg);
+  color: var(--color-hint-text);
+}
+
+.verrouille .pastille,
+.bientot .pastille {
+  background: var(--color-border);
+  color: var(--color-text);
+}
+
+.bientot .pastille {
+  background: var(--color-bg-subtle);
+}

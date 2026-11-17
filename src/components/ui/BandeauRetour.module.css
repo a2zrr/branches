@@ -1,0 +1,129 @@
+.bandeau {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  padding: var(--space-5) var(--space-6);
+  border-radius: 18px;
+}
+
+.neutre {
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+}
+
+.compteur {
+  font: var(--text-body);
+  font-size: 16px;
+  color: var(--color-text-muted);
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.reussi {
+  background: var(--color-success-bg);
+  animation: monter 250ms var(--ease-out) both;
+}
+
+.rate {
+  background: var(--color-danger-bg);
+  animation:
+    monter 250ms var(--ease-out) both,
+    secousse 300ms ease-in-out 250ms 2;
+}
+
+.gauche {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.pastille {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--color-surface);
+}
+
+/* Icône : scale 0,6 → 1,1 → 1. */
+.iconeRebond {
+  display: inline-flex;
+  animation: rebond-icone 450ms var(--ease-bounce) both;
+}
+
+.textes {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.titre {
+  font: var(--text-h2);
+  font-size: 24px;
+}
+
+.reussi .titre {
+  color: var(--color-success-text);
+}
+
+.rate .titre {
+  color: var(--color-danger-text);
+}
+
+.message {
+  font: var(--text-body);
+  font-size: 16px;
+  color: var(--color-text);
+}
+
+.reussi .message {
+  color: var(--color-success-text);
+}
+
+.rate .message {
+  color: var(--color-danger-text);
+}
+
+@keyframes monter {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes secousse {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-6px);
+  }
+  75% {
+    transform: translateX(6px);
+  }
+}
+
+@keyframes rebond-icone {
+  0% {
+    transform: scale(0.6);
+  }
+  60% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

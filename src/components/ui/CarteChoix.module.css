@@ -1,0 +1,79 @@
+/* Carte de choix : normal blanc, survol −2 px, sélectionnée bleu pâle + bord bleu Hédi, désactivée 50 %. */
+
+.carte {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-4) var(--space-5);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--edge-md) var(--color-border);
+  font: var(--text-body);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform var(--dur-fast) var(--ease-bounce),
+    box-shadow var(--dur-fast) ease;
+}
+
+.carte:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--edge-lg) var(--color-border);
+  background: var(--color-bg-subtle);
+}
+
+.carte:active:not(:disabled) {
+  transform: translateY(4px);
+  box-shadow: none;
+  transition-duration: var(--dur-press);
+}
+
+.carte:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.carte[data-selectionnee] {
+  background: var(--color-info-bg);
+  border-color: var(--color-brand);
+  box-shadow: var(--edge-md) var(--color-brand-edge);
+  color: var(--color-primary);
+}
+
+.carte:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.raccourci {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 2px solid currentColor;
+  border-radius: var(--radius-sm);
+  font: var(--text-small);
+  font-weight: 900;
+}
+
+.titre {
+  font: var(--text-h3);
+  font-size: 17px;
+  color: inherit;
+}
+
+.description {
+  font: var(--text-small);
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--color-text-muted);
+}
+
+.carte[data-selectionnee] .description {
+  color: var(--color-primary);
+}

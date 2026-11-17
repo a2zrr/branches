@@ -1,0 +1,57 @@
+.conteneur {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.entete {
+  display: flex;
+  justify-content: space-between;
+  font: var(--text-small);
+  font-weight: 800;
+  color: var(--color-text-muted);
+}
+
+.piste {
+  height: 18px;
+  border-radius: var(--radius-pill);
+  background: var(--color-border);
+  overflow: hidden;
+}
+
+/* La largeur s'anime en 600 ms (rebond). */
+.remplissage {
+  position: relative;
+  height: 100%;
+  min-width: 0;
+  border-radius: var(--radius-pill);
+  background: var(--color-brand);
+  transition: width 600ms var(--ease-bounce);
+}
+
+/* À 100 % : jaune, et pulse une fois. */
+.complete {
+  background: var(--color-hint);
+  animation: pulsation var(--dur-slow) ease-in-out 1;
+}
+
+.reflet {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  top: 4px;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  opacity: 0.45;
+}
+
+@keyframes pulsation {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(1.35);
+  }
+}

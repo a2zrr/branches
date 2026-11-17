@@ -1,0 +1,114 @@
+/* Bouton : bord 3D plein (ombre sans flou), capitales, états survol / actif / désactivé. */
+
+.bouton {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 48px;
+  padding: 0 var(--space-5);
+  border: 2px solid transparent;
+  border-radius: var(--radius-lg);
+  font: var(--text-label);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition:
+    transform var(--dur-fast) var(--ease-bounce),
+    box-shadow var(--dur-fast) ease;
+}
+
+.l {
+  min-height: 60px;
+  padding: 0 var(--space-6);
+  font-size: 16px;
+}
+
+/* Variantes : fond, texte et bord 3D. */
+.primaire {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  border-color: var(--color-primary);
+  box-shadow: var(--edge-md) var(--color-primary-edge);
+}
+
+.secondaire {
+  background: var(--color-surface);
+  color: var(--color-primary);
+  border-color: var(--color-border);
+  box-shadow: var(--edge-md) var(--color-border);
+}
+
+.danger {
+  background: var(--color-danger);
+  color: var(--color-on-danger);
+  border-color: var(--color-danger);
+  box-shadow: var(--edge-md) var(--color-danger-edge);
+}
+
+.indice {
+  background: var(--color-hint);
+  color: var(--color-on-hint);
+  border-color: var(--color-hint);
+  box-shadow: var(--edge-md) var(--color-hint-edge);
+}
+
+.succes {
+  background: var(--color-success);
+  color: var(--color-on-primary);
+  border-color: var(--color-success);
+  box-shadow: var(--edge-md) var(--color-success-edge);
+}
+
+/* Survol : −2 px, bord 6 px, rebond. Actif : +4 px, bord 0, 60 ms. */
+.bouton:hover:not(:disabled),
+.bouton[data-etat='survol'] {
+  transform: translateY(-2px);
+}
+
+.primaire:hover:not(:disabled),
+.primaire[data-etat='survol'] {
+  box-shadow: var(--edge-lg) var(--color-primary-edge);
+}
+.secondaire:hover:not(:disabled),
+.secondaire[data-etat='survol'] {
+  box-shadow: var(--edge-lg) var(--color-border);
+}
+.danger:hover:not(:disabled),
+.danger[data-etat='survol'] {
+  box-shadow: var(--edge-lg) var(--color-danger-edge);
+}
+.indice:hover:not(:disabled),
+.indice[data-etat='survol'] {
+  box-shadow: var(--edge-lg) var(--color-hint-edge);
+}
+.succes:hover:not(:disabled),
+.succes[data-etat='survol'] {
+  box-shadow: var(--edge-lg) var(--color-success-edge);
+}
+
+.bouton:active:not(:disabled),
+.bouton[data-etat='actif'] {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 transparent;
+  transition-duration: var(--dur-press);
+}
+
+.bouton:focus-visible,
+.bouton[data-etat='focus'] {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 4px;
+}
+
+.bouton:disabled {
+  cursor: not-allowed;
+  background: var(--color-disabled-bg);
+  color: var(--color-disabled-text);
+  border-color: var(--color-disabled-edge);
+  box-shadow: var(--edge-md) var(--color-disabled-edge);
+}
+
+.icone {
+  display: inline-flex;
+}

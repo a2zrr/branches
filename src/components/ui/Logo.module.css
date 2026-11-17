@@ -1,0 +1,27 @@
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.icone {
+  display: block;
+  width: 32px;
+  height: auto;
+}
+
+.l .icone {
+  width: 48px;
+}
+
+.mot {
+  font-family: var(--font-ui);
+  font-weight: 900;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+  color: var(--color-primary);
+}
+
+.l .mot {
+  font-size: 36px;
+}

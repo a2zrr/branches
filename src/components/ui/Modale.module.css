@@ -1,0 +1,65 @@
+.conteneur {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-5);
+}
+
+/* Voile : couvre l'écran sans assombrir la boîte. */
+.voile {
+  position: absolute;
+  inset: 0;
+  background: var(--color-text);
+  opacity: 0.6;
+}
+
+.boite {
+  position: relative;
+  z-index: 11;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: min(480px, 100%);
+  padding: var(--space-6);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--edge-lg) var(--color-border);
+}
+
+.titre {
+  font: var(--text-h2);
+}
+
+.corps {
+  font: var(--text-body);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
+
+.annuler {
+  appearance: none;
+  min-height: 48px;
+  padding: 0 var(--space-5);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  color: var(--color-primary);
+  font: var(--text-label);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+}
+
+.annuler:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}

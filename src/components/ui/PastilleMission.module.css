@@ -1,0 +1,99 @@
+/* Pastille de mission : cercle 72 px, bord 3D 6 px, étoiles dessous, titre en dessous. */
+
+.colonne {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  width: 92px;
+}
+
+.pastille {
+  appearance: none;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  transition:
+    transform var(--dur-fast) var(--ease-bounce),
+    box-shadow var(--dur-fast) ease;
+}
+
+.pastille:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.pastille:active:not(:disabled) {
+  transform: translateY(4px);
+  transition-duration: var(--dur-press);
+}
+
+.pastille:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 4px;
+}
+
+.pastille:disabled {
+  cursor: not-allowed;
+}
+
+.verrouillee {
+  background: var(--color-disabled-bg);
+  box-shadow: var(--edge-lg) var(--color-disabled-edge);
+}
+
+.disponible,
+.encours {
+  background: var(--color-brand);
+  box-shadow: var(--edge-lg) var(--color-brand-edge);
+}
+
+.terminee {
+  background: var(--color-hint);
+  box-shadow: var(--edge-lg) var(--color-hint-edge);
+}
+
+/* Anneau jaune qui pulse, pour la mission en cours. */
+.anneau {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  width: 88px;
+  height: 88px;
+  margin-left: -44px;
+  border-radius: 50%;
+  border: 5px solid var(--color-hint);
+  pointer-events: none;
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 0.35;
+  }
+}
+
+.etoiles {
+  display: flex;
+  gap: 2px;
+  height: 18px;
+}
+
+.titre {
+  font: var(--text-small);
+  font-weight: 900;
+  text-align: center;
+  color: var(--color-text-muted);
+}

@@ -1,0 +1,75 @@
+.rangee {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-3);
+}
+
+.bulle {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+  border: 2px solid var(--color-border);
+  border-radius: 18px;
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+/* Histoire : blanc, bord gris. */
+.histoire .titre {
+  color: var(--color-primary);
+}
+
+/* Indice : jaune pâle, bord jaune. */
+.indice {
+  background: var(--color-hint-bg);
+  border-color: var(--color-hint);
+}
+.indice .titre {
+  color: var(--color-hint-text);
+}
+
+/* Réaction fière : vert pâle, bord vert. */
+.reaction {
+  background: var(--color-success-bg);
+  border-color: var(--color-success);
+}
+.reaction .titre {
+  color: var(--color-success-text);
+}
+
+/* Queue en losange côté Hédi. */
+.queue {
+  position: absolute;
+  left: -9px;
+  bottom: 18px;
+  width: 16px;
+  height: 16px;
+  background: inherit;
+  border-left: 2px solid var(--color-border);
+  border-bottom: 2px solid var(--color-border);
+  transform: rotate(45deg);
+}
+.indice .queue {
+  border-color: var(--color-hint);
+}
+.reaction .queue {
+  border-color: var(--color-success);
+}
+
+.titre {
+  font: var(--text-label);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.texte {
+  margin: 0;
+  font: var(--text-body);
+  font-size: 17px;
+  line-height: 1.45;
+}

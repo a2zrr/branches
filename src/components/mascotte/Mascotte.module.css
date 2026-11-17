@@ -1,0 +1,80 @@
+/* Hédi : respiration, changement d'expression, secousse (paniqué) et clignement. */
+
+.svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Respiration : translateY 0 → −6 px, 3 s, en boucle. */
+.respire {
+  animation: respiration 3s ease-in-out infinite alternate;
+}
+
+/* Changement d'expression : scale 1 → 0,92 → 1,06 → 1 en 350 ms. */
+.changement {
+  animation: changement 350ms var(--ease-out) both;
+}
+
+/* Paniqué : secousse ±3° × 3. */
+.secousse {
+  animation: secousse 600ms ease-in-out 3;
+}
+
+/* Clignement : scaleY 1 → 0,12 → 1 (150 ms) toutes les 4,5 s, sur les yeux (calque data-calque="yeux"). */
+.svg :global([data-calque='yeux']) {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: clignement 4500ms linear infinite;
+}
+
+@keyframes respiration {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes changement {
+  0% {
+    transform: scale(1);
+  }
+  26% {
+    transform: scale(0.92);
+  }
+  56% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes secousse {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-3deg);
+  }
+  75% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes clignement {
+  0%,
+  96.6% {
+    transform: scaleY(1);
+  }
+  98.3% {
+    transform: scaleY(0.12);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}

@@ -1,0 +1,44 @@
+.badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  width: 104px;
+}
+
+.medaille {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  color: var(--color-on-primary);
+  transition: transform var(--dur-fast) var(--ease-bounce);
+}
+
+.badge:hover .medaille {
+  transform: scale(1.12) rotate(-6deg);
+}
+
+.debloque .medaille {
+  background: var(--badge-couleur, var(--color-primary));
+  box-shadow: var(--edge-md) var(--badge-arete, var(--color-primary-edge));
+}
+
+.verrouille .medaille {
+  background: var(--color-disabled-bg);
+  color: var(--color-disabled-text);
+  box-shadow: var(--edge-md) var(--color-disabled-edge);
+}
+
+.nom {
+  font: var(--text-small);
+  font-weight: 900;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.verrouille .nom {
+  color: var(--color-text-muted);
+}
