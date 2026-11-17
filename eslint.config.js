@@ -26,6 +26,8 @@ export default tseslint.config(
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
+      // Le moteur travaille sur des copies (jamais de mutation) : delete sur une copie fraîche est sûr.
+      '@typescript-eslint/no-dynamic-delete': 'off',
       '@typescript-eslint/restrict-template-expressions': ['error', { allowNumber: true }],
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       ...jsxA11y.flatConfigs.recommended.rules,
