@@ -1,0 +1,88 @@
+.fichier {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  overflow: hidden;
+}
+
+.entete {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 2px solid var(--color-border);
+  background: var(--color-bg-subtle);
+  font: var(--text-code);
+  font-size: 14px;
+  color: var(--color-text);
+}
+
+.lignes {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: var(--space-2) 0;
+  overflow: auto;
+  list-style: none;
+  font: var(--text-code);
+  font-size: 14px;
+}
+
+.ligne {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: 0 var(--space-4);
+  white-space: pre;
+}
+
+.numero {
+  flex: none;
+  width: 28px;
+  text-align: right;
+  color: var(--color-text-muted);
+  user-select: none;
+}
+
+.texte {
+  flex: 1;
+  min-width: 0;
+  white-space: pre-wrap;
+}
+
+/* Marqueurs : même couleur que le texte, mis en gras. */
+.debut,
+.separation,
+.fin {
+  font-weight: 700;
+  color: var(--color-danger-text);
+  background: var(--color-danger-bg);
+}
+
+/* Version de l'utilisateur : bleu pâle. Version de l'autre branche : jaune pâle. */
+.ours {
+  background: var(--color-info-bg);
+}
+
+.theirs {
+  background: var(--color-hint-bg);
+}
+
+.actif {
+  box-shadow: inset 4px 0 0 var(--color-focus);
+}
+
+.annotation {
+  flex: none;
+  margin-left: auto;
+  font: var(--text-small);
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+/* Annotation d'un marqueur : même couleur que le marqueur, pour garder le contraste sur fond rouge pâle. */
+.debut .annotation,
+.separation .annotation,
+.fin .annotation {
+  color: var(--color-danger-text);
+}

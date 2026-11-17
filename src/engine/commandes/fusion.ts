@@ -166,15 +166,10 @@ function avance(depot: Depot, headId: string, autreId: string, nom: string): Res
   };
 }
 
-/**
- * Résout un fichier en conflit : un choix par bloc (mienne, autre, deux).
- * Le contenu résolu est indexé et retiré de l'espace de travail.
- */
-export function resoudreFichier(depot: Depot, fichier: string, choix: readonly Choix[]): Depot {
-  const segments = depot.fusion?.fichiers[fichier];
-  if (depot.fusion === null || segments === undefined) return depot;
+/** Contenu d'un fichier résolu à partir de son choix pour chaque bloc de conflit. */
+export function contenuResolu(segments: readonly Segment[], choix: readonly Choix[]): string[] {
   let k = 0;
-  const contenu = segments.flatMap((s): string[] => {
+  return segments.flatMap((s): string[] => {
     if ('ok' in s) return [...s.ok];
     const c = choix[k] ?? 'mienne';
     k += 1;
@@ -182,6 +177,22 @@ export function resoudreFichier(depot: Depot, fichier: string, choix: readonly C
     if (c === 'autre') return [...s.conflit.theirs];
     return [...s.conflit.ours, ...s.conflit.theirs];
   });
+}
+
+/** Nombre de blocs en conflit dans un fichier (0 si le fichier n'est pas en conflit). */
+export function nombreBlocs(depot: Depot, fichier: string): number {
+  const segments = depot.fusion?.fichiers[fichier] ?? [];
+  return segments.filter((s) => 'conflit' in s).length;
+}
+
+/**
+ * Résout un fichier en conflit : un choix par bloc (mienne, autre, deux).
+ * Le contenu résolu est indexé et retiré de l'espace de travail.
+ */
+export function resoudreFichier(depot: Depot, fichier: string, choix: readonly Choix[]): Depot {
+  const segments = depot.fusion?.fichiers[fichier];
+  if (depot.fusion === null || segments === undefined) return depot;
+  const contenu = contenuResolu(segments, choix);
   const travail = { ...depot.travail };
   delete travail[fichier];
   return { ...depot, travail, index: { ...depot.index, [fichier]: contenu } };

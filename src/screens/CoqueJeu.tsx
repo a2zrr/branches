@@ -4,7 +4,7 @@ import { EnTeteJeu } from '../components/ui/EnTeteJeu';
 import { BandeauRetour } from '../components/ui/BandeauRetour';
 import { Modale } from '../components/ui/Modale';
 import { PanneauIndice } from '../components/ui/PanneauIndice';
-import { REGISTRE } from '../exercises/registre';
+import { REGISTRE, type ReponseChoix } from '../exercises/registre';
 import { depotInitial } from '../game/solution';
 import { trouverMission, MISSIONS } from '../game/missions';
 import { useProgression } from '../game/store';
@@ -28,7 +28,7 @@ export function CoqueJeu() {
   return <CoqueMission key={mission.id} mission={mission} />;
 }
 
-function CoqueMission({ mission }: { mission: MissionJouableValidee }) {
+export function CoqueMission({ mission }: { mission: MissionJouableValidee }) {
   const navigate = useNavigate();
   const terminerMission = useProgression((s) => s.terminerMission);
   const progression = useProgression((s) => s.progression);
@@ -39,17 +39,33 @@ function CoqueMission({ mission }: { mission: MissionJouableValidee }) {
   const [indicesReveles, setIndicesReveles] = useState(0);
   const [indiceOuvert, setIndiceOuvert] = useState(false);
   const [quitter, setQuitter] = useState(false);
+  const [choix, setChoix] = useState<ReponseChoix>([]);
 
   const Exercice = REGISTRE[mission.type].Composant;
   const chapitre = progressionChapitre(MISSIONS, mission.chapitre, progression);
   const total = MISSIONS.filter((m) => m.chapitre === mission.chapitre && estJouable(m)).length;
 
   const verifier = () => {
-    const resultat = evaluerReussite(depot, mission.reussite);
+    const definition = REGISTRE[mission.type];
+    let courant = depot;
+    let reaction: string | undefined;
+    if (definition.preparerVerification) {
+      const preparation = definition.preparerVerification(mission, depot, choix);
+      if (!preparation.ok) {
+        setBandeau({ type: 'rate', message: preparation.message });
+        return;
+      }
+      courant = preparation.depot;
+      reaction = preparation.reaction;
+      setDepot(courant);
+    }
+    const nombre = definition.compteLesValidations ? commandes + 1 : commandes;
+    if (definition.compteLesValidations) setCommandes(nombre);
+    const resultat = evaluerReussite(courant, mission.reussite);
     if (resultat.ok) {
       setBandeau({
         type: 'reussi',
-        message: `Tu as réussi en ${commandes} commande${commandes > 1 ? 's' : ''}.`,
+        message: reaction ?? `Tu as réussi en ${nombre} commande${nombre > 1 ? 's' : ''}.`,
       });
     } else {
       setBandeau({ type: 'rate', message: resultat.messageDuPremierEchec ?? '' });
@@ -96,6 +112,8 @@ function CoqueMission({ mission }: { mission: MissionJouableValidee }) {
             setBandeau({ type: 'rate', message: explication });
           }}
           setPret={setPret}
+          choix={choix}
+          setChoix={setChoix}
         />
       </main>
 
