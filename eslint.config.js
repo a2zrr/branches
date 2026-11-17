@@ -34,11 +34,11 @@ export default tseslint.config(
     },
   },
   {
-    files: ['*.config.{ts,js}', 'eslint.config.js'],
+    files: ['*.config.{ts,js}', 'eslint.config.js', 'scripts/**/*.{js,mjs}'],
     ...tseslint.configs.disableTypeChecked,
   },
   {
-    files: ['**/*.test.{ts,tsx}', 'e2e/**/*.ts', '*.config.{ts,js}'],
+    files: ['**/*.test.{ts,tsx}', 'e2e/**/*.ts', '*.config.{ts,js}', 'scripts/**/*.{js,mjs}'],
     languageOptions: { globals: globals.node },
   },
 );

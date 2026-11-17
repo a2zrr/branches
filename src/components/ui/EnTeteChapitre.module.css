@@ -84,3 +84,14 @@
 .bientot .pastille {
   background: var(--color-bg-subtle);
 }
+
+/* En sombre, la couleur du chapitre est assombrie par le fond (60 %) pour que le texte clair reste lisible. */
+:global([data-theme='sombre']) .ouvert {
+  background: color-mix(in srgb, var(--chapitre-couleur, var(--color-primary)) 60%, var(--color-bg));
+  border-color: color-mix(in srgb, var(--chapitre-couleur, var(--color-primary)) 60%, var(--color-bg));
+  color: var(--color-text);
+}
+
+:global([data-theme='sombre']) .ouvert .libelle {
+  color: var(--color-text);
+}

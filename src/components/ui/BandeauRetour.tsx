@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import { Bouton } from './Bouton';
 import { Icone } from './Icone';
 import { Mascotte } from '../mascotte/Mascotte';
@@ -36,6 +36,11 @@ export function BandeauRetour({
   onReinitialiser,
 }: BandeauRetourProps) {
   const defauts = DEFAUTS[type];
+  const racine = useRef<HTMLElement>(null);
+  useEffect(() => {
+    // Le bouton du bandeau reçoit le focus à son apparition (retour clavier).
+    if (type !== 'neutre') racine.current?.querySelector('button')?.focus();
+  }, [type]);
   const titreAffiche = titre ?? defauts.titre;
   const libelle = action ?? defauts.action;
 
@@ -63,6 +68,7 @@ export function BandeauRetour({
   return (
     <section
       className={`${styles.bandeau} ${reussi ? styles.reussi : styles.rate}`}
+      ref={racine}
       role={reussi ? 'status' : 'alert'}
       aria-live={reussi ? 'polite' : 'assertive'}
     >
