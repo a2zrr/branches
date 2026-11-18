@@ -139,3 +139,73 @@ test('étape 4 : capture de la carte dans l’état de Carte.png (chapitre 1, mi
   await page.goto('/carte');
   await page.screenshot({ path: 'verifications/correctif-3/etape-4-carte-mur-1440.png', fullPage: true });
 });
+
+// Correctif 3, étape 5 : l'ouverture des nuages.
+
+const CHAPITRE_1_FINI = Object.fromEntries(
+  ['c1-m1', 'c1-m2', 'c1-m3', 'c1-m4', 'c1-m5', 'c1-m6'].map((id) => [id, { etoiles: 3, commandes: 2, reussie: true }]),
+);
+
+test('étape 5 : le voile est présent, puis retiré après 2,5 s ; le chapitre 2 est découvert', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await partie(page, CHAPITRE_1_FINI);
+  await page.goto('/carte');
+  await expect(page.locator('[data-voile]')).toHaveCount(1);
+  await page.waitForTimeout(2500);
+  await expect(page.locator('[data-voile]')).toHaveCount(0);
+  await expect(page.locator('main section[aria-label="Chapitre 2"]')).toBeVisible();
+  await expect(page.getByRole('button', { name: /Mission 2, Conflit sur le bouton Payer, en cours/ })).toBeEnabled();
+  const decouverts = await page.evaluate(() => {
+    const brut = localStorage.getItem('branches:v1');
+    return brut === null ? null : (JSON.parse(brut) as { state: { chapitresDecouverts: number[] } }).state.chapitresDecouverts;
+  });
+  expect(decouverts).toEqual([1, 2]);
+});
+
+test('étape 5 : après un rechargement, pas de voile', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await partie(page, CHAPITRE_1_FINI);
+  await page.goto('/carte');
+  await page.waitForTimeout(2500);
+  await page.reload();
+  await expect(page.locator('[data-voile]')).toHaveCount(0);
+});
+
+test('étape 5 : CLS = 0, le chapitre 1 ne bouge pas pendant l’ouverture', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await partie(page, CHAPITRE_1_FINI);
+  await page.goto('/carte');
+  const position = () =>
+    page.evaluate(() => {
+      const h = document.querySelector('section h3');
+      const r = h?.getBoundingClientRect();
+      return r === undefined ? null : [Math.round(r.left), Math.round(r.top + window.scrollY), Math.round(r.width)];
+    });
+  const avant = await position();
+  await page.waitForTimeout(2500);
+  expect(await position()).toEqual(avant);
+});
+
+test.describe('étape 5 : mouvement réduit', () => {
+  test.use({ reducedMotion: 'reduce' });
+  test('le chapitre 2 est visible en moins de 300 ms, sans voile', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await partie(page, CHAPITRE_1_FINI);
+    await page.goto('/carte');
+    await expect(page.locator('[data-voile]')).toHaveCount(0);
+    await expect(page.locator('main section[aria-label="Chapitre 2"]')).toBeVisible({ timeout: 300 });
+  });
+});
+
+test('étape 5 : captures à 0, 600, 1 200 et 2 400 ms', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await partie(page, CHAPITRE_1_FINI);
+  await page.goto('/carte');
+  const instants = [0, 600, 1200, 2400];
+  let ecoule = 0;
+  for (const t of instants) {
+    await page.waitForTimeout(t - ecoule);
+    ecoule = t;
+    await page.screenshot({ path: `verifications/correctif-3/etape-5-ouverture-${t}.png`, fullPage: true });
+  }
+});

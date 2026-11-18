@@ -17,3 +17,23 @@
   z-index: 0;
   pointer-events: none;
 }
+
+/* Ouverture : le chapitre est caché, puis monte de 24 px en fondu (750 → 1 300 ms). */
+.attente {
+  opacity: 0;
+}
+
+.revele {
+  animation: reveler 550ms ease-out 750ms both;
+}
+
+@keyframes reveler {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

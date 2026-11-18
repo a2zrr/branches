@@ -1,0 +1,17 @@
+/* Le trait « faits » se trace pendant l'ouverture d'un chapitre : 1 → 0 en 600 ms, à 1 150 ms. */
+.attente {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.trace {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: tracer 600ms ease-out 1150ms forwards;
+}
+
+@keyframes tracer {
+  to {
+    stroke-dashoffset: 0;
+  }
+}

@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { EnTeteChapitre } from '../ui/EnTeteChapitre';
 import { CheminMissions } from './CheminMissions';
 import { NoeudMission, type EtatNoeud } from './NoeudMission';
@@ -17,6 +18,10 @@ export interface ChapitreCarteProps {
   mesures?: Mesures;
   /** Le mur de nuages suit ce chapitre : il lui faut la place du mur, et son chemin s'y enfonce. */
   suiviDUnMur?: boolean;
+  /** Ouverture : le chapitre est caché (attente), puis se révèle sous le voile (joue). */
+  revele?: 'attente' | 'joue';
+  /** Contenu posé dans la zone du chemin (le voile, à l'ouverture). */
+  children?: ReactNode;
 }
 
 /** État affiché d'une mission : une mission brouillon n'est jamais jouable. */
@@ -37,6 +42,8 @@ export function ChapitreCarte({
   onOpen,
   mesures = MESURES_PC,
   suiviDUnMur = false,
+  revele,
+  children,
 }: ChapitreCarteProps) {
   const jouables = missions.filter(estJouable);
   const faites = jouables.filter((m) => progression[m.id]?.reussie === true).length;
@@ -51,7 +58,10 @@ export function ChapitreCarte({
   const teinte = chapitre.vignette?.teinte ?? 'bleu';
 
   return (
-    <section className={styles.chapitre} aria-label={`Chapitre ${chapitre.numero}`}>
+    <section
+      className={`${styles.chapitre} ${revele === 'attente' ? styles.attente : revele === 'joue' ? styles.revele : ''}`}
+      aria-label={`Chapitre ${chapitre.numero}`}
+    >
       <EnTeteChapitre
         numero={chapitre.numero}
         titre={chapitre.titre}
@@ -72,6 +82,7 @@ export function ChapitreCarte({
             couleurFaite={`var(--chemin-${teinte})`}
             hauteur={hauteur}
             {...(suiviDUnMur ? { hauteurSousMur: hauteur } : {})}
+            {...(revele !== undefined ? { trace: revele } : {})}
           />
         )}
         {chapitre.vignette !== undefined && missions.length > 0 && (
@@ -101,8 +112,10 @@ export function ChapitreCarte({
             onCommencer={() => {
               onOpen(mission.id);
             }}
+            {...(revele !== undefined ? { apparition: { phase: revele, index: i } } : {})}
           />
         ))}
+        {children}
       </div>
     </section>
   );

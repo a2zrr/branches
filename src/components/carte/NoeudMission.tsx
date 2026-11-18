@@ -16,6 +16,8 @@ export interface NoeudMissionProps {
   /** Haut du bloc, relatif à la zone du chapitre (px). */
   top: number;
   onCommencer: () => void;
+  /** Ouverture d'un chapitre : la pastille surgit, avec 80 ms d'écart entre deux pastilles. */
+  apparition?: { phase: 'attente' | 'joue'; index: number };
 }
 
 const ICONE: Record<EtatNoeud, NomIcone> = {
@@ -38,7 +40,17 @@ const LIBELLE: Record<EtatNoeud, string> = {
  * Une mission sur la carte : pastille, titre à côté (PC), étoiles ou « BIENTÔT » au-dessus du titre.
  * La mission en cours n'a pas de titre : son popover s'ouvre du même côté que les titres.
  */
-export function NoeudMission({ mesures, numero, titre, etat, etoiles, dx, top, onCommencer }: NoeudMissionProps) {
+export function NoeudMission({
+  mesures,
+  numero,
+  titre,
+  etat,
+  etoiles,
+  dx,
+  top,
+  onCommencer,
+  apparition,
+}: NoeudMissionProps) {
   const adroite = dx >= 0;
   const enCours = etat === 'en-cours';
   const taille = enCours ? mesures.pastilleEnCours : mesures.pastille;
@@ -48,13 +60,14 @@ export function NoeudMission({ mesures, numero, titre, etat, etoiles, dx, top, o
 
   return (
     <div
-      className={styles.noeud}
+      className={`${styles.noeud} ${apparition?.phase === 'attente' ? styles.attente : ''} ${apparition?.phase === 'joue' ? styles.surgit : ''}`}
       data-etat={etat}
       style={{
         top,
         left: `calc(50% + ${dx - mesures.aire / 2}px)`,
         width: mesures.aire,
         height: mesures.aire,
+        ...(apparition !== undefined ? { ['--i' as string]: apparition.index } : {}),
       }}
     >
       {enCours && (

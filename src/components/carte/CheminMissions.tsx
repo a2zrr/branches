@@ -1,4 +1,5 @@
 import { courbe, decalage, type Mesures } from './geometrie';
+import styles from './CheminMissions.module.css';
 
 export interface CheminMissionsProps {
   mesures: Mesures;
@@ -12,6 +13,8 @@ export interface CheminMissionsProps {
   hauteurSousMur?: number;
   /** Hauteur totale de la zone du chapitre. */
   hauteur: number;
+  /** Ouverture d'un chapitre : le trait « faits » se trace (attente = invisible, joue = tracé). */
+  trace?: 'attente' | 'joue';
 }
 
 /**
@@ -25,6 +28,7 @@ export function CheminMissions({
   couleurFaite,
   hauteurSousMur,
   hauteur,
+  trace,
 }: CheminMissionsProps) {
   const centres = Array.from({ length: nombre }, (_, i) => {
     const y = mesures.haut + i * mesures.rang + mesures.aire / 2;
@@ -66,6 +70,8 @@ export function CheminMissions({
           stroke={couleurFaite}
           strokeWidth={mesures.traitChemin}
           strokeLinecap="round"
+          {...(trace !== undefined ? { pathLength: 1 } : {})}
+          className={trace === 'attente' ? styles.attente : trace === 'joue' ? styles.trace : undefined}
         />
       )}
     </svg>

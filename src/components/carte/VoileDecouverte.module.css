@@ -1,0 +1,35 @@
+/* Voile : posé sur la zone du chapitre précédent, au-dessus du nouveau chapitre (z-index 4). */
+
+.voile {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 4;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* La carte du voile : scale 1 → 1,05 → 0,6 et opacité → 0 en 550 ms. */
+.carteWrap {
+  position: absolute;
+  inset: 0;
+}
+
+.voile[data-phase='joue'] .carteWrap {
+  animation: carteSort 550ms ease-out both;
+}
+
+@keyframes carteSort {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  30% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+}

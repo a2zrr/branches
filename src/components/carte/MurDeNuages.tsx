@@ -1,15 +1,16 @@
 import { Icone } from '../ui/Icone';
 import { BarreProgression } from '../ui/BarreProgression';
-import { Mascotte } from '../mascotte/Mascotte';
+import { CarteMur } from './CarteMur';
+import { FondNuages } from './FondNuages';
 import type { MurDeNuages as Mur } from '../../game/carte';
 import type { Mesures } from './geometrie';
-import banqueSvg from '../../assets/nuages/banque.svg?raw';
-import petitNuageSvg from '../../assets/nuages/petit-nuage.svg?raw';
 import styles from './MurDeNuages.module.css';
 
 export interface MurDeNuagesProps {
   mur: Mur;
   mesures: Mesures;
+  /** Pendant l'ouverture d'un chapitre, le mur suivant est invisible puis apparaît en fondu. */
+  apparition?: 'attente' | 'joue';
 }
 
 const TITRE_CACHE = "Qu'y a-t-il derrière les nuages ?";
@@ -17,53 +18,29 @@ const TITRE_BIENTOT = 'La suite se prépare';
 
 /**
  * Le mur de nuages qui cache la suite de la carte (spec § 9 bis, « Le mur de nuages »).
- * Les morceaux de la banque (SVG) lisent les tokens --nuage-* : ils sont insérés en ligne.
  * Après le mur, rien : les chapitres cachés ne sont pas rendus.
  */
-export function MurDeNuages({ mur, mesures }: MurDeNuagesProps) {
+export function MurDeNuages({ mur, mesures, apparition }: MurDeNuagesProps) {
   const cache = mur.variante === 'cache';
-  const numero = mur.numero;
+  const classeApparition =
+    apparition === 'attente' ? styles.attente : apparition === 'joue' ? styles.apparait : '';
 
   return (
     <section
-      className={`${styles.mur} ${mesures.pc ? styles.pc : ''}`}
+      className={`${styles.mur} ${classeApparition}`}
       aria-labelledby="titre-mur"
       data-mur={mur.variante}
       style={{ marginTop: -mesures.murRemonte, height: mesures.murHauteur }}
     >
-      <div className={styles.hedi} aria-hidden="true">
-        <Mascotte expression="pensif" taille={mesures.pc ? 112 : 84} anime={false} />
-      </div>
-      <div
-        className={`${styles.morceau} ${styles.gauche}`}
-        aria-hidden="true"
-        dangerouslySetInnerHTML={{ __html: banqueSvg }}
-      />
-      <div
-        className={`${styles.morceau} ${styles.droite}`}
-        aria-hidden="true"
-        dangerouslySetInnerHTML={{ __html: banqueSvg }}
-      />
-      <div
-        className={`${styles.morceau} ${styles.milieu}`}
-        aria-hidden="true"
-        dangerouslySetInnerHTML={{ __html: banqueSvg }}
-      />
-      <div className={`${styles.petit} ${styles.petit1}`} aria-hidden="true" dangerouslySetInnerHTML={{ __html: petitNuageSvg }} />
-      <div className={`${styles.petit} ${styles.petit2}`} aria-hidden="true" dangerouslySetInnerHTML={{ __html: petitNuageSvg }} />
-      <div className={styles.fondu} aria-hidden="true" />
-
-      <div className={styles.carte} style={{ top: mesures.carteMurTop }}>
-        <div className={styles.entete}>
-          <span className={styles.icone} aria-hidden="true">
-            <Icone nom={cache ? 'cadenas' : 'horloge'} taille={26} couleur="var(--color-primary)" />
-          </span>
-          <span className={styles.label}>Chapitre {numero}</span>
-        </div>
-        <h2 id="titre-mur" className={styles.titre}>
-          {cache ? TITRE_CACHE : TITRE_BIENTOT}
-        </h2>
-        <p className={styles.texte}>{cache ? mur.texte : mur.sousTitre}</p>
+      <FondNuages variante="mur" expression="pensif" mesures={mesures} />
+      <CarteMur
+        idTitre="titre-mur"
+        top={mesures.carteMurTop}
+        icone={<Icone nom={cache ? 'cadenas' : 'horloge'} taille={26} couleur="var(--color-primary)" />}
+        label={`Chapitre ${mur.numero}`}
+        titre={cache ? TITRE_CACHE : TITRE_BIENTOT}
+        texte={cache ? mur.texte : mur.sousTitre}
+      >
         {cache && (
           <BarreProgression
             valeur={mur.avancement.faites}
@@ -72,7 +49,7 @@ export function MurDeNuages({ mur, mesures }: MurDeNuagesProps) {
             libelleValeur={`${mur.avancement.faites} / ${mur.avancement.total} missions`}
           />
         )}
-      </div>
+      </CarteMur>
     </section>
   );
 }
