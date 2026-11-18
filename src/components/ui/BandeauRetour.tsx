@@ -87,9 +87,7 @@ export function BandeauRetour({
       <div className={styles.gauche}>
         {reussi ? (
           <span className={styles.pastille}>
-            <span className={styles.iconeRebond}>
-              <Icone nom="coche" taille={30} couleur="var(--color-success)" />
-            </span>
+            <Icone nom="coche" taille={30} couleur="var(--color-success)" />
           </span>
         ) : (
           <Mascotte expression="panique" taille={68} anime={false} />
