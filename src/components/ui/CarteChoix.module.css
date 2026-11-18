@@ -32,6 +32,17 @@
   transition-duration: var(--dur-press);
 }
 
+.carte[data-etat='survol'] {
+  transform: translateY(-2px);
+  box-shadow: var(--edge-lg) var(--color-border);
+  background: var(--color-bg-subtle);
+}
+
+.carte[data-etat='focus'] {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
 .carte:focus-visible {
   outline: 3px solid var(--color-focus);
   outline-offset: 3px;

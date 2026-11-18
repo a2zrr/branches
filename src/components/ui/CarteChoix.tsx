@@ -12,6 +12,8 @@ export interface CarteChoixProps {
   apercu?: ReactNode;
   /** Présentation en ligne : raccourci, titre et description sur une seule ligne. */
   pleineLigne?: boolean;
+  /** Aperçu d'un état (page design system) : « survol » ou « focus » forcé. */
+  etatApercu?: 'survol' | 'focus';
 }
 
 export function CarteChoix({
@@ -23,6 +25,7 @@ export function CarteChoix({
   onSelect,
   apercu,
   pleineLigne = false,
+  etatApercu,
 }: CarteChoixProps) {
   return (
     <button
@@ -31,6 +34,7 @@ export function CarteChoix({
       aria-pressed={selectionnee}
       disabled={desactivee}
       data-selectionnee={selectionnee || undefined}
+      data-etat={etatApercu}
       onClick={onSelect}
     >
       <span className={styles.raccourci} aria-hidden="true">

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Bouton, type VarianteBouton } from '../../components/ui/Bouton';
 import { CarteChoix } from '../../components/ui/CarteChoix';
 import { BulleMascotte } from '../../components/ui/BulleMascotte';
@@ -6,300 +5,294 @@ import { BarreProgression } from '../../components/ui/BarreProgression';
 import { BandeauRetour } from '../../components/ui/BandeauRetour';
 import { EnTeteChapitre } from '../../components/ui/EnTeteChapitre';
 import { PastilleMission } from '../../components/ui/PastilleMission';
-import { Compteur } from '../../components/ui/Compteur';
 import { PuceNotion } from '../../components/ui/PuceNotion';
-import { TonGit } from '../../components/ui/TonGit';
-import { Badge } from '../../components/ui/Badge';
-import { Logo } from '../../components/ui/Logo';
-import { Mascotte } from '../../components/mascotte/Mascotte';
-import type { ExpressionHedi } from '../../components/mascotte/types';
 import { useProgression } from '../../game/store';
-import type { Badge as DonneesBadge } from '../../game/types';
-import badgesJson from '../../data/missions/badges.json';
+import type { ReactNode } from 'react';
 import styles from './DesignSystem.module.css';
 
-const BADGES = badgesJson as DonneesBadge[];
 const ETATS_BOUTON = ['normal', 'survol', 'actif', 'désactivé', 'focus'] as const;
 const VARIANTES: { nom: VarianteBouton; libelle: string }[] = [
   { nom: 'primaire', libelle: 'Vérifier' },
   { nom: 'secondaire', libelle: 'Passer' },
   { nom: 'danger', libelle: 'Compris' },
   { nom: 'indice', libelle: 'Indice' },
-  { nom: 'succes', libelle: 'Continuer' },
 ];
-const EXPRESSIONS: ExpressionHedi[] = ['accueillant', 'panique', 'pensif', 'fier'];
 
+/** Section de la page : titre à gauche, signature du composant (props) à droite. */
+function Section({
+  id,
+  titre,
+  signature,
+  children,
+}: {
+  id: string;
+  titre: string;
+  signature: string;
+  children: ReactNode;
+}) {
+  return (
+    <section className={styles.section} aria-labelledby={id}>
+      <header className={styles.sEntete}>
+        <h2 id={id} className={styles.h2}>
+          {titre}
+        </h2>
+        <code className={styles.signature}>{signature}</code>
+      </header>
+      {children}
+    </section>
+  );
+}
+
+/** Page design system (maquette Composants.png) : chaque composant dans ses états. */
 export function DesignSystem() {
   const theme = useProgression((etat) => etat.theme);
   const definirTheme = useProgression((etat) => etat.definirTheme);
-  const [selection, setSelection] = useState(1);
 
   return (
     <main className={styles.page}>
-      <header className={styles.entete}>
-        <div className={styles.titreBloc}>
-          <p className={styles.surtitre}>Design system</p>
+      <div className={styles.conteneur}>
+        <header className={styles.entete}>
+          <p className={styles.surtitre}>2 · Design system</p>
           <h1 className={styles.titre}>Composants d&apos;interface</h1>
           <p className={styles.intro}>
             Chaque composant porte son nom React et les données qu&apos;il reçoit. Rien n&apos;est dessiné
             pour une mission précise.
           </p>
-        </div>
-        <div className={styles.outils}>
-          <Logo taille="l" />
-          <Bouton
-            variante="secondaire"
-            onClick={() => {
-              definirTheme(theme === 'clair' ? 'sombre' : 'clair');
-            }}
-          >
-            {theme === 'clair' ? 'Mode sombre' : 'Mode clair'}
-          </Bouton>
-        </div>
-      </header>
-
-      <section className={styles.section} aria-labelledby="s-bouton">
-        <h2 id="s-bouton" className={styles.h2}>
-          Bouton
-        </h2>
-        <div className={styles.grilleBoutons}>
-          <div className={styles.ligneBouton}>
-            <span />
-            {ETATS_BOUTON.map((etat) => (
-              <span key={etat} className={styles.enTete}>
-                {etat}
-              </span>
-            ))}
+          <div>
+            <Bouton
+              variante="secondaire"
+              onClick={() => {
+                definirTheme(theme === 'clair' ? 'sombre' : 'clair');
+              }}
+            >
+              {theme === 'clair' ? 'Mode sombre' : 'Mode clair'}
+            </Bouton>
           </div>
-          {VARIANTES.map((v) => (
-            <div key={v.nom} className={styles.ligneBouton}>
-              <code className={styles.code}>{v.nom}</code>
+        </header>
+
+        <Section
+          id="s-bouton"
+          titre="Bouton"
+          signature='<Bouton variante="primaire|secondaire|danger|indice" taille="m|l" desactive icone onClick>'
+        >
+          <div className={styles.grilleBoutons}>
+            <div className={styles.ligneBouton}>
+              <span />
               {ETATS_BOUTON.map((etat) => (
-                <div key={etat} className={styles.cellule}>
-                  <Bouton
-                    variante={v.nom}
-                    desactive={etat === 'désactivé'}
-                    etatApercu={
-                      etat === 'survol'
-                        ? 'survol'
-                        : etat === 'actif'
-                          ? 'actif'
-                          : etat === 'focus'
-                            ? 'focus'
-                            : undefined
-                    }
-                  >
-                    {v.libelle}
-                  </Bouton>
-                </div>
+                <span key={etat} className={styles.legende}>
+                  {etat}
+                </span>
               ))}
             </div>
-          ))}
+            {VARIANTES.map((v) => (
+              <div key={v.nom} className={styles.ligneBouton}>
+                <code className={styles.code}>{v.nom}</code>
+                {ETATS_BOUTON.map((etat) => (
+                  <div key={etat} className={styles.cellule}>
+                    <Bouton
+                      variante={v.nom}
+                      desactive={etat === 'désactivé'}
+                      etatApercu={
+                        etat === 'survol'
+                          ? 'survol'
+                          : etat === 'actif'
+                            ? 'actif'
+                            : etat === 'focus'
+                              ? 'focus'
+                              : undefined
+                      }
+                    >
+                      {v.libelle}
+                    </Bouton>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+          <div className={styles.essai}>
+            <strong>Essaie-les :</strong>
+            <Bouton variante="primaire">Vérifier</Bouton>
+            <Bouton variante="secondaire">Passer</Bouton>
+            <Bouton variante="danger">Compris</Bouton>
+            <Bouton variante="indice">Indice</Bouton>
+            <Bouton variante="primaire" desactive>
+              Vérifier
+            </Bouton>
+            <span className={styles.note}>Survol : −2 px, bord 6 px · Clic : +4 px, bord 0 · 60 ms</span>
+          </div>
+        </Section>
+
+        <Section
+          id="s-carte"
+          titre="Carte de choix"
+          signature="<CarteChoix raccourci titre description selectionnee desactivee onSelect>"
+        >
+          <div className={styles.grilleCartes}>
+            {[
+              { etat: 'NORMAL', props: {} },
+              { etat: 'SURVOL', props: { etatApercu: 'survol' as const } },
+              { etat: 'SÉLECTIONNÉE', props: { selectionnee: true } },
+              { etat: 'DÉSACTIVÉE', props: { desactivee: true } },
+              { etat: 'FOCUS', props: { etatApercu: 'focus' as const } },
+            ].map((c) => (
+              <div key={c.etat} className={styles.colonneCarte}>
+                <CarteChoix
+                  raccourci={1}
+                  titre="Garder ma version"
+                  description="On garde le code de HEAD."
+                  selectionnee={c.props.selectionnee === true}
+                  desactivee={c.props.desactivee === true}
+                  etatApercu={c.props.etatApercu}
+                  onSelect={() => undefined}
+                />
+                <span className={styles.legende}>{c.etat}</span>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        <div className={styles.deux}>
+          <Section
+            id="s-bulle"
+            titre="Bulle de la mascotte"
+            signature='<BulleMascotte expression ton="histoire|indice|reaction" titre texte>'
+          >
+            <div className={styles.pile}>
+              <BulleMascotte
+                expression="panique"
+                ton="histoire"
+                titre="Histoire"
+                texte="Bon. Quelqu’un a commité notre clé API sur main. La démo est dans deux heures."
+              />
+              <BulleMascotte
+                expression="pensif"
+                ton="indice"
+                titre="Indice 1 sur 2"
+                texte="Pour annuler sans toucher au passé, Git ajoute un commit qui fait l’inverse."
+              />
+              <BulleMascotte
+                expression="fier"
+                ton="reaction"
+                titre="Réaction"
+                texte="Je savais que tu étais la bonne recrue !"
+              />
+            </div>
+          </Section>
+
+          <Section
+            id="s-barre"
+            titre="Barre de progression"
+            signature="<BarreProgression valeur max etiquette>"
+          >
+            <div className={styles.pile}>
+              <BarreProgression valeur={3} max={6} etiquette="Mission 4 sur 6" />
+              <BarreProgression valeur={4} max={12} etiquette="Commandes maîtrisées" libelleValeur="4 / 12" />
+              <BarreProgression valeur={6} max={6} etiquette="Chapitre terminé" />
+            </div>
+            <p className={styles.note}>
+              La largeur s’anime en 600 ms (--ease-bounce). À 100 % : la barre passe au jaune et pulse une
+              fois.
+            </p>
+            <h3 className={styles.h3}>Puce de commande</h3>
+            <div className={styles.puces}>
+              <PuceNotion nom="git revert" etat="maitrisee" />
+              <PuceNotion nom="git merge" etat="en-cours" />
+              <PuceNotion nom="git bisect" etat="a-decouvrir" />
+            </div>
+          </Section>
         </div>
-        <div className={styles.rangee}>
-          <Bouton variante="primaire" taille="l">
-            Vérifier (l)
-          </Bouton>
-          <Bouton variante="secondaire" taille="m">
-            Réinitialiser
-          </Bouton>
+
+        <Section
+          id="s-bandeau"
+          titre="Bandeau de retour"
+          signature='<BandeauRetour type="neutre|reussi|rate" titre message commandes optimal action onAction>'
+        >
+          <div className={styles.pile}>
+            <BandeauRetour
+              type="neutre"
+              commandes={2}
+              optimal={3}
+              onAction={() => undefined}
+              onReinitialiser={() => undefined}
+            />
+            <BandeauRetour
+              type="reussi"
+              message="La clé a disparu et l'historique est intact."
+              onAction={() => undefined}
+            />
+            <BandeauRetour
+              type="rate"
+              message="Git ne connaît pas « rever ». Lis bien ce qu'il te suggère."
+              onAction={() => undefined}
+            />
+          </div>
+          <p className={styles.note}>
+            Entrée : translateY 100 % → 0 en 250 ms (--ease-out), puis l’icône rebondit (scale 0,6 → 1,1 → 1).
+            Le bandeau raté secoue de ±6 px deux fois.
+          </p>
+        </Section>
+
+        <div className={styles.deux}>
+          <Section
+            id="s-chapitre"
+            titre="En-tête de chapitre"
+            signature='<EnTeteChapitre numero titre etat="ouvert|verrouille|bientot" faites total etoiles couleur>'
+          >
+            <div className={styles.pile}>
+              <EnTeteChapitre
+                numero={1}
+                titre="La veille de la démo"
+                sousTitre="Le projet est cassé, la démo est ce soir."
+                etat="ouvert"
+                faites={3}
+                total={6}
+                etoiles={8}
+                couleur="var(--color-primary)"
+                couleurArete="var(--color-primary-edge)"
+              />
+              <EnTeteChapitre
+                numero={2}
+                titre="Le stagiaire a poussé sur main"
+                sousTitre=""
+                etat="verrouille"
+                faites={0}
+                total={5}
+                etoiles={0}
+              />
+              <EnTeteChapitre
+                numero={4}
+                titre="Bientôt disponible"
+                sousTitre=""
+                etat="bientot"
+                faites={0}
+                total={0}
+                etoiles={0}
+              />
+            </div>
+          </Section>
+
+          <Section
+            id="s-pastille"
+            titre="Pastille de mission"
+            signature='<PastilleMission etat="verrouillee|disponible|en-cours|terminee" etoiles numero titre onClick>'
+          >
+            <div className={styles.pastilles}>
+              <PastilleMission etat="verrouillee" etoiles={0} numero={5} titre="Verrouillée" />
+              <PastilleMission etat="disponible" etoiles={0} numero={6} titre="Disponible" />
+              <PastilleMission
+                etat="en-cours"
+                etoiles={0}
+                numero={4}
+                titre="En cours"
+                onClick={() => undefined}
+              />
+              <PastilleMission etat="terminee" etoiles={1} numero={1} titre="Terminée ★" />
+              <PastilleMission etat="terminee" etoiles={2} numero={2} titre="Terminée ★★" />
+              <PastilleMission etat="terminee" etoiles={3} numero={3} titre="Terminée ★★★" />
+            </div>
+          </Section>
         </div>
-      </section>
-
-      <section className={styles.section} aria-labelledby="s-carte">
-        <h2 id="s-carte" className={styles.h2}>
-          Carte de choix
-        </h2>
-        <div className={styles.grilleCartes}>
-          <CarteChoix
-            raccourci={1}
-            titre="Garder ma version"
-            description="On garde le code de HEAD."
-            selectionnee={selection === 1}
-            onSelect={() => {
-              setSelection(1);
-            }}
-          />
-          <CarteChoix
-            raccourci={2}
-            titre="Garder l'autre"
-            description="On garde le code de la branche."
-            selectionnee={selection === 2}
-            onSelect={() => {
-              setSelection(2);
-            }}
-          />
-          <CarteChoix
-            raccourci={3}
-            titre="Garder les deux"
-            description="À utiliser avec prudence."
-            selectionnee={selection === 3}
-            onSelect={() => {
-              setSelection(3);
-            }}
-          />
-          <CarteChoix
-            raccourci={4}
-            titre="Désactivée"
-            description="Ne peut pas être choisie."
-            selectionnee={false}
-            desactivee
-            onSelect={() => undefined}
-          />
-        </div>
-      </section>
-
-      <section className={styles.section} aria-labelledby="s-mascotte">
-        <h2 id="s-mascotte" className={styles.h2}>
-          Mascotte : Hédi
-        </h2>
-        <div className={styles.grilleMascottes}>
-          {EXPRESSIONS.map((expression) => (
-            <figure key={expression} className={styles.figure}>
-              <Mascotte expression={expression} taille={160} />
-              <figcaption className={styles.legende}>{expression}</figcaption>
-            </figure>
-          ))}
-        </div>
-      </section>
-
-      <section className={styles.section} aria-labelledby="s-bulle">
-        <h2 id="s-bulle" className={styles.h2}>
-          Bulle de la mascotte
-        </h2>
-        <BulleMascotte
-          expression="panique"
-          ton="histoire"
-          texte="Bon. Quelqu'un a commité notre clé API sur main. La démo est dans deux heures."
-        />
-        <BulleMascotte
-          expression="pensif"
-          ton="indice"
-          titre="Indice 1 sur 2"
-          texte="Pour annuler sans toucher au passé, Git ajoute un commit qui fait l'inverse."
-        />
-        <BulleMascotte expression="fier" ton="reaction" texte="Je savais que tu étais la bonne recrue !" />
-      </section>
-
-      <section className={styles.section} aria-labelledby="s-barre">
-        <h2 id="s-barre" className={styles.h2}>
-          Barre de progression
-        </h2>
-        <BarreProgression valeur={4} max={6} etiquette="Mission 4 sur 6" />
-        <BarreProgression valeur={4} max={12} etiquette="Commandes maîtrisées" />
-        <BarreProgression valeur={6} max={6} etiquette="Chapitre terminé" />
-      </section>
-
-      <section className={styles.section} aria-labelledby="s-puce">
-        <h2 id="s-puce" className={styles.h2}>
-          Compteurs, puces et « Ton Git »
-        </h2>
-        <div className={styles.rangee}>
-          <Compteur type="notions" valeur={3} total={12} />
-          <Compteur type="xp" valeur={120} />
-          <Compteur type="etoiles" valeur={8} total={18} />
-        </div>
-        <div className={styles.rangee}>
-          <PuceNotion nom="git revert" etat="maitrisee" />
-          <PuceNotion nom="git merge" etat="en-cours" />
-          <PuceNotion nom="git bisect" etat="a-decouvrir" />
-        </div>
-        <TonGit
-          notions={[
-            { nom: 'git commit', etat: 'maitrisee' },
-            { nom: 'git log', etat: 'maitrisee' },
-            { nom: 'git switch', etat: 'maitrisee' },
-            { nom: 'git revert', etat: 'en-cours' },
-            { nom: 'git merge', etat: 'a-decouvrir' },
-          ]}
-        />
-      </section>
-
-      <section className={styles.section} aria-labelledby="s-bandeau">
-        <h2 id="s-bandeau" className={styles.h2}>
-          Bandeau de retour
-        </h2>
-        <BandeauRetour
-          type="neutre"
-          commandes={2}
-          optimal={3}
-          onAction={() => undefined}
-          onReinitialiser={() => undefined}
-        />
-        <BandeauRetour
-          type="reussi"
-          message="La clé a disparu et l'historique est intact."
-          onAction={() => undefined}
-        />
-        <BandeauRetour
-          type="rate"
-          message="Git ne connaît pas « rever ». Lis bien ce qu'il te suggère."
-          onAction={() => undefined}
-        />
-      </section>
-
-      <section className={styles.section} aria-labelledby="s-chapitre">
-        <h2 id="s-chapitre" className={styles.h2}>
-          En-tête de chapitre
-        </h2>
-        <EnTeteChapitre
-          numero={1}
-          titre="La veille de la démo"
-          etat="ouvert"
-          faites={3}
-          total={6}
-          etoiles={8}
-          couleur="var(--color-primary)"
-          couleurArete="var(--color-primary-edge)"
-        />
-        <EnTeteChapitre
-          numero={2}
-          titre="Le stagiaire a poussé sur main"
-          etat="verrouille"
-          faites={0}
-          total={5}
-          etoiles={0}
-        />
-        <EnTeteChapitre
-          numero={4}
-          titre="Bientôt disponible"
-          etat="bientot"
-          faites={0}
-          total={0}
-          etoiles={0}
-        />
-      </section>
-
-      <section className={styles.section} aria-labelledby="s-pastille">
-        <h2 id="s-pastille" className={styles.h2}>
-          Pastille de mission
-        </h2>
-        <div className={styles.rangeePastilles}>
-          <PastilleMission etat="verrouillee" etoiles={0} numero={5} titre="Fusionne avant 20 h" />
-          <PastilleMission etat="disponible" etoiles={0} numero={6} titre="Le bug fantôme" />
-          <PastilleMission
-            etat="en-cours"
-            etoiles={0}
-            numero={4}
-            titre="La clé qui fuit"
-            onClick={() => undefined}
-          />
-          <PastilleMission etat="terminee" etoiles={1} numero={1} titre="Ton premier commit" />
-          <PastilleMission etat="terminee" etoiles={2} numero={2} titre="Qui a cassé quoi ?" />
-          <PastilleMission etat="terminee" etoiles={3} numero={3} titre="Une branche pour la démo" />
-        </div>
-      </section>
-
-      <section className={styles.section} aria-labelledby="s-badge">
-        <h2 id="s-badge" className={styles.h2}>
-          Badges
-        </h2>
-        <div className={styles.rangee}>
-          {BADGES.map((badge, index) => (
-            <Badge key={badge.id} badge={badge} debloque={index % 2 === 0} />
-          ))}
-        </div>
-      </section>
+      </div>
     </main>
   );
 }
