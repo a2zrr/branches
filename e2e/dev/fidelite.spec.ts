@@ -31,3 +31,12 @@ test('capture design system', async ({ page }) => {
   await page.waitForTimeout(600);
   await page.screenshot({ path: resolve(DOSSIER, 'Composants-app.png'), fullPage: true });
 });
+
+test('capture graphe système', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await injecter(page);
+  await page.goto('/dev/graphe');
+  await page.evaluate(() => document.fonts.ready);
+  await page.waitForTimeout(600);
+  await page.screenshot({ path: resolve(DOSSIER, 'GrapheSysteme-app.png'), fullPage: false });
+});

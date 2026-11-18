@@ -1,0 +1,123 @@
+/* Sections du graphe (maquette GrapheSysteme.png), page de développement. */
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+  padding: var(--space-6);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+}
+
+.sEntete {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+.h2 {
+  margin: 0;
+  font: var(--text-h2);
+  font-size: 26px;
+}
+
+.signature {
+  font: var(--text-code);
+  font-size: 13px;
+  color: var(--color-primary);
+  text-align: right;
+  font-variant-ligatures: none;
+}
+
+.deux {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+}
+
+.grilleEtats {
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.carte {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border-radius: var(--radius-xl);
+  background: var(--color-bg-subtle);
+  text-align: center;
+}
+
+.titreCarte {
+  font: var(--text-small);
+  font-size: 14px;
+}
+
+.texteCarte {
+  font: var(--text-small);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.etiquettes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.liens {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+}
+
+.lien {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.legende {
+  font: var(--text-small);
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.note {
+  margin: 0;
+  font: var(--text-small);
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+.action {
+  min-width: 0;
+}
+
+.code {
+  margin: 0;
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--term-bg);
+  color: var(--term-text);
+  font: var(--text-code);
+  font-size: 13px;
+  white-space: pre-wrap;
+  font-variant-ligatures: none;
+}
+
+/* L'exemple tient en entier : pas de zone défilante à rendre accessible. */
+.action > div {
+  overflow: visible !important;
+  max-height: none !important;
+}

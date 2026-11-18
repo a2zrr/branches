@@ -3,6 +3,7 @@ import { GrapheCommits } from '../../components/graphe/GrapheCommits';
 import { Bouton } from '../../components/ui/Bouton';
 import { useProgression } from '../../game/store';
 import { jeuxGraphe, type JeuGraphe } from './jeuxGraphe';
+import { SectionsSysteme } from './GrapheSysteme';
 import styles from './Graphe.module.css';
 
 const DELAI_ETAPE_MS = 900;
@@ -41,6 +42,8 @@ export function Graphe() {
           {theme === 'clair' ? 'Mode sombre' : 'Mode clair'}
         </Bouton>
       </header>
+
+      <SectionsSysteme />
 
       {jeux.map((jeu) => {
         const courante = etape[jeu.id] ?? jeu.etapes.length - 1;
