@@ -11,19 +11,38 @@
   min-height: 0;
 }
 
-.bandeau {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  padding: var(--space-4) var(--space-7);
+/* Pied de hauteur fixe : il ne change jamais de taille quand un bandeau apparaît. */
+.pied {
+  position: relative;
+  flex: none;
+  height: 112px;
+  padding: 0 var(--space-7);
   background: var(--color-surface);
   border-top: 2px solid var(--color-border);
 }
 
-/* Bandeau d'alerte : pleine largeur, sans marge du pied. */
-.bandeauAlerte {
-  padding: 0;
-  background: transparent;
+.neutre,
+.neutreCache {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-2);
+  height: 100%;
+}
+
+/* Barre neutre masquée mais toujours là : elle garde sa place. */
+.neutreCache {
+  visibility: hidden;
+}
+
+/* Bandeau réussi ou raté : posé par-dessus le pied, il déborde vers le haut sans rien pousser. */
+.superpose {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  padding: 0 var(--space-7);
 }
 
 .aide {

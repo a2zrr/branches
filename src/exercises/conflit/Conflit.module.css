@@ -1,3 +1,10 @@
+/* Résumé de la barre neutre (texte à gauche). */
+.resumeBarre {
+  font: var(--text-small);
+  font-size: 15px;
+  color: var(--color-text-muted);
+}
+
 /* Exercice conflit : maquette Conflit.png. Bulle et sortie en haut ; fichier 705 px à gauche ; choix à droite. */
 
 .zone {

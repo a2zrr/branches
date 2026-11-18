@@ -12,6 +12,23 @@ import type { PropsExercice } from '../registre';
 import styles from './Conflit.module.css';
 
 const SANS_SEGMENTS: readonly Segment[] = [];
+
+const LIBELLES_CHOIX: Record<Choix, string> = {
+  mienne: 'Garder ma version',
+  autre: 'Garder l’autre',
+  deux: 'Garder les deux',
+};
+
+/** Barre neutre du conflit : « Choix : … · Touches 1, 2, 3 pour choisir ». */
+export function ResumeConflit({ choix }: { choix: readonly (Choix | null)[] }) {
+  const premier = choix[0] ?? null;
+  return (
+    <span className={styles.resumeBarre}>
+      Choix : <strong>{premier === null ? 'aucun' : LIBELLES_CHOIX[premier]}</strong> · Touches 1, 2, 3 pour
+      choisir
+    </span>
+  );
+}
 const SANS_CHOIX: readonly Choix[] = [];
 
 /** Sortie de la commande de départ (git merge …), affichée en haut comme dans le terminal. */

@@ -51,6 +51,7 @@ export function CoqueMission({ mission }: { mission: MissionJouableValidee }) {
   const [choix, setChoix] = useState<ReponseChoix>([]);
 
   const Exercice = REGISTRE[mission.type].Composant;
+  const Resume = REGISTRE[mission.type].ResumeBarre;
   const chapitre = progressionChapitre(MISSIONS, mission.chapitre, progression);
   const total = MISSIONS.filter((m) => m.chapitre === mission.chapitre && estJouable(m)).length;
 
@@ -98,9 +99,10 @@ export function CoqueMission({ mission }: { mission: MissionJouableValidee }) {
         titre={mission.titre}
         objectif={mission.objectif}
         indicesRestants={mission.indices.length - indicesReveles}
+        ouvert={indiceOuvert}
         onIndice={() => {
           setIndicesReveles((n) => Math.max(1, n));
-          setIndiceOuvert(true);
+          setIndiceOuvert((o) => !o);
         }}
         onQuitter={() => {
           setQuitter(true);
@@ -127,41 +129,47 @@ export function CoqueMission({ mission }: { mission: MissionJouableValidee }) {
         />
       </main>
 
-      {bandeau.type === 'neutre' && (
-        <footer className={styles.bandeau}>
+      {/* Pied à hauteur fixe : la barre neutre y reste toujours. Les bandeaux réussi et raté se superposent
+          par-dessus (position absolue) : ils ne poussent jamais la page. */}
+      <footer className={styles.pied}>
+        <div
+          className={bandeau.type === 'neutre' ? styles.neutre : styles.neutreCache}
+          inert={bandeau.type !== 'neutre'}
+        >
           <BandeauRetour
             type="neutre"
             plat
             tailleAction="l"
             commandes={commandes}
             optimal={mission.optimal}
+            resume={Resume ? <Resume choix={choix} mission={mission} /> : undefined}
             onAction={verifier}
             onReinitialiser={() => {
               setDepot(depotInitial(mission));
             }}
           />
           {!pret && <span className={styles.aide}>Tape une commande pour activer VÉRIFIER.</span>}
-        </footer>
-      )}
-      {bandeau.type === 'rate' && (
-        <footer className={styles.bandeauAlerte}>
-          <BandeauRetour
-            type="rate"
-            plat
-            titre={bandeau.titre}
-            message={bandeau.message}
-            commandes={commandes}
-            onAction={() => {
-              setBandeau({ type: 'neutre' });
-            }}
-          />
-        </footer>
-      )}
-      {bandeau.type === 'reussi' && (
-        <footer className={styles.bandeau}>
-          <BandeauRetour type="reussi" message={bandeau.message} onAction={continuer} />
-        </footer>
-      )}
+        </div>
+        {bandeau.type === 'rate' && (
+          <div className={styles.superpose}>
+            <BandeauRetour
+              type="rate"
+              plat
+              titre={bandeau.titre}
+              message={bandeau.message}
+              commandes={commandes}
+              onAction={() => {
+                setBandeau({ type: 'neutre' });
+              }}
+            />
+          </div>
+        )}
+        {bandeau.type === 'reussi' && (
+          <div className={styles.superpose}>
+            <BandeauRetour type="reussi" message={bandeau.message} onAction={continuer} />
+          </div>
+        )}
+      </footer>
 
       {indiceOuvert && (
         <PanneauIndice

@@ -4,7 +4,7 @@ import type { Depot, Evenement } from '../engine/types';
 import type { Choix } from '../engine/types';
 import type { MissionJouableValidee } from '../game/schemas';
 import { TerminalGraphe } from './terminal-graphe/TerminalGraphe';
-import { Conflit } from './conflit/Conflit';
+import { Conflit, ResumeConflit } from './conflit/Conflit';
 import { preparerVerificationConflit } from './conflit/verification';
 
 export type TypeExercice = 'terminal-graphe' | 'conflit';
@@ -26,8 +26,15 @@ export interface PropsExercice {
 export type ResultatVerification =
   { ok: true; depot: Depot; reaction?: string } | { ok: false; message: string };
 
+/** Contenu de gauche de la barre neutre, fourni par l'exercice (ex. « Choix : … »). */
+export interface PropsResume {
+  choix: ReponseChoix;
+  mission: MissionJouableValidee;
+}
+
 export interface DefinitionExercice {
   Composant: ComponentType<PropsExercice>;
+  ResumeBarre?: ComponentType<PropsResume>;
   /** Chaque vérification compte pour une étape (conflit). */
   compteLesValidations?: boolean;
   /** Étape propre au type avant la vérification générique (ex. appliquer le choix et valider la fusion). */
@@ -42,6 +49,7 @@ export const REGISTRE: Record<TypeExercice, DefinitionExercice> = {
   'terminal-graphe': { Composant: TerminalGraphe },
   conflit: {
     Composant: Conflit,
+    ResumeBarre: ResumeConflit,
     compteLesValidations: true,
     preparerVerification: preparerVerificationConflit,
   },

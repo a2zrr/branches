@@ -9,6 +9,8 @@ export interface EnTeteJeuProps {
   titre: string;
   objectif: string;
   indicesRestants: number;
+  /** Le panneau d'indice est ouvert (bouton bascule). */
+  ouvert: boolean;
   onIndice: () => void;
   onQuitter: () => void;
 }
@@ -25,6 +27,7 @@ export function EnTeteJeu({
   titre,
   objectif,
   indicesRestants,
+  ouvert,
   onIndice,
   onQuitter,
 }: EnTeteJeuProps) {
@@ -57,7 +60,14 @@ export function EnTeteJeu({
         <span className={styles.compte}>
           Mission {numero} sur {total}
         </span>
-        <button type="button" className={styles.indice} onClick={onIndice}>
+        <button
+          type="button"
+          className={styles.indice}
+          aria-expanded={ouvert}
+          aria-controls="panneau-indice"
+          data-indice-bouton=""
+          onClick={onIndice}
+        >
           <Icone nom="ampoule" taille={22} trait={2.2} couleur="var(--color-on-hint)" />
           Indice
           <span className={styles.badge}>{indicesRestants}</span>

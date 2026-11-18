@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Mascotte } from '../mascotte/Mascotte';
 import { Bouton } from './Bouton';
 import styles from './PanneauIndice.module.css';
@@ -17,8 +18,27 @@ export interface PanneauIndiceProps {
 export function PanneauIndice({ indices, index, onSuivant, onFermer }: PanneauIndiceProps) {
   const courant = indices[Math.max(0, index - 1)] ?? '';
   const restants = indices.length - index;
+
+  // Échap et clic en dehors ferment le panneau. Le bouton INDICE, lui, bascule seul.
+  useEffect(() => {
+    const touche = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onFermer();
+    };
+    const souris = (e: MouseEvent) => {
+      const cible = e.target as Element | null;
+      if (cible?.closest('#panneau-indice') || cible?.closest('[data-indice-bouton]')) return;
+      onFermer();
+    };
+    window.addEventListener('keydown', touche);
+    window.addEventListener('mousedown', souris);
+    return () => {
+      window.removeEventListener('keydown', touche);
+      window.removeEventListener('mousedown', souris);
+    };
+  }, [onFermer]);
+
   return (
-    <div className={styles.panneau} role="dialog" aria-label="Indice">
+    <div id="panneau-indice" className={styles.panneau} role="dialog" aria-label="Indice">
       <Mascotte expression="pensif" taille={84} />
       <div className={styles.corps}>
         <span className={styles.etiquette}>
@@ -32,8 +52,8 @@ export function PanneauIndice({ indices, index, onSuivant, onFermer }: PanneauIn
               Indice suivant
             </Bouton>
           )}
-          <Bouton variante="indice" onClick={onFermer}>
-            OK, j’essaie
+          <Bouton variante="secondaire" onClick={onFermer}>
+            Fermer
           </Bouton>
         </div>
       </div>

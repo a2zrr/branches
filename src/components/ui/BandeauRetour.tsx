@@ -19,6 +19,8 @@ export interface BandeauRetourProps {
   onReinitialiser?: () => void;
   /** Sans boîte : barre plate du bas de la coque (maquette JeuTerminal.png). */
   plat?: boolean;
+  /** Contenu de gauche de la barre neutre (fourni par l'exercice). */
+  resume?: ReactNode;
   /** Taille du bouton principal en barre neutre. */
   tailleAction?: 'm' | 'l';
 }
@@ -39,6 +41,7 @@ export function BandeauRetour({
   onAction,
   onReinitialiser,
   plat = false,
+  resume,
   tailleAction = 'm',
 }: BandeauRetourProps) {
   const defauts = DEFAUTS[type];
@@ -57,7 +60,7 @@ export function BandeauRetour({
         aria-label="Barre de vérification"
       >
         <span className={styles.compteur}>
-          Commandes : {commandes ?? 0} · Optimal : {optimal ?? 0}
+          {resume ?? `Commandes : ${commandes ?? 0} · Optimal : ${optimal ?? 0}`}
         </span>
         <div className={styles.actions}>
           {onReinitialiser && (
