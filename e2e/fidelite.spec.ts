@@ -95,3 +95,21 @@ test('capture conflit', async ({ page }) => {
   await page.waitForTimeout(800);
   await page.screenshot({ path: resolve(DOSSIER, 'Conflit-app.png'), fullPage: false });
 });
+
+test('capture fin de mission', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await injecter(page);
+  await page.goto('/mission/c1-m4');
+  const champ = page.getByLabel('Commande Git');
+  await champ.fill('git log --oneline');
+  await champ.press('Enter');
+  await champ.fill('git rever a3f9c2e');
+  await champ.press('Enter');
+  await page.getByRole('button', { name: 'Compris' }).click();
+  await champ.fill('git revert a3f9c2e');
+  await champ.press('Enter');
+  await page.getByRole('button', { name: 'Vérifier' }).click();
+  await page.getByRole('button', { name: 'Continuer' }).click();
+  await page.waitForTimeout(3500);
+  await page.screenshot({ path: resolve(DOSSIER, 'FinMission-app.png'), fullPage: false });
+});

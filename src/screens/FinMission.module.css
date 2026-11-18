@@ -1,9 +1,11 @@
+/* Fin de mission : maquette FinMission.png. Pas d'en-tête ni de pied de page du site ; pied de progression. */
+
 .page {
   position: relative;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: var(--color-bg-subtle);
+  background: var(--color-bg);
   overflow: hidden;
 }
 
@@ -37,45 +39,83 @@
 .principal {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: var(--space-6);
+  grid-template-columns: 450px 595px;
+  justify-content: center;
+  align-items: start;
+  gap: 85px;
   flex: 1;
-  padding: var(--space-6) var(--space-7);
+  padding: 110px 40px 60px;
 }
 
-.bloc {
+/* ---- Colonne gauche : Hédi, bulle verte, titre vert, étoiles ---- */
+
+.gauche {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  padding: var(--space-6);
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  background: var(--color-surface);
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.bulle {
+  position: relative;
+  padding: var(--space-3) var(--space-5);
+  border: 2px solid var(--color-success);
+  border-radius: 20px;
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+  font: var(--text-label);
+  font-size: 18px;
+  font-weight: 800;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.bulle::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -11px;
+  width: 16px;
+  height: 16px;
+  background: var(--color-success-bg);
+  border-right: 2px solid var(--color-success);
+  border-bottom: 2px solid var(--color-success);
+  transform: translateX(-50%) rotate(45deg);
 }
 
 .hedi {
+  position: relative;
   display: flex;
   justify-content: center;
+  margin-top: var(--space-3);
+}
+
+.etincelle {
+  position: absolute;
 }
 
 .titre {
+  margin: var(--space-3) 0 0;
   font: var(--text-display);
-  font-size: 44px;
+  font-size: 54px;
+  white-space: nowrap;
+  color: var(--color-success-text);
   text-align: center;
 }
 
-.sousTitre,
-.commandes {
+.sousTitre {
   margin: 0;
-  text-align: center;
   font: var(--text-body);
+  font-size: 20px;
   color: var(--color-text-muted);
+  text-align: center;
 }
 
 .etoiles {
   display: flex;
   justify-content: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
+  margin-top: var(--space-3);
 }
 
 /* Étoiles une par une : rebond de 600 ms, 250 ms d'écart. */
@@ -93,67 +133,167 @@
     opacity 200ms ease;
 }
 
-.h2 {
-  font: var(--text-h3);
+.pastille {
+  margin: var(--space-2) 0 0;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-subtle);
+  font: var(--text-small);
+  font-size: 16px;
+  color: var(--color-text);
+}
+
+/* ---- Colonne droite : trois cartes à bandeau coloré, puis « Ce que tu as appris » ---- */
+
+.droite {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding-top: 0;
 }
 
 .stats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-3);
+  gap: var(--space-4);
 }
 
 .stat {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
-  padding: var(--space-4);
-  border-radius: var(--radius-xl);
-  background: var(--color-bg-subtle);
+  border: 2px solid var(--color-border);
+  border-radius: 18px;
+  background: var(--color-surface);
+  overflow: hidden;
+  box-shadow: var(--edge-md) var(--color-border);
 }
 
 .statTitre {
+  padding: var(--space-2) var(--space-3);
   font: var(--text-label);
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--color-text-muted);
-}
-
-.statValeur {
-  font: var(--text-h2);
+  text-align: center;
   color: var(--color-text);
 }
 
+.statValeur {
+  display: block;
+  margin-top: var(--space-2);
+  font: var(--text-h1);
+  font-size: 38px;
+  text-align: center;
+}
+
 .statDetail {
+  display: block;
+  padding-bottom: var(--space-3);
   font: var(--text-small);
+  font-size: 14px;
+  text-align: center;
   color: var(--color-text-muted);
+}
+
+.statXp {
+  border-color: var(--color-hint);
+}
+.statXp .statTitre {
+  background: var(--color-hint);
+  color: var(--color-on-hint);
+}
+.statXp .statValeur {
+  color: var(--color-hint-text);
+}
+
+.statCommandes {
+  border-color: var(--color-brand);
+}
+.statCommandes .statTitre {
+  background: var(--color-brand);
+  color: var(--color-on-primary);
+}
+.statCommandes .statValeur {
+  color: var(--color-primary);
+}
+
+.statGit {
+  border-color: var(--graph-halo);
+}
+.statGit .statTitre {
+  background: var(--graph-halo);
+  color: var(--color-on-primary);
+}
+.statGit .statValeur {
+  color: var(--color-success-text);
 }
 
 .appris {
   display: flex;
   flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  box-shadow: var(--edge-md) var(--color-border);
+}
+
+.apprisEntete {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   gap: var(--space-3);
 }
 
+.h2 {
+  margin: 0;
+  font: var(--text-h3);
+  font-size: 22px;
+  color: var(--color-text);
+}
+
 .commande {
-  padding: var(--space-2) var(--space-3);
+  padding: 6px 12px;
   border-radius: var(--radius-md);
   background: var(--term-bg);
-  color: var(--term-prompt);
+  color: var(--term-text);
   font: var(--text-code);
   font-size: 14px;
+  font-variant-ligatures: none;
+  white-space: nowrap;
 }
 
 .liste {
-  margin: 0;
-  padding-left: var(--space-5);
-  font: var(--text-body);
-  font-size: 16px;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
+
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font: var(--text-body);
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.coche {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--color-success-bg);
+}
+
+/* ---- Pied : phrase de progression à gauche, deux boutons à droite ---- */
 
 .pied {
   position: relative;
@@ -162,13 +302,14 @@
   align-items: center;
   gap: var(--space-4);
   padding: var(--space-4) var(--space-7);
-  background: var(--color-surface);
+  background: var(--color-bg);
   border-top: 2px solid var(--color-border);
 }
 
 .resume {
   font: var(--text-small);
-  color: var(--color-hint-text);
+  font-size: 16px;
+  color: var(--color-text);
 }
 
 .actions {

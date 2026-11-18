@@ -55,7 +55,9 @@ test.describe('étape 9 : fin de mission et boucle de progression', () => {
     await expect(page.getByRole('heading', { name: 'Mission accomplie !' })).toBeVisible();
     await expect(page.getByRole('img', { name: '2 étoiles sur 3' })).toBeVisible();
     await expect(page.getByText('3 commandes — optimal : 2')).toBeVisible();
-    await expect(page.getByText('+20 XP · meilleure note : 2 étoiles')).toBeVisible();
+    await expect(
+      page.getByText('+20 XP · git revert rejoint ton Git : 4 commandes maîtrisées sur 15'),
+    ).toBeVisible();
     await expect(page.getByText('4 / 15').first()).toBeVisible();
     await expect(page.getByRole('link', { name: 'Mission suivante' })).toHaveAttribute(
       'href',

@@ -3,12 +3,9 @@ import { Link, Navigate, useLocation, useNavigate, useParams } from 'react-route
 import { Mascotte } from '../components/mascotte/Mascotte';
 import { Bouton } from '../components/ui/Bouton';
 import { Icone } from '../components/ui/Icone';
-import { TonGit } from '../components/ui/TonGit';
-import { BulleMascotte } from '../components/ui/BulleMascotte';
 import { MISSIONS, trouverMission } from '../game/missions';
 import { useProgression } from '../game/store';
 import { estJouable, notionsTonGit, xpPour } from '../game/regles';
-import type { ResultatMission } from '../game/regles';
 import styles from './FinMission.module.css';
 
 interface EtatFin {
@@ -26,6 +23,23 @@ function missionSuivante(id: string): string | null {
   return jouables[i + 1]?.id ?? null;
 }
 
+/** Étoile à quatre branches, pour la décoration autour de Hédi. */
+function Etincelle({ x, y, taille }: { x: number; y: number; taille: number }) {
+  return (
+    <svg
+      className={styles.etincelle}
+      style={{ left: x, top: y }}
+      width={taille}
+      height={taille}
+      viewBox="-10 -10 20 20"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2 Z" style={{ fill: 'var(--color-hint)' }} />
+    </svg>
+  );
+}
+
 export function FinMission() {
   const { id = '' } = useParams();
   const location = useLocation();
@@ -37,7 +51,6 @@ export function FinMission() {
     typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const [etoilesAffichees, setEtoilesAffichees] = useState(() => (reduit ? (etat?.etoiles ?? 0) : 0));
 
-  const resultat: ResultatMission | undefined = progression[id];
   const notions = useMemo(() => notionsTonGit(MISSIONS, progression, null), [progression]);
 
   useEffect(() => {
@@ -62,10 +75,8 @@ export function FinMission() {
 
   const suivante = missionSuivante(mission.id);
   const maitrisees = notions.filter((n) => n.etat === 'maitrisee').length;
-  const notion = notions.find((n) => n.nom === mission.notion);
-  const etoiles = etat.etoiles;
-  const xp = xpPour(etoiles);
-  const meilleures = resultat?.etoiles ?? etoiles;
+  const xp = xpPour(etat.etoiles);
+  const derniereCommande = mission.solution[mission.solution.length - 1] ?? '';
 
   return (
     <div className={styles.page}>
@@ -84,11 +95,15 @@ export function FinMission() {
           ))}
         </div>
       )}
+
       <main className={styles.principal}>
-        <section className={styles.bloc} aria-labelledby="fin-titre">
-          <BulleMascotte expression="fier" ton="reaction" texte="Je savais que tu étais la bonne recrue !" />
+        <section className={styles.gauche} aria-labelledby="fin-titre">
+          <div className={styles.bulle}>Je savais que tu étais la bonne recrue !</div>
           <div className={styles.hedi}>
-            <Mascotte expression="fier" taille={200} anime={!reduit} />
+            <Mascotte expression="fier" taille={220} anime={!reduit} />
+            <Etincelle x={-6} y={22} taille={26} />
+            <Etincelle x={210} y={48} taille={20} />
+            <Etincelle x={206} y={170} taille={18} />
           </div>
           <h1 id="fin-titre" className={styles.titre}>
             Mission accomplie !
@@ -99,7 +114,7 @@ export function FinMission() {
           <div
             className={styles.etoiles}
             role="img"
-            aria-label={`${etoiles} étoile${etoiles > 1 ? 's' : ''} sur 3`}
+            aria-label={`${etat.etoiles} étoile${etat.etoiles > 1 ? 's' : ''} sur 3`}
           >
             {[1, 2, 3].map((n) => (
               <span
@@ -109,48 +124,55 @@ export function FinMission() {
               >
                 <Icone
                   nom="etoile"
-                  taille={56}
-                  trait={1.5}
+                  taille={66}
+                  trait={1.2}
                   remplie
-                  couleur={n <= etoiles ? 'var(--color-hint)' : 'var(--color-border)'}
+                  couleur={n <= etat.etoiles ? 'var(--color-hint)' : 'var(--color-border-strong)'}
                 />
               </span>
             ))}
           </div>
-          <p className={styles.commandes}>
+          <p className={styles.pastille}>
             {etat.commandes} commande{etat.commandes > 1 ? 's' : ''} — optimal : {mission.optimal}
           </p>
         </section>
 
-        <section className={styles.bloc} aria-labelledby="fin-stats">
-          <h2 id="fin-stats" className={styles.h2}>
-            Ce que tu as gagné
-          </h2>
+        <section className={styles.droite} aria-label="Résultat">
           <div className={styles.stats}>
-            <div className={styles.stat}>
+            <div className={`${styles.stat} ${styles.statXp}`}>
               <span className={styles.statTitre}>XP gagnés</span>
               <strong className={styles.statValeur}>+{xp}</strong>
+              <span className={styles.statDetail}>{etat.etoiles} ★ × 10</span>
             </div>
-            <div className={styles.stat}>
+            <div className={`${styles.stat} ${styles.statCommandes}`}>
               <span className={styles.statTitre}>Commandes</span>
               <strong className={styles.statValeur}>{etat.commandes}</strong>
-              <span className={styles.statDetail}>optimal {mission.optimal}</span>
+              <span className={styles.statDetail}>optimal : {mission.optimal}</span>
             </div>
-            <div className={styles.stat}>
+            <div className={`${styles.stat} ${styles.statGit}`}>
               <span className={styles.statTitre}>Ton Git</span>
               <strong className={styles.statValeur}>
                 {maitrisees} / {notions.length}
               </strong>
-              <span className={styles.statDetail}>{notion?.nom ?? mission.notion}</span>
+              <span className={styles.statDetail}>+ {mission.notion}</span>
             </div>
           </div>
-          <TonGit notions={notions} />
+
           <div className={styles.appris}>
-            <h2 className={styles.h2}>Ce que tu as appris</h2>
-            <code className={styles.commande}>$ {mission.solution[mission.solution.length - 1] ?? ''}</code>
+            <div className={styles.apprisEntete}>
+              <h2 className={styles.h2}>Ce que tu as appris</h2>
+              {derniereCommande !== '' && (
+                <code className={styles.commande}>$ {derniereCommande.replace(/^git /, 'git ')}</code>
+              )}
+            </div>
             <ul className={styles.liste}>
               {mission.appris.map((a) => (
-                <li key={a}>{a}</li>
+                <li key={a} className={styles.item}>
+                  <span className={styles.coche} aria-hidden="true">
+                    <Icone nom="coche" taille={16} trait={3} couleur="var(--color-success)" />
+                  </span>
+                  <span>{a}</span>
+                </li>
               ))}
             </ul>
           </div>
@@ -159,10 +181,10 @@ export function FinMission() {
 
       <footer className={styles.pied}>
         <span className={styles.resume}>
-          +{xp} XP · meilleure note : {meilleures} étoile{meilleures > 1 ? 's' : ''}
+          +{xp} XP · {mission.notion} rejoint ton Git : {maitrisees} commandes maîtrisées sur {notions.length}
         </span>
         <div className={styles.actions}>
-          {etoiles < 3 && (
+          {etat.etoiles < 3 && (
             <Bouton
               variante="secondaire"
               onClick={() => {
