@@ -126,9 +126,8 @@ test.describe('étape 9 : fin de mission et boucle de progression', () => {
     const chemin = resolve(DOSSIER, 'branches-progression.json');
     await telechargement.saveAs(chemin);
 
-    await page.getByRole('button', { name: 'Recommencer à zéro' }).click();
-    await page.getByRole('button', { name: 'Oui' }).click();
-    await page.getByRole('button', { name: 'Tout effacer' }).click();
+    await page.getByRole('button', { name: 'Recommencer' }).click();
+    await page.getByRole('button', { name: 'Oui, tout effacer' }).click();
     await page.goto('/carte');
     await expect(page.getByRole('button', { name: /Mission 1, Ton premier commit, en cours/ })).toBeVisible();
 
