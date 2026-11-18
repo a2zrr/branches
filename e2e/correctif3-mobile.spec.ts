@@ -86,7 +86,7 @@ test('étape 6 : la feuille Ton Git se ferme avec Échap et rend le focus au bou
   await page.setViewportSize({ width: 390, height: 844 });
   await partie(page, CHAPITRE_1_FINI);
   await page.goto('/carte');
-  const bouton = page.getByRole('button', { name: 'Ouvrir Ton Git' });
+  const bouton = page.getByRole('button', { name: /Ton Git,/ });
   await bouton.click();
   await expect(page.getByRole('dialog')).toBeVisible();
   await page.keyboard.press('Escape');

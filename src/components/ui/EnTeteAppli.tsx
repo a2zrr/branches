@@ -50,7 +50,7 @@ export function EnTeteAppli({
         </Link>
         <div className={styles.outils}>
           {onNotions !== undefined ? (
-            <button type="button" className={styles.boutonNotions} onClick={onNotions} aria-label="Ouvrir Ton Git">
+            <button type="button" className={styles.boutonNotions} onClick={onNotions} aria-label={`Ton Git, ${notionsMaitrisees} / ${notionsTotal} notions maîtrisées`}>
               <Compteur type="notions" valeur={notionsMaitrisees} total={notionsTotal} />
             </button>
           ) : (
