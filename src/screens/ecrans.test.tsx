@@ -104,7 +104,7 @@ describe('panneau paramètres', () => {
     expect(screen.getByRole('radio', { name: 'Sombre' })).toHaveAttribute('aria-checked', 'true');
   });
 
-  it('recommencer demande deux confirmations, puis efface la progression et garde le thème', async () => {
+  it('recommencer ouvre « Tout effacer ? » ; Annuler n’efface rien ; Oui efface et garde le thème', async () => {
     const utilisateur = userEvent.setup();
     useProgression.setState({
       theme: 'sombre',
@@ -113,11 +113,12 @@ describe('panneau paramètres', () => {
     });
     render(<FenetreParametres />);
     await utilisateur.click(screen.getByRole('button', { name: 'Recommencer' }));
+    expect(screen.getByRole('alertdialog', { name: 'Tout effacer ?' })).toBeInTheDocument();
+    expect(screen.getByRole('dialog', { name: 'Paramètres' })).toBeInTheDocument();
     await utilisateur.click(screen.getByRole('button', { name: 'Annuler' }));
     expect(useProgression.getState().progression['c1-m1']).toBeDefined();
     await utilisateur.click(screen.getByRole('button', { name: 'Recommencer' }));
-    await utilisateur.click(screen.getByRole('button', { name: 'Oui' }));
-    await utilisateur.click(screen.getByRole('button', { name: 'Tout effacer' }));
+    await utilisateur.click(screen.getByRole('button', { name: 'Oui, tout effacer' }));
     expect(useProgression.getState().progression).toEqual({});
     expect(useProgression.getState().theme).toBe('sombre');
   });

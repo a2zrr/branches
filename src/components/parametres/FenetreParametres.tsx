@@ -6,6 +6,7 @@ import { useProgression, type Theme } from '../../game/store';
 import { useInterface } from '../../game/ui';
 import { estJouable, notionsTonGit } from '../../game/regles';
 import { pluriel } from '../../game/pluriel';
+import { routeur } from '../../routes';
 import styles from './FenetreParametres.module.css';
 
 /** Fenêtre Paramètres (correctif 4) : centrée, elle s'ouvre en pop par-dessus la page. */
@@ -14,8 +15,6 @@ export function FenetreParametres() {
   if (!ouvert) return null;
   return <FenetreOuverte />;
 }
-
-type EtapeEfface = 0 | 1 | 2;
 
 const THEMES: { valeur: Theme; libelle: string; icone: NomIcone }[] = [
   { valeur: 'clair', libelle: 'Clair', icone: 'soleil' },
@@ -48,7 +47,11 @@ function FenetreOuverte() {
   const importer = useProgression((s) => s.importer);
   const reinitialiser = useProgression((s) => s.reinitialiser);
   const [sortie, setSortie] = useState(false);
-  const [etape, setEtape] = useState<EtapeEfface>(0);
+  // « Tout effacer ? » : boîte de dialogue dans la fenêtre ; la fenêtre reste ouverte.
+  const [confirmation, setConfirmation] = useState(false);
+  const recommencer = useRef<HTMLButtonElement>(null);
+  const annuler = useRef<HTMLButtonElement>(null);
+  const idAlerte = useId();
   const [message, setMessage] = useState<string | null>(null);
   const panneau = useRef<HTMLDivElement>(null);
   const idTitre = useId();
@@ -81,11 +84,31 @@ function FenetreOuverte() {
     };
   }, []);
 
-  // Échap ferme ; Tab reste dans la fenêtre.
+  // Quand la confirmation s'ouvre, le focus va sur ANNULER.
+  useEffect(() => {
+    if (confirmation) annuler.current?.focus();
+  }, [confirmation]);
+
+  const fermerConfirmation = () => {
+    setConfirmation(false);
+    window.setTimeout(() => {
+      recommencer.current?.focus();
+    }, 0);
+  };
+
+  // OUI : efface la progression, ferme la fenêtre et revient à l'accueil.
+  const toutEffacer = () => {
+    reinitialiser();
+    fermer();
+    void routeur.navigate('/');
+  };
+
+  // Échap ne ferme que la confirmation si elle est ouverte ; sinon la fenêtre. Tab reste dans la fenêtre.
   useEffect(() => {
     const clavier = (e: globalThis.KeyboardEvent) => {
       if (e.key === 'Escape') {
-        fermerAvecSortie();
+        if (confirmation) fermerConfirmation();
+        else fermerAvecSortie();
         return;
       }
       if (e.key !== 'Tab' || panneau.current === null) return;
@@ -190,6 +213,7 @@ function FenetreOuverte() {
           </button>
         </header>
 
+        <div className={styles.zoneCorps}>
         <div className={styles.corps}>
           <section className={styles.bloc} aria-labelledby={`${idTitre}-apparence`}>
             <h3 id={`${idTitre}-apparence`} className={styles.etiquette}>
@@ -320,63 +344,57 @@ function FenetreOuverte() {
                   </h3>
                   <p className={styles.legende}>Efface ta progression sur cet appareil.</p>
                 </div>
-                {etape === 0 && (
-                  <button
-                    type="button"
-                    className={styles.boutonDanger}
-                    onClick={() => {
-                      setEtape(1);
-                    }}
-                  >
-                    Recommencer
-                  </button>
-                )}
+                <button
+                  ref={recommencer}
+                  type="button"
+                  className={styles.boutonDanger}
+                  onClick={() => {
+                    setConfirmation(true);
+                  }}
+                >
+                  Recommencer
+                </button>
               </div>
-              {etape > 0 && (
-                <div className={styles.confirmation}>
-                  <p className={styles.question}>
-                    {etape === 1
-                      ? 'Tu es sûr de vouloir tout recommencer ?'
-                      : 'Tout effacer ? Cette action est définitive.'}
-                  </p>
-                  <div className={styles.duo}>
-                    <button
-                      type="button"
-                      className={styles.boutonContour}
-                      onClick={() => {
-                        setEtape(0);
-                      }}
-                    >
-                      Annuler
-                    </button>
-                    {etape === 1 ? (
-                      <button
-                        type="button"
-                        className={styles.boutonPlein}
-                        onClick={() => {
-                          setEtape(2);
-                        }}
-                      >
-                        Oui
-                      </button>
-                    ) : (
-                      <button
-                        type="button"
-                        className={styles.boutonPlein}
-                        onClick={() => {
-                          reinitialiser();
-                          setEtape(0);
-                          setMessage('Progression effacée. Le thème est conservé.');
-                        }}
-                      >
-                        Tout effacer
-                      </button>
-                    )}
-                  </div>
-                </div>
-              )}
             </div>
           </section>
+          </div>
+
+          {confirmation && (
+            <div
+              className={styles.alerte}
+              role="alertdialog"
+              aria-labelledby={`${idAlerte}-titre`}
+              aria-describedby={`${idAlerte}-texte`}
+            >
+              <Mascotte expression="panique" taille={112} />
+              <h3 id={`${idAlerte}-titre`} className={styles.titreAlerte}>
+                Tout effacer ?
+              </h3>
+              <p id={`${idAlerte}-texte`} className={styles.texteAlerte}>
+                Tes {reussies} {pluriel(reussies, 'mission réussie', 'missions réussies')}, tes {etoiles}{' '}
+                {pluriel(etoiles, 'étoile', 'étoiles')} et tes {xp} XP seront perdus. Exporte d’abord ta
+                progression si tu veux la garder.
+              </p>
+              <div className={styles.boutonsAlerte}>
+                <button
+                  ref={annuler}
+                  type="button"
+                  className={styles.boutonContour}
+                  onClick={fermerConfirmation}
+                >
+                  Annuler
+                </button>
+                <button type="button" className={styles.boutonPlein} onClick={toutEffacer}>
+                  Oui, tout effacer
+                </button>
+              </div>
+              <button type="button" className={styles.lienExport} onClick={telecharger}>
+                <Icone nom="telecharger" taille={18} trait={2.4} couleur="currentColor" />
+                Exporter d’abord ma progression
+              </button>
+            </div>
+          )}
+
         </div>
 
         <footer className={styles.pied}>

@@ -93,3 +93,63 @@ test('section 2 : captures clair et sombre en 1440 × 900', async ({ page }) => 
   await page.waitForTimeout(250);
   await page.screenshot({ path: 'verifications/correctif-4/parametres-sombre-1440.png' });
 });
+
+// Section 3 : la confirmation « Tout effacer ? ».
+
+test('section 3 : Recommencer ouvre la confirmation sans fermer la fenêtre ; le focus va sur Annuler', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await neuf(page);
+  await ouvrirParametres(page);
+  await page.getByRole('button', { name: 'Recommencer' }).click();
+  await expect(page.getByRole('alertdialog', { name: 'Tout effacer ?' })).toBeVisible();
+  await expect(page.getByRole('dialog', { name: 'Paramètres' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Annuler' })).toBeFocused();
+  await page.screenshot({ path: 'verifications/correctif-4/parametres-confirmation-1440.png' });
+});
+
+test('section 3 : Échap ne ferme que la confirmation, et le focus revient sur Recommencer', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await neuf(page);
+  await ouvrirParametres(page);
+  await page.getByRole('button', { name: 'Recommencer' }).click();
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('alertdialog')).toHaveCount(0);
+  await expect(page.getByRole('dialog', { name: 'Paramètres' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Recommencer' })).toBeFocused();
+});
+
+test('section 3 : Annuler ne change rien ; Oui efface, ferme et revient à l’accueil', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.addInitScript(() => {
+    if (localStorage.getItem('branches:v1') === null) {
+      localStorage.setItem(
+        'branches:v1',
+        JSON.stringify({
+          state: {
+            theme: 'sombre',
+            progression: { 'c1-m1': { etoiles: 3, commandes: 2, reussie: true } },
+            xp: 30,
+            chapitresDecouverts: [1, 2],
+          },
+          version: 3,
+        }),
+      );
+    }
+  });
+  await page.goto('/carte');
+  await page.getByRole('button', { name: 'Paramètres' }).click();
+  await page.getByRole('button', { name: 'Recommencer' }).click();
+  await page.getByRole('button', { name: 'Annuler' }).click();
+  await expect(page.getByRole('alertdialog')).toHaveCount(0);
+  const apresAnnuler = await page.evaluate(() => JSON.parse(localStorage.getItem('branches:v1') ?? '{}') as { state: { progression: object } });
+  expect(Object.keys(apresAnnuler.state.progression)).toEqual(['c1-m1']);
+
+  await page.getByRole('button', { name: 'Recommencer' }).click();
+  await page.getByRole('button', { name: 'Oui, tout effacer' }).click();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(page).toHaveURL('/');
+  const apres = await page.evaluate(() => JSON.parse(localStorage.getItem('branches:v1') ?? '{}') as { state: { progression: object; theme: string; chapitresDecouverts: number[] } });
+  expect(apres.state.progression).toEqual({});
+  expect(apres.state.theme).toBe('sombre');
+  expect(apres.state.chapitresDecouverts).toEqual([1]);
+});
