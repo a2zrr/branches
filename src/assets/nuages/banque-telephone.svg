@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 700" preserveAspectRatio="xMidYMin slice" aria-hidden="true" focusable="false">
+<!-- Branchés : banque de nuages du mur (téléphone). Deux couches : arrière bleu pâle, devant blanc avec contour 3 px. Moitié gauche telle quelle, moitié droite en miroir, morceau du milieu tel quel. -->
+<style>.na{fill:var(--nuage-arriere,#DDEEFA)}.nf{fill:var(--nuage-face,#FFFFFF)}.nc{stroke:var(--nuage-bord,#CFE4F3);stroke-width:3;stroke-linejoin:round}</style>
+<path class="na" d="M-20 700V150C0 96 66 78 104 106C132 48 228 46 250 98C280 70 332 80 330 122V700Z"/>
+<path class="nf nc" d="M-20 700V196C-20 138 48 116 88 146C108 88 198 80 222 138C252 110 322 120 320 168V700Z"/>
+</svg>

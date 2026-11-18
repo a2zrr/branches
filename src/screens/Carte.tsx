@@ -1,6 +1,8 @@
 import { Link, useNavigate } from 'react-router';
 import { EnTeteAppli } from '../components/ui/EnTeteAppli';
 import { ChapitreCarte } from '../components/carte/ChapitreCarte';
+import { MurDeNuages } from '../components/carte/MurDeNuages';
+import { MESURES_PC } from '../components/carte/geometrie';
 import { BarreProgression } from '../components/ui/BarreProgression';
 import { PuceNotion } from '../components/ui/PuceNotion';
 import { Mascotte } from '../components/mascotte/Mascotte';
@@ -32,18 +34,21 @@ export function Carte() {
 
       <div className={`conteneur ${styles.corps}`}>
         <main className={styles.chemin}>
-          {vue.chapitres.map((chapitre) => (
+          {vue.chapitres.map((chapitre, i) => (
             <ChapitreCarte
               key={chapitre.numero}
               chapitre={chapitre}
               missions={vue.missions.filter((m) => m.chapitre === chapitre.numero)}
               etats={e.etats}
               progression={e.progression}
+              suiviDUnMur={i === vue.chapitres.length - 1}
               onOpen={(id) => {
                 void navigate(`/mission/${id}`);
               }}
             />
           ))}
+          {/* Rien après le mur : les chapitres cachés ne sont pas rendus. */}
+          <MurDeNuages mur={vue.mur} mesures={MESURES_PC} />
         </main>
 
         <aside className={styles.colonne} aria-label="Hédi et progression">

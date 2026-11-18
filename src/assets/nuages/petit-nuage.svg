@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 -4 158 96" aria-hidden="true" focusable="false">
+<!-- Branchés : petit nuage qui flotte au-dessus du mur. -->
+<style>.na{fill:var(--nuage-arriere,#DDEEFA)}.nf{fill:var(--nuage-face,#FFFFFF)}.nc{stroke:var(--nuage-bord,#CFE4F3);stroke-width:3;stroke-linejoin:round}</style>
+<path class="nf nc" d="M22 74C6 74 2 52 18 46C16 26 42 18 54 32C62 10 98 8 106 34C126 28 142 44 134 60C148 64 146 82 130 82H30C24 82 22 78 22 74Z"/>
+</svg>

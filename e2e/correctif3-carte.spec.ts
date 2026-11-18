@@ -102,3 +102,40 @@ test('étape 3 : capture avec le chapitre 2 visible (chapitre 1 terminé)', asyn
   await expect(page.locator('[data-vignette]')).toHaveCount(2);
   await page.screenshot({ path: 'verifications/correctif-3/etape-3-carte-chapitre-2-1440.png', fullPage: true });
 });
+
+// Correctif 3, étape 4 : le mur de nuages.
+
+test('étape 4 : dans une partie neuve, aucun titre de chapitre ni de mission caché dans le DOM', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await partie(page, {});
+  await page.goto('/carte');
+  await expect(page.locator('[data-mur="cache"]')).toHaveCount(1);
+  await expect(page.getByText('Le stagiaire a poussé sur main')).toHaveCount(0);
+  await expect(page.getByText('Mais qui est Kévin')).toHaveCount(0);
+  await expect(page.getByText('Bientôt disponible')).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: "Qu'y a-t-il derrière les nuages ?" })).toBeVisible();
+  await expect(page.getByText('Termine les 6 missions du chapitre 1 pour les dissiper.')).toBeVisible();
+});
+
+test('étape 4 : chapitre 2 fini, le mur devient « bientôt » n° 3, sans barre', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  const tout = Object.fromEntries(
+    ['c1-m1', 'c1-m2', 'c1-m3', 'c1-m4', 'c1-m5', 'c1-m6', 'c2-m2'].map((id) => [
+      id,
+      { etoiles: 3, commandes: 2, reussie: true },
+    ]),
+  );
+  await partie(page, tout);
+  await page.goto('/carte');
+  await expect(page.locator('[data-mur="bientot"]')).toHaveCount(1);
+  await expect(page.getByText('La suite se prépare')).toBeVisible();
+  await expect(page.getByText('De nouvelles galères arrivent. Hédi prépare déjà ses excuses.')).toBeVisible();
+  await expect(page.locator('[data-mur="bientot"] [role="progressbar"]')).toHaveCount(0);
+});
+
+test('étape 4 : capture de la carte dans l’état de Carte.png (chapitre 1, mission 4 en cours)', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await partie(page);
+  await page.goto('/carte');
+  await page.screenshot({ path: 'verifications/correctif-3/etape-4-carte-mur-1440.png', fullPage: true });
+});

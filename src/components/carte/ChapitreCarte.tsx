@@ -15,6 +15,8 @@ export interface ChapitreCarteProps {
   progression: Progression;
   onOpen: (id: string) => void;
   mesures?: Mesures;
+  /** Le mur de nuages suit ce chapitre : il lui faut la place du mur, et son chemin s'y enfonce. */
+  suiviDUnMur?: boolean;
 }
 
 /** État affiché d'une mission : une mission brouillon n'est jamais jouable. */
@@ -34,6 +36,7 @@ export function ChapitreCarte({
   progression,
   onOpen,
   mesures = MESURES_PC,
+  suiviDUnMur = false,
 }: ChapitreCarteProps) {
   const jouables = missions.filter(estJouable);
   const faites = jouables.filter((m) => progression[m.id]?.reussie === true).length;
@@ -43,7 +46,8 @@ export function ChapitreCarte({
     noeuds.findIndex((n) => n.etat === 'en-cours' || n.etat === 'disponible'),
     0,
   );
-  const hauteur = mesures.haut + missions.length * mesures.rang + mesures.bas;
+  const hauteur =
+    mesures.haut + missions.length * mesures.rang + mesures.bas + (suiviDUnMur ? mesures.sousLeMur : 0);
   const teinte = chapitre.vignette?.teinte ?? 'bleu';
 
   return (
@@ -67,6 +71,7 @@ export function ChapitreCarte({
             indexCourant={indexCourant}
             couleurFaite={`var(--chemin-${teinte})`}
             hauteur={hauteur}
+            {...(suiviDUnMur ? { hauteurSousMur: hauteur } : {})}
           />
         )}
         {chapitre.vignette !== undefined && missions.length > 0 && (

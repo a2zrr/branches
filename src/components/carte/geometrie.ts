@@ -19,6 +19,16 @@ export interface Mesures {
   vignette: number;
   /** Position horizontale de la vignette dans la zone (CSS). */
   vignetteGauche: string;
+  /** Place ajoutée sous un chapitre qui précède le mur. */
+  sousLeMur: number;
+  /** Le mur remonte de cette hauteur sur le chapitre précédent. */
+  murRemonte: number;
+  /** Hauteur du mur de nuages. */
+  murHauteur: number;
+  /** Distance entre le haut du mur et la carte centrale. */
+  carteMurTop: number;
+  /** Version PC : côtés du mur qui s'effacent. */
+  pc: boolean;
 }
 
 export const MESURES_PC: Mesures = {
@@ -32,6 +42,11 @@ export const MESURES_PC: Mesures = {
   traitChemin: 12,
   vignette: 300,
   vignetteGauche: 'calc(50% - 390px)',
+  sousLeMur: 100,
+  murRemonte: 110,
+  murHauteur: 450,
+  carteMurTop: 178,
+  pc: true,
 };
 
 /** Décalage d'une mission dans le zigzag (il se répète tous les 8). */
