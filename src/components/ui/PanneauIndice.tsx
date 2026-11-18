@@ -4,45 +4,37 @@ import styles from './PanneauIndice.module.css';
 
 export interface PanneauIndiceProps {
   indices: string[];
-  /** Nombre d'indices déjà révélés. */
+  /** Nombre d'indices déjà révélés (au moins 1 à l'ouverture). */
   index: number;
   onSuivant: () => void;
   onFermer: () => void;
 }
 
-/** Hédi pensif ; les indices se révèlent un par un. Ils ne changent pas les étoiles. */
+/**
+ * Carte jaune ancrée sous le bouton INDICE (maquette JeuTerminalIndice.png) : Hédi pensif,
+ * le dernier indice révélé, et les boutons INDICE SUIVANT / OK, J'ESSAIE. Pas de voile : le jeu reste visible.
+ */
 export function PanneauIndice({ indices, index, onSuivant, onFermer }: PanneauIndiceProps) {
-  const revele = indices.slice(0, index);
+  const courant = indices[Math.max(0, index - 1)] ?? '';
   const restants = indices.length - index;
   return (
-    <div className={styles.fond}>
-      <div className={styles.panneau} role="dialog" aria-modal="true" aria-label="Indice">
-        <div className={styles.entete}>
-          <Mascotte expression="pensif" taille={84} />
-          <div className={styles.textes}>
-            <span className={styles.titre}>
-              Indice {index} sur {indices.length}
-            </span>
-            <p className={styles.note}>Les indices ne changent pas le nombre d’étoiles.</p>
-          </div>
-        </div>
-        <ol className={styles.liste}>
-          {revele.map((texte, i) => (
-            <li key={i} className={styles.indice}>
-              {texte}
-            </li>
-          ))}
-        </ol>
-        {revele.length === 0 && <p className={styles.note}>Aucun indice révélé pour l’instant.</p>}
+    <div className={styles.panneau} role="dialog" aria-label="Indice">
+      <Mascotte expression="pensif" taille={84} />
+      <div className={styles.corps}>
+        <span className={styles.etiquette}>
+          Indice {index} sur {indices.length}
+        </span>
+        <p className={styles.texte}>{courant}</p>
+        <p className={styles.note}>Les indices ne changent pas le nombre d’étoiles.</p>
         <div className={styles.actions}>
-          <Bouton variante="secondaire" onClick={onFermer}>
-            Fermer
-          </Bouton>
           {restants > 0 && (
-            <Bouton variante="indice" onClick={onSuivant}>
-              Révéler un indice
+            <Bouton variante="secondaire" onClick={onSuivant}>
+              Indice suivant
             </Bouton>
           )}
+          <Bouton variante="indice" onClick={onFermer}>
+            OK, j’essaie
+          </Bouton>
         </div>
       </div>
     </div>

@@ -1,4 +1,5 @@
 .terminal {
+  font-variant-ligatures: none;
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -9,7 +10,7 @@
   box-shadow: var(--edge-lg) var(--term-edge);
   color: var(--term-text);
   font: var(--text-code);
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .barre {
@@ -88,4 +89,18 @@
 
 .invite:focus-within .saisie {
   caret-color: var(--term-text);
+}
+
+/* Coloration : invite verte, hash jaunes, références cyan (comme dans le vrai terminal). */
+.promptLigne {
+  color: var(--term-prompt);
+  white-space: pre;
+}
+
+.hash {
+  color: var(--term-hash);
+}
+
+.ref {
+  color: var(--term-ref);
 }

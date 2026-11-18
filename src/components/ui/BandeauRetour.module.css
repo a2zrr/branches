@@ -127,3 +127,16 @@
     transform: scale(1);
   }
 }
+
+/* Alerte plate : pleine largeur, sans coins arrondis (maquette JeuTerminalErreur.png). */
+.alertePlate {
+  border-radius: 0;
+  padding: var(--space-4) var(--space-7);
+}
+
+/* Barre plate : déclarée après .neutre pour l'emporter sur sa bordure. */
+.neutre.plat {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}

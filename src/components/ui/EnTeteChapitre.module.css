@@ -100,3 +100,8 @@
 :global([data-theme='sombre']) .ouvert .pastille {
   color: var(--color-text);
 }
+
+/* En sombre, la pastille reprend la teinte du chapitre (40 %) sur le fond : le texte clair reste lisible. */
+:global([data-theme='sombre']) .ouvert .pastille {
+  background: color-mix(in srgb, var(--chapitre-arete, var(--color-primary-edge)) 40%, var(--color-bg));
+}

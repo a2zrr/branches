@@ -15,9 +15,15 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  padding: var(--space-4) var(--space-6);
-  background: var(--color-bg);
+  padding: var(--space-4) var(--space-7);
+  background: var(--color-surface);
   border-top: 2px solid var(--color-border);
+}
+
+/* Bandeau d'alerte : pleine largeur, sans marge du pied. */
+.bandeauAlerte {
+  padding: 0;
+  background: transparent;
 }
 
 .aide {

@@ -1,10 +1,12 @@
+/* Zone d'exercice : colonne gauche 598 px (Hédi + terminal), carte graphe à droite. Marges de 40 px. */
+
 .zone {
   display: grid;
-  grid-template-columns: 44% minmax(0, 1fr);
+  grid-template-columns: 598px minmax(0, 1fr);
   gap: var(--space-5);
   height: 100%;
   min-height: 0;
-  padding: var(--space-5);
+  padding: var(--space-5) var(--space-7);
 }
 
 .gauche {
@@ -19,13 +21,43 @@
   min-height: 0;
 }
 
-.droite {
+.carte {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
   min-width: 0;
+  min-height: 0;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  box-shadow: var(--edge-sm) var(--color-border);
+  overflow: hidden;
+}
+
+.entete {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 2px solid var(--color-border);
 }
 
 .h2 {
+  margin: 0;
   font: var(--text-h3);
+  font-size: 22px;
+  color: var(--color-text);
+}
+
+.meta {
+  font: var(--text-small);
+  font-size: 14px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.graphe {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }

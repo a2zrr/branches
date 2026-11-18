@@ -16,7 +16,16 @@ import type { MissionJouableValidee } from '../game/schemas';
 import type { Depot } from '../engine/types';
 import styles from './CoqueJeu.module.css';
 
-type Bandeau = { type: 'neutre' } | { type: 'rate'; message: string } | { type: 'reussi'; message: string };
+type Bandeau =
+  | { type: 'neutre' }
+  | { type: 'rate'; titre?: string; message: string }
+  | { type: 'reussi'; message: string };
+
+/** Sépare « Presque ! Git ne connaît pas « rever ». » (titre) du reste de l'explication (message). */
+function separer(explication: string): { titre: string; message: string } {
+  const m = /^(.+?\.)\s+(.*)$/s.exec(explication);
+  return m ? { titre: m[1] ?? explication, message: m[2] ?? '' } : { titre: explication, message: '' };
+}
 
 export function CoqueJeu() {
   const { id = '' } = useParams();
@@ -52,7 +61,7 @@ export function CoqueMission({ mission }: { mission: MissionJouableValidee }) {
     if (definition.preparerVerification) {
       const preparation = definition.preparerVerification(mission, depot, choix);
       if (!preparation.ok) {
-        setBandeau({ type: 'rate', message: preparation.message });
+        setBandeau({ type: 'rate', ...separer(preparation.message) });
         return;
       }
       courant = preparation.depot;
@@ -68,7 +77,7 @@ export function CoqueMission({ mission }: { mission: MissionJouableValidee }) {
         message: reaction ?? `Tu as réussi en ${nombre} commande${nombre > 1 ? 's' : ''}.`,
       });
     } else {
-      setBandeau({ type: 'rate', message: resultat.messageDuPremierEchec ?? '' });
+      setBandeau({ type: 'rate', ...separer(resultat.messageDuPremierEchec ?? '') });
     }
   };
 
@@ -90,6 +99,7 @@ export function CoqueMission({ mission }: { mission: MissionJouableValidee }) {
         objectif={mission.objectif}
         indicesRestants={mission.indices.length - indicesReveles}
         onIndice={() => {
+          setIndicesReveles((n) => Math.max(1, n));
           setIndiceOuvert(true);
         }}
         onQuitter={() => {
@@ -109,7 +119,7 @@ export function CoqueMission({ mission }: { mission: MissionJouableValidee }) {
             setCommandes((c) => c + 1);
           }}
           signalerErreur={(explication) => {
-            setBandeau({ type: 'rate', message: explication });
+            setBandeau({ type: 'rate', ...separer(explication) });
           }}
           setPret={setPret}
           choix={choix}
@@ -121,6 +131,8 @@ export function CoqueMission({ mission }: { mission: MissionJouableValidee }) {
         <footer className={styles.bandeau}>
           <BandeauRetour
             type="neutre"
+            plat
+            tailleAction="l"
             commandes={commandes}
             optimal={mission.optimal}
             onAction={verifier}
@@ -132,10 +144,13 @@ export function CoqueMission({ mission }: { mission: MissionJouableValidee }) {
         </footer>
       )}
       {bandeau.type === 'rate' && (
-        <footer className={styles.bandeau}>
+        <footer className={styles.bandeauAlerte}>
           <BandeauRetour
             type="rate"
+            plat
+            titre={bandeau.titre}
             message={bandeau.message}
+            commandes={commandes}
             onAction={() => {
               setBandeau({ type: 'neutre' });
             }}

@@ -1,42 +1,57 @@
-.fond {
+/* Carte d'indice ancrée sous le bouton INDICE, à droite. Pas de voile. */
+.panneau {
   position: fixed;
-  inset: 0;
+  top: 92px;
+  right: 40px;
   z-index: 20;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: var(--space-5);
-  background: var(--color-text);
-}
-
-.panneau {
-  display: flex;
-  flex-direction: column;
   gap: var(--space-4);
-  width: min(560px, 100%);
-  padding: var(--space-6);
+  width: 500px;
+  padding: var(--space-4) var(--space-5);
   border: 2px solid var(--color-hint);
-  border-radius: var(--radius-xl);
+  border-radius: 20px;
   background: var(--color-hint-bg);
   color: var(--color-text);
   box-shadow: var(--edge-lg) var(--color-hint-edge);
 }
 
-.entete {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
+/* Pointe vers le bouton INDICE. */
+.panneau::before {
+  content: '';
+  position: absolute;
+  top: -11px;
+  right: 76px;
+  width: 18px;
+  height: 18px;
+  background: var(--color-hint-bg);
+  border-left: 2px solid var(--color-hint);
+  border-top: 2px solid var(--color-hint);
+  transform: rotate(45deg);
 }
 
-.textes {
+.corps {
   display: flex;
+  flex: 1;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: var(--space-2);
+  min-width: 0;
 }
 
-.titre {
-  font: var(--text-h3);
+.etiquette {
+  font: var(--text-label);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   color: var(--color-hint-text);
+}
+
+.texte {
+  margin: 0;
+  font: var(--text-body);
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.4;
 }
 
 .note {
@@ -45,21 +60,16 @@
   color: var(--color-text-muted);
 }
 
-.liste {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  margin: 0;
-  padding: 0 0 0 var(--space-5);
-  font: var(--text-body);
-}
-
-.indice {
-  padding-left: var(--space-1);
-}
-
 .actions {
   display: flex;
   justify-content: flex-end;
   gap: var(--space-3);
+  margin-top: var(--space-1);
+}
+
+/* Les boutons restent sur une ligne, comme dans la maquette. */
+.actions button {
+  white-space: nowrap;
+  min-height: 44px;
+  padding: 0 var(--space-4);
 }

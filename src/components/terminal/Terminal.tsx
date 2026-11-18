@@ -1,9 +1,39 @@
-import { useEffect, useRef, useState, type KeyboardEvent, type SyntheticEvent } from 'react';
+import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode, type SyntheticEvent } from 'react';
 import styles from './Terminal.module.css';
 
 export interface LigneTerminal {
   type: 'commande' | 'sortie' | 'erreur' | 'info';
   texte: string;
+}
+
+/** Coloration comme le vrai terminal : invite verte, hash jaunes, références cyan. */
+function colorer(l: LigneTerminal): ReactNode {
+  if (l.type === 'commande') {
+    const fin = l.texte.indexOf('$ ');
+    if (fin < 0) return l.texte;
+    return (
+      <>
+        <span className={styles.promptLigne}>{l.texte.slice(0, fin + 2)}</span>
+        {l.texte.slice(fin + 2)}
+      </>
+    );
+  }
+  if (l.type !== 'sortie') return l.texte;
+  return l.texte.split(/(\b[0-9a-f]{7}\b|\(HEAD[^)]*\))/).map((p, i) => {
+    if (/^[0-9a-f]{7}$/.test(p))
+      return (
+        <span key={i} className={styles.hash}>
+          {p}
+        </span>
+      );
+    if (p.startsWith('(HEAD'))
+      return (
+        <span key={i} className={styles.ref}>
+          {p}
+        </span>
+      );
+    return p;
+  });
 }
 
 export interface TerminalProps {
@@ -87,7 +117,7 @@ export function Terminal({
       <div className={styles.ecran} role="log" aria-live="polite" aria-relevant="additions">
         {lignes.map((l, i) => (
           <div key={i} className={`${styles.ligne} ${styles[l.type]}`}>
-            {l.texte}
+            {l.texte === '' ? '\u00a0' : colorer(l)}
           </div>
         ))}
         <form onSubmit={soumettre} className={styles.invite}>

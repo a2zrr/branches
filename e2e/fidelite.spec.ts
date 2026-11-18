@@ -43,3 +43,45 @@ test('capture carte', async ({ page }) => {
   await page.waitForTimeout(800);
   await page.screenshot({ path: resolve(DOSSIER, 'Carte-app.png'), fullPage: true });
 });
+
+test('capture jeu terminal', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await injecter(page);
+  await page.goto('/mission/c1-m4');
+  const champ = page.getByLabel('Commande Git');
+  await champ.fill('git log --oneline');
+  await champ.press('Enter');
+  await champ.fill('git revert a3f9c2e');
+  await champ.press('Enter');
+  await page.evaluate(() => document.fonts.ready);
+  await page.waitForTimeout(800);
+  await page.screenshot({ path: resolve(DOSSIER, 'JeuTerminal-app.png'), fullPage: false });
+});
+
+test('capture jeu erreur', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await injecter(page);
+  await page.goto('/mission/c1-m4');
+  const champ = page.getByLabel('Commande Git');
+  await champ.fill('git log --oneline');
+  await champ.press('Enter');
+  await champ.fill('git rever a3f9c2e');
+  await champ.press('Enter');
+  await page.evaluate(() => document.fonts.ready);
+  await page.waitForTimeout(800);
+  await page.screenshot({ path: resolve(DOSSIER, 'JeuTerminalErreur-app.png'), fullPage: false });
+});
+
+test('capture jeu indice', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await injecter(page);
+  await page.goto('/mission/c1-m4');
+  const champ = page.getByLabel('Commande Git');
+  await champ.fill('git log --oneline');
+  await champ.press('Enter');
+  await champ.fill('git re');
+  await page.getByRole('button', { name: /^Indice \d/ }).click();
+  await page.evaluate(() => document.fonts.ready);
+  await page.waitForTimeout(600);
+  await page.screenshot({ path: resolve(DOSSIER, 'JeuTerminalIndice-app.png'), fullPage: false });
+});

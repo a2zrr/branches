@@ -17,6 +17,10 @@ export interface BandeauRetourProps {
   onAction: () => void;
   /** Bouton secondaire RÉINITIALISER (affiché en neutre). */
   onReinitialiser?: () => void;
+  /** Sans boîte : barre plate du bas de la coque (maquette JeuTerminal.png). */
+  plat?: boolean;
+  /** Taille du bouton principal en barre neutre. */
+  tailleAction?: 'm' | 'l';
 }
 
 const DEFAUTS: Record<TypeBandeau, { titre?: string; action: string }> = {
@@ -34,6 +38,8 @@ export function BandeauRetour({
   action,
   onAction,
   onReinitialiser,
+  plat = false,
+  tailleAction = 'm',
 }: BandeauRetourProps) {
   const defauts = DEFAUTS[type];
   const racine = useRef<HTMLElement>(null);
@@ -46,7 +52,10 @@ export function BandeauRetour({
 
   if (type === 'neutre') {
     return (
-      <section className={`${styles.bandeau} ${styles.neutre}`} aria-label="Barre de vérification">
+      <section
+        className={`${styles.bandeau} ${styles.neutre} ${plat ? styles.plat : ''}`}
+        aria-label="Barre de vérification"
+      >
         <span className={styles.compteur}>
           Commandes : {commandes ?? 0} · Optimal : {optimal ?? 0}
         </span>
@@ -56,7 +65,7 @@ export function BandeauRetour({
               Réinitialiser
             </Bouton>
           )}
-          <Bouton variante="primaire" onClick={onAction}>
+          <Bouton variante="primaire" taille={tailleAction} onClick={onAction}>
             {libelle}
           </Bouton>
         </div>
@@ -67,7 +76,7 @@ export function BandeauRetour({
   const reussi = type === 'reussi';
   return (
     <section
-      className={`${styles.bandeau} ${reussi ? styles.reussi : styles.rate}`}
+      className={`${styles.bandeau} ${reussi ? styles.reussi : styles.rate} ${plat ? styles.alertePlate : ''}`}
       ref={racine}
       role={reussi ? 'status' : 'alert'}
       aria-live={reussi ? 'polite' : 'assertive'}
@@ -84,10 +93,15 @@ export function BandeauRetour({
         )}
         <div className={styles.textes}>
           <strong className={styles.titre}>{titreAffiche}</strong>
-          {message && <span className={styles.message}>{message}</span>}
+          {(message !== '' || commandes !== undefined) && (
+            <span className={styles.message}>
+              {message}
+              {commandes !== undefined && `${message !== '' ? ' · ' : ''}Commandes : ${commandes}`}
+            </span>
+          )}
         </div>
       </div>
-      <Bouton variante={reussi ? 'succes' : 'danger'} onClick={onAction}>
+      <Bouton variante={reussi ? 'succes' : 'danger'} taille={plat ? 'l' : 'm'} onClick={onAction}>
         {libelle}
       </Bouton>
     </section>

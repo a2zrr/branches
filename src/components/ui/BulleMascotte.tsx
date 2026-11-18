@@ -25,7 +25,9 @@ export function BulleMascotte({ expression, ton, titre, texte, taille = 76 }: Bu
       <Mascotte expression={expression} taille={taille} />
       <div className={`${styles.bulle} ${styles[ton]}`}>
         <span className={styles.queue} aria-hidden="true" />
-        <span className={styles.titre}>{titre ?? TITRES_PAR_DEFAUT[ton]}</span>
+        {(titre ?? TITRES_PAR_DEFAUT[ton]) !== '' && (
+          <span className={styles.titre}>{titre ?? TITRES_PAR_DEFAUT[ton]}</span>
+        )}
         <p className={styles.texte}>{texte}</p>
       </div>
     </div>

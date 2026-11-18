@@ -5,16 +5,26 @@ import { depotVersGraphe } from '../../components/graphe/adaptateur';
 import { BulleMascotte } from '../../components/ui/BulleMascotte';
 import { executer } from '../../engine/executer';
 import { idHead } from '../../engine/depot';
+import type { Depot } from '../../engine/types';
 import type { PropsExercice } from '../registre';
 import styles from './TerminalGraphe.module.css';
 
 /** Invite de commande : branche courante, ou HEAD détaché. */
-function inviteDe(depot: PropsExercice['depot']): string {
+function inviteDe(depot: Depot): string {
   const tete = depot.head.type === 'branche' ? `(${depot.head.nom})` : `(HEAD detached at ${idHead(depot)})`;
   return `~/startup-demo ${tete} $ `;
 }
 
-/** Exercice « Terminal + graphe » : le joueur tape des commandes, le graphe suit en direct. */
+/** Ligne de méta de la carte graphe : « 2 branches · 8 commits · HEAD → main ». */
+function metaGraphe(depot: Depot): string {
+  const branches = Object.keys(depot.branches).length;
+  const commits = Object.keys(depot.commits).length;
+  const tete =
+    depot.head.type === 'branche' ? `HEAD → ${depot.head.nom}` : `HEAD détaché sur ${idHead(depot)}`;
+  return `${branches} branche${branches > 1 ? 's' : ''} · ${commits} commits · ${tete}`;
+}
+
+/** Exercice « Terminal + graphe » (maquette JeuTerminal.png) : terminal à gauche, graphe dans une carte à droite. */
 export function TerminalGraphe({
   mission,
   depot,
@@ -65,7 +75,7 @@ export function TerminalGraphe({
   return (
     <div className={styles.zone}>
       <div className={styles.gauche}>
-        <BulleMascotte expression="panique" ton="histoire" texte={mission.histoire} taille={72} />
+        <BulleMascotte expression="panique" ton="histoire" titre="" texte={mission.histoire} taille={72} />
         <div className={styles.terminal}>
           <Terminal
             lignes={lignes}
@@ -75,10 +85,17 @@ export function TerminalGraphe({
           />
         </div>
       </div>
-      <div className={styles.droite}>
-        <h2 className={styles.h2}>Historique du dépôt</h2>
-        <GrapheCommits donnees={donnees} hauteur={520} />
-      </div>
+      <section className={styles.carte} aria-labelledby="historique-titre">
+        <div className={styles.entete}>
+          <h2 id="historique-titre" className={styles.h2}>
+            Historique du dépôt
+          </h2>
+          <span className={styles.meta}>{metaGraphe(depot)}</span>
+        </div>
+        <div className={styles.graphe}>
+          <GrapheCommits donnees={donnees} hauteur={600} sansCadre />
+        </div>
+      </section>
     </div>
   );
 }

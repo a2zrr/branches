@@ -12,13 +12,21 @@ export interface GrapheCommitsProps {
   /** Hauteur de la zone défilante, en px. */
   hauteur?: number;
   onSelect?: (id: string) => void;
+  /** Sans cadre : le conteneur parent porte la bordure. */
+  sansCadre?: boolean;
 }
 
 /**
  * Graphe des commits : une colonne par branche, une rangée par commit (le plus récent en haut).
  * Le graphe SVG est décoratif (aria-hidden) ; la liste des rangées est lisible au lecteur d'écran.
  */
-export function GrapheCommits({ donnees, theme = 'clair', hauteur = 560, onSelect }: GrapheCommitsProps) {
+export function GrapheCommits({
+  donnees,
+  theme = 'clair',
+  hauteur = 560,
+  onSelect,
+  sansCadre = false,
+}: GrapheCommitsProps) {
   const graphe = useMemo(() => placerGraphe(donnees), [donnees]);
   const reduit = useReducedMotion() === true;
   const nouveau = donnees.vue?.nouveau;
@@ -28,7 +36,11 @@ export function GrapheCommits({ donnees, theme = 'clair', hauteur = 560, onSelec
   const headY = headNoeud?.y ?? ROW / 2;
 
   return (
-    <div className={styles.conteneur} data-theme-graphe={theme} style={{ maxHeight: hauteur }}>
+    <div
+      className={sansCadre ? styles.sansCadre : styles.conteneur}
+      data-theme-graphe={theme}
+      style={{ maxHeight: hauteur }}
+    >
       <div className={styles.corps} style={{ width: 'max-content' }}>
         <svg
           className={styles.svg}
