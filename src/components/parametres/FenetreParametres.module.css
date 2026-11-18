@@ -89,6 +89,7 @@
 
 /* En-tête fixe : bleu pâle, Hédi qui déborde un peu. */
 .entete {
+  position: relative;
   flex: none;
   display: flex;
   align-items: center;
@@ -280,6 +281,14 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--space-3);
+}
+
+.texteTuile {
+  display: contents;
+}
+
+.iconeTheme {
+  display: inline-flex;
 }
 
 .tuile {
@@ -553,7 +562,131 @@
   color: var(--color-text-muted);
 }
 
+/* Trois formes des branches qui flottent autour de Hédi (animation bob de l'accueil). */
+.formes {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.forme1,
+.forme2,
+.forme3 {
+  position: absolute;
+  animation: bob 4s ease-in-out infinite;
+}
+
+.forme1 {
+  left: 18px;
+  top: 10px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--branch-1);
+}
+
+.forme2 {
+  right: 74px;
+  top: 8px;
+  width: 14px;
+  height: 14px;
+  background: var(--branch-2);
+  animation-duration: 3.4s;
+  animation-delay: -1.3s;
+}
+
+.forme3 {
+  left: 104px;
+  bottom: 8px;
+  width: 12px;
+  height: 12px;
+  background: var(--branch-3);
+  transform: rotate(45deg);
+  animation-duration: 4.6s;
+  animation-delay: -2.2s;
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -8px;
+  }
+}
+
+/* Téléphone (< 600 px) : en-tête plus serré, formes cachées, aperçus de 48 px, tuiles 2 × 2 en ligne,
+   bouton RECOMMENCER pleine largeur sous son texte. */
+@media (max-width: 599px) {
+  .entete {
+    padding: 14px 16px;
+  }
+
+  .formes {
+    display: none;
+  }
+
+  .corps {
+    padding: 16px;
+  }
+
+  .apercu {
+    height: 48px;
+  }
+
+  .carteTheme {
+    padding: 10px 8px;
+  }
+
+  .ligneTheme {
+    gap: 4px;
+  }
+
+  .nomTheme {
+    font-size: 14px;
+  }
+
+  .iconeTheme {
+    display: none;
+  }
+
+  .tuiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tuile {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .tuile .pastilleIcone {
+    margin-bottom: 0;
+  }
+
+  .texteTuile {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .enteteCarte {
+    flex-wrap: wrap;
+  }
+
+  .carteDanger .boutonDanger {
+    width: 100%;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .forme1,
+  .forme2,
+  .forme3 {
+    animation: none;
+  }
+
   .panneau,
   .panneauSortie {
     animation: fondu 200ms ease-out both;

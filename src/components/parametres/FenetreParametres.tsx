@@ -7,6 +7,7 @@ import { useInterface } from '../../game/ui';
 import { estJouable, notionsTonGit } from '../../game/regles';
 import { pluriel } from '../../game/pluriel';
 import { routeur } from '../../routes';
+import { useEcranEtroit } from '../ui/useEcranEtroit';
 import styles from './FenetreParametres.module.css';
 
 /** Fenêtre Paramètres (correctif 4) : centrée, elle s'ouvre en pop par-dessus la page. */
@@ -52,6 +53,7 @@ function FenetreOuverte() {
   const recommencer = useRef<HTMLButtonElement>(null);
   const annuler = useRef<HTMLButtonElement>(null);
   const idAlerte = useId();
+  const etroit = useEcranEtroit(600);
   const [message, setMessage] = useState<string | null>(null);
   const panneau = useRef<HTMLDivElement>(null);
   const idTitre = useId();
@@ -187,8 +189,13 @@ function FenetreOuverte() {
       >
         <header className={styles.entete}>
           <div className={styles.hedi}>
-            <Mascotte expression="accueillant" taille={78} />
+            <Mascotte expression="accueillant" taille={etroit ? 60 : 78} />
           </div>
+          <span className={styles.formes} aria-hidden="true">
+            <span className={styles.forme1} />
+            <span className={styles.forme2} />
+            <span className={styles.forme3} />
+          </span>
           <div className={styles.titres}>
             <h2 id={idTitre} className={styles.titre}>
               Paramètres
@@ -246,7 +253,9 @@ function FenetreOuverte() {
                         {choisi && <Icone nom="coche" taille={14} trait={3} couleur="var(--color-on-primary)" />}
                       </span>
                       <span className={styles.nomTheme}>{t.libelle}</span>
-                      <Icone nom={t.icone} taille={20} trait={2.2} couleur="var(--color-text-muted)" />
+                      <span className={styles.iconeTheme}>
+                        <Icone nom={t.icone} taille={20} trait={2.2} couleur="var(--color-text-muted)" />
+                      </span>
                     </span>
                   </button>
                 );
@@ -263,33 +272,41 @@ function FenetreOuverte() {
                 <span className={`${styles.pastilleIcone} ${styles.pInfo}`} aria-hidden="true">
                   <Icone nom="drapeau" taille={20} trait={2.4} couleur="var(--color-info)" />
                 </span>
-                <span className={styles.valeur}>
+                <span className={styles.texteTuile}>
+                  <span className={styles.valeur}>
                   {reussies} / {jouables}
                 </span>
-                <span className={styles.libelle}>missions</span>
+                  <span className={styles.libelle}>missions</span>
+                </span>
               </div>
               <div className={styles.tuile}>
                 <span className={`${styles.pastilleIcone} ${styles.pOr}`} aria-hidden="true">
                   <Icone nom="etoile" taille={20} trait={1.5} remplie couleur="var(--color-hint)" />
                 </span>
-                <span className={styles.valeur}>{etoiles}</span>
-                <span className={styles.libelle}>{pluriel(etoiles, 'étoile', 'étoiles')}</span>
+                <span className={styles.texteTuile}>
+                  <span className={styles.valeur}>{etoiles}</span>
+                  <span className={styles.libelle}>{pluriel(etoiles, 'étoile', 'étoiles')}</span>
+                </span>
               </div>
               <div className={styles.tuile}>
                 <span className={`${styles.pastilleIcone} ${styles.pVert}`} aria-hidden="true">
                   <Icone nom="cadreTerminal" taille={20} trait={2.4} couleur="var(--color-success-text)" />
                 </span>
-                <span className={styles.valeur}>
+                <span className={styles.texteTuile}>
+                  <span className={styles.valeur}>
                   {maitrisees} / {notions.length}
                 </span>
-                <span className={styles.libelle}>notions</span>
+                  <span className={styles.libelle}>notions</span>
+                </span>
               </div>
               <div className={styles.tuile}>
                 <span className={`${styles.pastilleIcone} ${styles.pOr}`} aria-hidden="true">
                   <Icone nom="eclair" taille={20} trait={2} remplie couleur="var(--color-hint)" />
                 </span>
-                <span className={styles.valeur}>{xp}</span>
-                <span className={styles.libelle}>XP</span>
+                <span className={styles.texteTuile}>
+                  <span className={styles.valeur}>{xp}</span>
+                  <span className={styles.libelle}>XP</span>
+                </span>
               </div>
             </div>
           </section>

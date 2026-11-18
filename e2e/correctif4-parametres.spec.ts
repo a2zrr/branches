@@ -153,3 +153,39 @@ test('section 3 : Annuler ne change rien ; Oui efface, ferme et revient à l’a
   expect(apres.state.theme).toBe('sombre');
   expect(apres.state.chapitresDecouverts).toEqual([1]);
 });
+
+// Section 4 : sur téléphone.
+
+for (const [largeur, hauteur] of [
+  [360, 740],
+  [390, 844],
+] as const) {
+  test(`section 4 : à ${largeur} × ${hauteur}, la fenêtre reste dans l’écran, sans défilement horizontal, boutons ≥ 44 px`, async ({ page }) => {
+    await page.setViewportSize({ width: largeur, height: hauteur });
+    await neuf(page);
+    await ouvrirParametres(page);
+    const cadre = await page.getByRole('dialog', { name: 'Paramètres' }).evaluate((el) => {
+      const b = el.getBoundingClientRect();
+      return { gauche: b.left, haut: b.top, droite: b.right, bas: b.bottom };
+    });
+    expect(cadre.gauche).toBeGreaterThanOrEqual(0);
+    expect(cadre.haut).toBeGreaterThanOrEqual(0);
+    expect(cadre.droite).toBeLessThanOrEqual(largeur);
+    expect(cadre.bas).toBeLessThanOrEqual(hauteur);
+    const debord = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+    expect(debord).toBeLessThanOrEqual(0);
+    const petits = await page.getByRole('dialog', { name: 'Paramètres' }).evaluate((el) =>
+      Array.from(el.querySelectorAll('button, label'))
+        .map((b) => ({ nom: b.textContent, h: b.getBoundingClientRect().height }))
+        .filter((b) => b.h < 44),
+    );
+    expect(petits).toEqual([]);
+  });
+}
+
+test('section 4 : capture 390 × 844', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await neuf(page);
+  await ouvrirParametres(page);
+  await page.screenshot({ path: 'verifications/correctif-4/parametres-mobile-390.png' });
+});
