@@ -69,3 +69,36 @@ test('étape 3 : les vignettes sont décoratives (aria-hidden)', async ({ page }
   await expect(vignettes).toHaveCount(1);
   await expect(vignettes.first()).toHaveAttribute('aria-hidden', 'true');
 });
+
+for (const largeur of [1280, 1440, 1920]) {
+  test(`étape 3 : à ${largeur} px, la vignette ne touche aucune pastille, aucun titre, aucun popover`, async ({ page }) => {
+    await page.setViewportSize({ width: largeur, height: 900 });
+    await partie(page);
+    await page.goto('/carte');
+    const conflits = await page.evaluate(() => {
+      const vignette = document.querySelector('[data-vignette]');
+      if (vignette === null) return ['pas de vignette'];
+      const v = vignette.getBoundingClientRect();
+      const cibles = document.querySelectorAll('main button, main [class*="legende"], main [role="group"]');
+      const trouves: string[] = [];
+      cibles.forEach((el) => {
+        const r = el.getBoundingClientRect();
+        const chevauche = r.left < v.right && r.right > v.left && r.top < v.bottom && r.bottom > v.top;
+        if (chevauche) trouves.push(el.tagName + ':' + el.textContent.slice(0, 20));
+      });
+      return trouves;
+    });
+    expect(conflits).toEqual([]);
+  });
+}
+
+test('étape 3 : capture avec le chapitre 2 visible (chapitre 1 terminé)', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  const tout = Object.fromEntries(
+    ['c1-m1', 'c1-m2', 'c1-m3', 'c1-m4', 'c1-m5', 'c1-m6'].map((id) => [id, { etoiles: 3, commandes: 2, reussie: true }]),
+  );
+  await partie(page, tout);
+  await page.goto('/carte');
+  await expect(page.locator('[data-vignette]')).toHaveCount(2);
+  await page.screenshot({ path: 'verifications/correctif-3/etape-3-carte-chapitre-2-1440.png', fullPage: true });
+});

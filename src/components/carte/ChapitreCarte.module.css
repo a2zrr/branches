@@ -10,3 +10,10 @@
   position: relative;
   width: 100%;
 }
+
+/* Vignette posée dans le creux du zigzag, à gauche (PC). */
+.vignette {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+}

@@ -15,6 +15,10 @@ export interface Mesures {
   pastilleEnCours: number;
   /** Largeur du trait du chemin. */
   traitChemin: number;
+  /** Côté de la vignette, en px. */
+  vignette: number;
+  /** Position horizontale de la vignette dans la zone (CSS). */
+  vignetteGauche: string;
 }
 
 export const MESURES_PC: Mesures = {
@@ -26,6 +30,8 @@ export const MESURES_PC: Mesures = {
   pastille: 72,
   pastilleEnCours: 84,
   traitChemin: 12,
+  vignette: 300,
+  vignetteGauche: 'calc(50% - 390px)',
 };
 
 /** Décalage d'une mission dans le zigzag (il se répète tous les 8). */
@@ -36,6 +42,11 @@ export function decalage(mesures: Mesures, index: number): number {
 /** Haut du bloc d'une mission, relatif à la zone du chapitre. */
 export function hautDuRang(mesures: Mesures, index: number): number {
   return mesures.haut + index * mesures.rang;
+}
+
+/** Index de la mission sur laquelle la vignette est centrée : la 3e, ou la dernière s'il y en a moins. */
+export function indexVignette(nombre: number): number {
+  return Math.min(2, Math.max(nombre - 1, 0));
 }
 
 /** Centre d'une mission : (décalage, y). */

@@ -1,7 +1,8 @@
 import { EnTeteChapitre } from '../ui/EnTeteChapitre';
 import { CheminMissions } from './CheminMissions';
 import { NoeudMission, type EtatNoeud } from './NoeudMission';
-import { centre, hautDuRang, MESURES_PC, type Mesures } from './geometrie';
+import { centre, hautDuRang, indexVignette, MESURES_PC, type Mesures } from './geometrie';
+import { VignetteChapitre } from './VignetteChapitre';
 import type { ChapitreValide, MissionValidee } from '../../game/schemas';
 import { estJouable, type EtatMission, type Progression } from '../../game/regles';
 import styles from './ChapitreCarte.module.css';
@@ -67,6 +68,20 @@ export function ChapitreCarte({
             couleurFaite={`var(--chemin-${teinte})`}
             hauteur={hauteur}
           />
+        )}
+        {chapitre.vignette !== undefined && missions.length > 0 && (
+          <div
+            className={styles.vignette}
+            style={{
+              left: mesures.vignetteGauche,
+              top:
+                hautDuRang(mesures, indexVignette(missions.length)) +
+                mesures.aire / 2 -
+                mesures.vignette / 2,
+            }}
+          >
+            <VignetteChapitre vignette={chapitre.vignette} taille={mesures.vignette} />
+          </div>
         )}
         {noeuds.map(({ mission, etat }, i) => (
           <NoeudMission
