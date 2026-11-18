@@ -1,88 +1,113 @@
-# Branchés
+<p align="center">
+  <img src="docs/banniere.png" alt="Branchés : apprends Git en sauvant la démo de ce soir" width="100%">
+</p>
 
-Branchés est un jeu web pour apprendre Git. Le joueur est un développeur junior chez Pivot & Co, une petite start-up.
-Chaque chapitre est une galère : le projet est cassé, la démo est ce soir. Chaque mission se résout avec de vraies
-commandes Git, tapées dans un terminal, pendant que le graphe des commits se dessine en direct. Hédi, le chef de projet,
-raconte la galère, donne les indices et réagit.
+<p align="center">
+  <a href="https://github.com/a2zrr/branches/actions/workflows/ci.yml"><img src="https://github.com/a2zrr/branches/actions/workflows/ci.yml/badge.svg" alt="Intégration continue"></a>
+  <img src="https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white" alt="TypeScript strict">
+  <img src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black" alt="React">
+  <img src="https://img.shields.io/badge/accessibilit%C3%A9-WCAG%20AA-2B7A00" alt="Accessibilité WCAG AA">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/licence-MIT-0F72B2" alt="Licence MIT"></a>
+</p>
 
-- **Aucun compte, aucun serveur.** Ta partie est sauvegardée dans ton navigateur. Un bouton permet d'exporter et d'importer
-  la progression (fichier JSON), par exemple pour changer de navigateur.
-- **Git est simulé** dans le navigateur par un moteur TypeScript. Les sorties reproduisent celles de Git, en anglais.
-- **Interface en français**, en tutoiement. Desktop d'abord (1440 × 900, largeur minimale 1280 px).
-- **Mode clair par défaut**, mode sombre en option.
-- **Tout est piloté par les données** : une mission est un fichier JSON, un chapitre une entrée de `chapitres.json`.
+**Branchés** est un jeu pour apprendre Git dans le navigateur. On tape de vraies commandes dans un terminal, et le graphe des commits réagit en direct, avec des animations. Chaque mission est une galère chez Pivot & Co, une start-up dont la démo est ce soir. Hédi, le chef de projet, panique. À toi de réparer `main`.
 
-## Lancer en local
+> *English summary — Branchés is a browser game that teaches Git. You type real Git commands in a terminal and watch the commit graph animate live. Story-driven missions, stars, XP, no account, no backend: everything runs and stays in your browser. The interface is in French; Git output is in English, like the real thing.*
 
-Prérequis : Node.js 20 ou plus récent, et Google Chrome (ou Chromium) pour les tests de bout en bout.
+## Sommaire
+
+- [Captures](#captures)
+- [Ce que fait le jeu](#ce-que-fait-le-jeu)
+- [Lancer le projet](#lancer-le-projet)
+- [Comment c'est construit](#comment-cest-construit)
+- [Ajouter une mission](#ajouter-une-mission)
+- [Qualité](#qualité)
+- [Licence](#licence)
+
+## Captures
+
+| Accueil | Carte des missions |
+|---|---|
+| ![Accueil](docs/captures/accueil.png) | ![Carte des missions](docs/captures/carte.png) |
+| **Une mission : terminal et graphe** | **Conflit de merge** |
+| ![Écran de jeu](docs/captures/jeu.png) | ![Conflit de merge](docs/captures/conflit.png) |
+
+<p align="center">
+  <img src="docs/captures/nuages.gif" alt="Les nuages s'écartent et révèlent le chapitre suivant" width="380">
+  &nbsp;&nbsp;
+  <img src="docs/captures/telephone.png" alt="La carte sur téléphone" width="260">
+</p>
+
+## Ce que fait le jeu
+
+- **Un vrai terminal.** On tape `git commit`, `git log`, `git switch`, `git revert`, `git merge`, `git bisect`… La sortie ressemble à celle de Git. Les fautes de frappe reçoivent une suggestion : « Git a deviné ce que tu voulais dire ».
+- **Un graphe vivant.** Chaque commande anime le graphe : nouveaux commits, déplacement de HEAD, fusions, reverts. Chaque branche a sa couleur **et** sa forme (cercle, carré, losange…) : on la reconnaît même sans les couleurs.
+- **Des conflits de merge à résoudre**, version par version, avec un aperçu du résultat.
+- **Une histoire.** Des chapitres, des missions courtes, des indices à la demande. La suite de la carte reste cachée sous les nuages jusqu'à la fin du chapitre.
+- **Une progression qui mesure ce qu'on sait faire.** Des étoiles selon le nombre de commandes utilisées par rapport à la solution optimale, de l'XP, les notions maîtrisées (« Ton Git ») et des badges. Pas de série de jours, pas de pression.
+- **Aucun compte, aucun serveur.** La partie reste dans le navigateur (`localStorage`). On peut l'exporter et l'importer.
+- **Pour tout le monde.** Thème clair, sombre ou automatique, navigation complète au clavier, contraste AA, animations réduites si le système le demande. La carte s'adapte au téléphone.
+
+Aujourd'hui : **3 chapitres, 7 missions jouables** et 8 autres en préparation.
+
+## Lancer le projet
+
+Il faut **Node.js 20** ou plus récent.
 
 ```bash
-npm install
-npm run dev        # http://127.0.0.1:5173
+git clone https://github.com/a2zrr/branches.git
+cd branches
+npm ci
+npm run dev
 ```
 
-## Scripts
+Le jeu s'ouvre sur `http://localhost:5173`.
 
-| Script | Rôle |
+| Commande | Rôle |
 |---|---|
-| `npm run dev` | Serveur de développement (routes `/dev/design-system` et `/dev/graphe` incluses) |
-| `npm run build` | Vérification des types puis build de production dans `dist/` |
-| `npm run preview` | Sert le build de production |
-| `npm run lint` | ESLint (typescript-eslint, react-hooks, jsx-a11y), zéro avertissement |
-| `npm run typecheck` | Vérification des types TypeScript (`strict`, `noUncheckedIndexedAccess`) |
-| `npm run test` | Tests unitaires (Vitest, Testing Library, jsdom) |
-| `npm run test:e2e` | Tests de bout en bout (Playwright, Chrome système, deux serveurs) |
-| `npm run verif` | `lint` + `typecheck` + `test` |
-| `npm run verifier:commits` | Vérifie le format des messages de commit |
+| `npm run dev` | serveur de développement |
+| `npm run build` | version de production dans `dist/` |
+| `npm run preview` | sert la version de production |
+| `npm run verif` | lint, types et tests unitaires (à lancer avant chaque commit) |
+| `npm run test` | tests unitaires (Vitest) |
+| `npm run test:e2e` | tests de bout en bout et d'accessibilité (Playwright + axe) |
 
-Les tests de bout en bout utilisent le Chrome installé sur la machine (`channel: 'chrome'`). Pour un autre navigateur
-Chromium, définis la variable `PW_CHANNEL`.
+## Comment c'est construit
 
-## Architecture
+| Domaine | Choix |
+|---|---|
+| Interface | React, TypeScript strict, Vite, React Router |
+| Styles | CSS Modules et variables CSS (design tokens clair et sombre), aucune librairie de composants |
+| État | Zustand avec persistance locale, schémas validés par zod |
+| Animations | Motion, uniquement `transform` et `opacity` |
+| Tests | Vitest et Testing Library, Playwright et axe-core |
 
 ```
 src/
-├── engine/          moteur Git simulé : TypeScript pur, sans React, Zustand, Motion ni DOM
-│   ├── executer.ts  executer(depot, ligne) → { depot, sortie, erreur?, evenements }
-│   ├── commandes/   status, add, commit, log, branch, switch, checkout, merge, revert, reset, bisect, tag, show…
-│   └── …            depot.ts (références, arbres), diff.ts (fusion à trois voies), erreurs.ts, parseur.ts
-├── game/            règles du jeu
-│   ├── schemas.ts   validation zod des fiches
-│   ├── missions.ts  chargement de src/data/missions/*.json
-│   ├── reussite.ts  évaluation des conditions de réussite
-│   ├── regles.ts    étoiles, XP, déblocage, « Ton Git », badges
-│   └── store.ts     progression persistée (Zustand, clé « branches:v1 »), export et import
-├── exercises/       registre des types d'exercice (terminal-graphe, conflit)
-├── components/      design system : ui/, mascotte/ (Hédi), graphe/ (layout pur + rendu), terminal/, conflit/
-├── screens/         accueil, carte, coque de jeu, fin de mission, paramètres
-└── data/missions/   fiches JSON des missions, chapitres.json, badges.json
-e2e/                 tests Playwright (prod : build de production ; dev : serveur de développement)
-design/              référence visuelle et fonctionnelle (lecture seule)
+├── engine/      moteur Git simulé : TypeScript pur, sans React ni DOM
+├── game/        règles du jeu : déblocage, étoiles, XP, notions, chapitres visibles
+├── data/        chapitres, missions et badges en JSON
+├── components/  composants d'interface (graphe, terminal, mascotte…)
+├── screens/     accueil, carte, mission, fin de mission
+└── styles/      tokens et styles globaux
 ```
 
-Le moteur ne modifie jamais le dépôt qu'il reçoit : `executer` renvoie un nouveau dépôt et des événements, que le graphe
-utilise pour ses animations. Les couleurs n'apparaissent que dans `src/styles/tokens.css` : les composants utilisent
-des variables CSS, et un test vérifie qu'aucune couleur n'est écrite en dur.
+**Le moteur Git** reproduit le comportement de Git sur un dépôt en mémoire : commits, branches, HEAD détaché, merge (avance rapide et commit de fusion), conflits, revert, bisect… Il est **immuable** : chaque commande renvoie un nouveau dépôt et une liste d'**événements** (`commitCree`, `headDeplace`, `fusion`…). L'interface se contente de les animer. Le moteur n'a aucune dépendance à React, ce qui permet de le tester entièrement en isolation.
 
-## Ajouter une mission, un chapitre, un type d'exercice
+**Le graphe** place les commits lui-même : une colonne par branche, une rangée par commit, des liens droits, de départ ou de fusion, puis un motif (plein, tirets, pointillés) au-delà de six branches.
 
-- **Une mission** : un fichier JSON dans `src/data/missions/`. Pas-à-pas et modèle commenté dans
-  [`docs/AJOUTER-UNE-MISSION.md`](docs/AJOUTER-UNE-MISSION.md).
-- **Un chapitre** : une entrée dans `src/data/missions/chapitres.json`.
-- **Un type d'exercice** : un composant dans `src/exercises/` et une ligne dans `src/exercises/registre.ts`. La coque
-  n'a pas besoin d'être modifiée.
+## Ajouter une mission
 
-Après un ajout, `npm run verif` valide la fiche : schéma, identifiants uniques, solution qui réussit, nombre de
-commandes égal à l'optimal.
+Une mission, c'est **un fichier JSON** dans `src/data/missions/` : l'histoire, l'objectif, l'état de départ du dépôt, les indices, les conditions de réussite et le nombre optimal de commandes. Il n'y a rien à coder. Le format complet est décrit dans [docs/ajouter-une-mission.md](docs/ajouter-une-mission.md), et chaque fiche est validée au chargement.
 
-## Déploiement
+## Qualité
 
-Le site est statique. Il se déploie sur Vercel : `vercel.json` réécrit toutes les routes vers `index.html`.
-
-1. Créer un dépôt sur GitHub, puis y pousser le code (`git remote add origin …`, `git push -u origin main`).
-2. Importer le dépôt dans Vercel. Les réglages par défaut conviennent : commande de build `npm run build`, dossier de
-   sortie `dist`.
+- Tests unitaires du moteur, commande par commande, et des règles de jeu.
+- Chaque mission est rejouée automatiquement avec sa solution de référence.
+- Tests de bout en bout sur les parcours principaux, en clair et en sombre, sur PC et sur téléphone.
+- Audit d'accessibilité axe sur chaque écran.
+- Intégration continue GitHub Actions à chaque push.
 
 ## Licence
 
-Projet privé.
+[MIT](LICENSE) © 2026 Abdel hak EZZERBOUTI — conçu et développé par [@a2zrr](https://github.com/a2zrr).

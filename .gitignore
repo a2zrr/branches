@@ -4,10 +4,12 @@ dist/
 coverage/
 playwright-report/
 test-results/
+
+# environnement et déploiement
+.vercel/
+.env*
+!.env.example
+
+# journaux et système
 *.log
 .DS_Store
-
-# captures des vérifications (les rapports .md restent versionnés)
-verifications/**/*.png
-
-# fichiers de travail locaux : jamais versionnés
