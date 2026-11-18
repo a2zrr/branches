@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { RouterProvider } from 'react-router';
-import { PanneauParametres } from './components/parametres/PanneauParametres';
+import { FenetreParametres } from './components/parametres/FenetreParametres';
 import { routeur } from './routes';
 import { useProgression } from './game/store';
 
@@ -14,7 +14,7 @@ export function App() {
   return (
     <>
       <RouterProvider router={routeur} />
-      <PanneauParametres />
+      <FenetreParametres />
     </>
   );
 }

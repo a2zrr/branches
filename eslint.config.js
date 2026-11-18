@@ -6,7 +6,7 @@ import jsxA11y from 'eslint-plugin-jsx-a11y';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  { ignores: ['dist', 'coverage', 'playwright-report', 'test-results', 'design', 'branches-correctif', 'branches-correctif-3', 'node_modules'] },
+  { ignores: ['dist', 'coverage', 'playwright-report', 'test-results', 'design', 'branches-correctif', 'branches-correctif-3', 'branches-correctif-4', 'node_modules'] },
   js.configs.recommended,
   ...tseslint.configs.strictTypeChecked,
   {

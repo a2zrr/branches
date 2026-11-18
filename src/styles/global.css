@@ -1,6 +1,6 @@
 :root {
   /* Voile derrière les panneaux et ombre portée du panneau latéral. */
-  --color-voile: rgba(16, 24, 28, 0.45);
+  --color-voile: rgba(16, 24, 28, 0.5);
   --color-ombre-panneau: rgba(16, 24, 28, 0.18);
 }
 

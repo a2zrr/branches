@@ -6,10 +6,10 @@ import { useProgression, type Theme } from '../../game/store';
 import { useInterface } from '../../game/ui';
 import { estJouable, notionsTonGit } from '../../game/regles';
 import { pluriel } from '../../game/pluriel';
-import styles from './PanneauParametres.module.css';
+import styles from './FenetreParametres.module.css';
 
 /** Panneau latéral Paramètres : se superpose à la page en cours, sans changer d'adresse. */
-export function PanneauParametres() {
+export function FenetreParametres() {
   const ouvert = useInterface((s) => s.parametresOuverts);
   if (!ouvert) return null;
   return <PanneauOuvert />;
@@ -42,17 +42,20 @@ function PanneauOuvert() {
   const fermerAvecSortie = () => {
     if (sortie) return;
     setSortie(true);
-    window.setTimeout(fermer, 300);
+    window.setTimeout(fermer, 160);
   };
 
+  // À l'ouverture, le focus va sur ✕ ; à la fermeture, il revient sur l'élément qui a ouvert la fenêtre.
   useEffect(() => {
+    const declencheur = document.activeElement as HTMLElement | null;
     const premier = panneau.current?.querySelector<HTMLElement>('button');
     premier?.focus();
     const ancienOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     return () => {
       document.body.style.overflow = ancienOverflow;
-      document.getElementById('bouton-parametres')?.focus();
+      if (declencheur?.isConnected === true) declencheur.focus();
+      else document.getElementById('bouton-parametres')?.focus();
     };
   }, []);
 

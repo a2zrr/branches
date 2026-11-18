@@ -41,6 +41,7 @@
   --color-on-danger: #FFFFFF;
   --color-danger-bg: #FFE5E5;
   --color-danger-text: #B3261E;
+  --color-danger-border: #FFC9C9;  /* bordure des boutons et cartes « danger » non pleins */
   --color-hint: #FFC21A;           /* bouton d'indice, XP, étoiles */
   --color-hint-edge: #E0A000;
   --color-on-hint: #3C3C3C;
@@ -147,6 +148,7 @@
   --color-on-danger: #3A0A0A;
   --color-danger-bg: #3A1A1C;
   --color-danger-text: #FFA3A3;
+  --color-danger-border: #5A2A2C;
   --color-hint-edge: #C99500;
   --color-on-hint: #2A2000;
   --color-hint-bg: #3A3012;

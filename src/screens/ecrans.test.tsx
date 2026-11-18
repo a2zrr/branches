@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { Accueil } from './Accueil';
 import { Carte } from './Carte';
 import { CarteAdmin } from './CarteAdmin';
-import { PanneauParametres } from '../components/parametres/PanneauParametres';
+import { FenetreParametres } from '../components/parametres/FenetreParametres';
 import { useInterface } from '../game/ui';
 import { useProgression } from '../game/store';
 import { MISSIONS } from '../game/missions';
@@ -98,7 +98,7 @@ describe('panneau paramètres', () => {
 
   it('le thème se bascule et se mémorise', async () => {
     const utilisateur = userEvent.setup();
-    render(<PanneauParametres />);
+    render(<FenetreParametres />);
     await utilisateur.click(screen.getByRole('radio', { name: 'Sombre' }));
     expect(useProgression.getState().theme).toBe('sombre');
     expect(screen.getByRole('radio', { name: 'Sombre' })).toHaveAttribute('aria-checked', 'true');
@@ -111,7 +111,7 @@ describe('panneau paramètres', () => {
       progression: { 'c1-m1': { etoiles: 3, commandes: 2, reussie: true } },
       xp: 30,
     });
-    render(<PanneauParametres />);
+    render(<FenetreParametres />);
     await utilisateur.click(screen.getByRole('button', { name: 'Recommencer à zéro' }));
     await utilisateur.click(screen.getByRole('button', { name: 'Annuler' }));
     expect(useProgression.getState().progression['c1-m1']).toBeDefined();
