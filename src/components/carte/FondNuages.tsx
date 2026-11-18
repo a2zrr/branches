@@ -1,7 +1,8 @@
 import { Mascotte } from '../mascotte/Mascotte';
 import type { Mesures } from './geometrie';
 import type { ExpressionHedi } from '../mascotte/types';
-import banqueSvg from '../../assets/nuages/banque.svg?raw';
+import banquePcSvg from '../../assets/nuages/banque.svg?raw';
+import banqueTelSvg from '../../assets/nuages/banque-telephone.svg?raw';
 import petitNuageSvg from '../../assets/nuages/petit-nuage.svg?raw';
 import styles from './FondNuages.module.css';
 
@@ -20,6 +21,7 @@ export interface FondNuagesProps {
  */
 export function FondNuages({ variante, phase = 'attente', expression, mesures }: FondNuagesProps) {
   const racine = `${styles.fond} ${mesures.pc ? styles.pc : ''}`;
+  const banqueSvg = mesures.pc ? banquePcSvg : banqueTelSvg;
   return (
     <div className={racine} data-variante={variante} data-phase={phase} aria-hidden="true">
       <div className={styles.hedi}>

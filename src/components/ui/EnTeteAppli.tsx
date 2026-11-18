@@ -13,6 +13,8 @@ export interface EnTeteAppliProps {
   etoiles?: { valeur: number };
   /** « accueil » : XP et roue. « carte » : étoiles, XP et roue. */
   variante?: 'accueil' | 'carte';
+  /** Téléphone (carte) : la puce « notions » ouvre la feuille Ton Git. */
+  onNotions?: () => void;
 }
 
 /** Roue dentée : ouvre le panneau Paramètres sur la page en cours. */
@@ -38,6 +40,7 @@ export function EnTeteAppli({
   xp,
   etoiles,
   variante = 'accueil',
+  onNotions,
 }: EnTeteAppliProps) {
   return (
     <header className={styles.entete}>
@@ -46,7 +49,13 @@ export function EnTeteAppli({
           <Logo />
         </Link>
         <div className={styles.outils}>
-          <Compteur type="notions" valeur={notionsMaitrisees} total={notionsTotal} />
+          {onNotions !== undefined ? (
+            <button type="button" className={styles.boutonNotions} onClick={onNotions} aria-label="Ouvrir Ton Git">
+              <Compteur type="notions" valeur={notionsMaitrisees} total={notionsTotal} />
+            </button>
+          ) : (
+            <Compteur type="notions" valeur={notionsMaitrisees} total={notionsTotal} />
+          )}
           {variante === 'carte' && etoiles !== undefined ? (
             <>
               <Compteur type="etoiles" valeur={etoiles.valeur} />

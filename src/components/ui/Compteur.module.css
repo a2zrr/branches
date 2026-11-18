@@ -23,3 +23,19 @@
 .nombre {
   font-variant-numeric: tabular-nums;
 }
+
+/* Téléphone : pastilles plus serrées, pour que quatre d'entre elles tiennent dans 360 px. */
+@media (max-width: 767px) {
+  .compteur {
+    padding: 0 var(--space-3);
+    font-size: 15px;
+  }
+}
+
+/* Très petits téléphones (< 380 px) : pastilles encore plus serrées. */
+@media (max-width: 379px) {
+  .compteur {
+    gap: var(--space-1);
+    padding: 0 var(--space-2);
+  }
+}

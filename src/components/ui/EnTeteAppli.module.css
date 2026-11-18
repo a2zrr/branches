@@ -41,3 +41,33 @@
   outline: 3px solid var(--color-focus);
   outline-offset: 3px;
 }
+
+/* Puce « notions » cliquable sur téléphone : même apparence que la puce, zone de 44 px. */
+.boutonNotions {
+  appearance: none;
+  display: inline-flex;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  cursor: pointer;
+}
+
+.boutonNotions:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+/* Téléphone : en-tête compact, pour que logo et quatre pastilles tiennent dans 360 px. */
+@media (max-width: 767px) {
+  .interieur {
+    gap: var(--space-1);
+    padding: var(--space-3);
+  }
+
+  .outils {
+    gap: var(--space-1);
+    min-width: 0;
+  }
+}

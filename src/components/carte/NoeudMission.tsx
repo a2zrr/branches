@@ -73,12 +73,14 @@ export function NoeudMission({
       {enCours && (
         <>
           <span className={styles.anneau} aria-hidden="true" />
-          <PopoverMission
-            numero={numero}
-            titre={titre}
-            cote={adroite ? 'droite' : 'gauche'}
-            onCommencer={onCommencer}
-          />
+          {mesures.pc && (
+            <PopoverMission
+              numero={numero}
+              titre={titre}
+              cote={adroite ? 'droite' : 'gauche'}
+              onCommencer={onCommencer}
+            />
+          )}
         </>
       )}
       <button
@@ -104,7 +106,21 @@ export function NoeudMission({
           }
         />
       </button>
-      {!enCours && (
+      {!mesures.pc && etat === 'terminee' && (
+        <span className={styles.badgeEtoiles} aria-hidden="true">
+          {[1, 2, 3].map((n) => (
+            <Icone
+              key={n}
+              nom="etoile"
+              taille={12}
+              trait={1.5}
+              remplie
+              couleur={n <= etoiles ? 'var(--color-hint)' : 'var(--color-border)'}
+            />
+          ))}
+        </span>
+      )}
+      {!enCours && mesures.pc && (
         <div className={`${styles.legende} ${adroite ? styles.adroite : styles.agauche}`} aria-hidden="true">
           {etat === 'terminee' && (
             <span className={styles.etoiles}>

@@ -306,3 +306,10 @@
     animation-duration: 1ms;
   }
 }
+
+/* Sous 480 px, le panneau prend toute la largeur. */
+@media (max-width: 479px) {
+  .panneau {
+    width: 100%;
+  }
+}

@@ -7,7 +7,9 @@ import { Mascotte } from '../components/mascotte/Mascotte';
 import { ChapitreCarte } from '../components/carte/ChapitreCarte';
 import { MurDeNuages } from '../components/carte/MurDeNuages';
 import { VoileDecouverte } from '../components/carte/VoileDecouverte';
-import { MESURES_PC } from '../components/carte/geometrie';
+import { BarreMission } from '../components/carte/BarreMission';
+import { FeuilleTonGit } from '../components/carte/FeuilleTonGit';
+import { useMesures } from '../components/carte/useMesures';
 import { CHAPITRES, MISSIONS } from '../game/missions';
 import { compter } from '../game/pluriel';
 import { chapitresVisibles } from '../game/carte';
@@ -30,6 +32,11 @@ function reduireLesAnimations(): boolean {
 export function Carte() {
   const e = useEtatJeu();
   const navigate = useNavigate();
+  const mesures = useMesures();
+  const pc = mesures.pc;
+  // Téléphone : la mission choisie (par défaut la mission en cours) s'affiche dans la barre du bas.
+  const [choisie, setChoisie] = useState<string | null>(null);
+  const [feuilleOuverte, setFeuilleOuverte] = useState(false);
   const marquerDecouverts = useProgression((s) => s.marquerDecouverts);
   const chapitreCourant = e.enCours?.chapitre ?? 1;
   const progChapitre = progressionChapitre(MISSIONS, chapitreCourant, e.progression);
@@ -109,18 +116,28 @@ export function Carte() {
   }, [joue]);
 
   const dernier = vue.chapitres.length - 1;
+  const missionBarre = MISSIONS.find((m) => m.id === (choisie ?? e.enCours?.id));
   const phase = joue ? 'joue' : 'attente';
 
   return (
     <div className={styles.page}>
       <h1 className={styles.visuellementCache}>Carte des missions</h1>
-      <EnTeteAppli
-        variante="carte"
-        notionsMaitrisees={e.notionsMaitrisees}
-        notionsTotal={e.notionsTotal}
-        xp={e.xp}
-        etoiles={{ valeur: e.etoiles }}
-      />
+      <div className={styles.entete}>
+        <EnTeteAppli
+          variante="carte"
+          notionsMaitrisees={e.notionsMaitrisees}
+          notionsTotal={e.notionsTotal}
+          xp={e.xp}
+          etoiles={{ valeur: e.etoiles }}
+          {...(pc
+            ? {}
+            : {
+                onNotions: () => {
+                  setFeuilleOuverte(true);
+                },
+              })}
+        />
+      </div>
 
       <div className={`conteneur ${styles.corps}`}>
         <main className={styles.chemin} inert={clicsBloques}>
@@ -131,6 +148,7 @@ export function Carte() {
             return (
               <ChapitreCarte
                 key={chapitre.numero}
+                mesures={mesures}
                 chapitre={chapitre}
                 missions={vue.missions.filter((m) => m.chapitre === chapitre.numero)}
                 etats={e.etats}
@@ -138,7 +156,8 @@ export function Carte() {
                 suiviDUnMur={i === dernier || suivant !== null}
                 {...(nouveau ? { revele: phase } : {})}
                 onOpen={(id) => {
-                  void navigate(`/mission/${id}`);
+                  if (pc) void navigate(`/mission/${id}`);
+                  else setChoisie(id);
                 }}
               >
                 {suivant !== null && (
@@ -150,7 +169,7 @@ export function Carte() {
                       total: jouables.length,
                     }}
                     phase={phase}
-                    mesures={MESURES_PC}
+                    mesures={mesures}
                   />
                 )}
               </ChapitreCarte>
@@ -159,7 +178,7 @@ export function Carte() {
           {/* Rien après le mur : les chapitres cachés ne sont pas rendus. */}
           <MurDeNuages
             mur={vue.mur}
-            mesures={MESURES_PC}
+            mesures={mesures}
             {...(ouverture !== null ? { apparition: phase } : {})}
           />
         </main>
@@ -221,6 +240,27 @@ export function Carte() {
           </section>
         </aside>
       </div>
+
+      {!pc && missionBarre !== undefined && (
+        <BarreMission
+          numero={missionBarre.ordre}
+          titre={missionBarre.titre}
+          terminee={e.progression[missionBarre.id]?.reussie === true}
+          onJouer={() => {
+            void navigate(`/mission/${missionBarre.id}`);
+          }}
+        />
+      )}
+      {!pc && feuilleOuverte && (
+        <FeuilleTonGit
+          notions={e.notions}
+          maitrisees={e.notionsMaitrisees}
+          total={e.notionsTotal}
+          onFermer={() => {
+            setFeuilleOuverte(false);
+          }}
+        />
+      )}
     </div>
   );
 }

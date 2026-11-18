@@ -1,0 +1,95 @@
+.voile {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  border: 0;
+  background: color-mix(in srgb, var(--color-text) 35%, transparent);
+  animation: fondu 200ms ease-out both;
+  cursor: default;
+}
+
+.feuille {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 51;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: var(--space-5) var(--space-5) calc(var(--space-6) + env(safe-area-inset-bottom));
+  border-radius: 24px 24px 0 0;
+  background: var(--color-surface);
+  box-shadow: 0 -4px 0 var(--color-border);
+  animation: monte 300ms var(--ease-out) both;
+}
+
+.entete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.titre {
+  margin: 0;
+  font: var(--text-h3);
+  color: var(--color-text);
+}
+
+.fermer {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 var(--space-4);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  color: var(--color-primary);
+  font: var(--text-label);
+  cursor: pointer;
+}
+
+.fermer:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.compte {
+  margin: var(--space-2) 0 var(--space-4);
+  font: var(--text-small);
+  color: var(--color-text-muted);
+}
+
+.puces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@keyframes fondu {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes monte {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .voile,
+  .feuille {
+    animation-duration: 1ms;
+  }
+}

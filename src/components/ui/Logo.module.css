@@ -30,3 +30,10 @@
 .sombre .mot {
   color: var(--color-night-text);
 }
+
+/* Téléphone : l'icône seule, pour que l'en-tête tienne dans 360 px (le mot reste dans aria-label du lien). */
+@media (max-width: 767px) {
+  .mot {
+    display: none;
+  }
+}

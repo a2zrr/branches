@@ -156,3 +156,37 @@
   font-size: 14px;
   color: var(--color-text-muted);
 }
+
+/* En-tête collant (PC et téléphone). */
+.entete {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--color-bg);
+}
+
+/* Téléphone et tablette (< 1 024 px) : une colonne ; la colonne de droite passe dans la feuille Ton Git. */
+@media (max-width: 1023px) {
+  .page {
+    padding-bottom: 120px;
+  }
+
+  .corps {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 640px;
+    margin: 0 auto;
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+
+  .colonne {
+    display: none;
+  }
+}
+
+/* Téléphone (< 768 px) : toute la largeur. */
+@media (max-width: 767px) {
+  .corps {
+    max-width: none;
+  }
+}

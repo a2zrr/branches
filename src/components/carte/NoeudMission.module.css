@@ -160,3 +160,18 @@
 .titreMuet {
   color: var(--color-text-muted);
 }
+
+/* Téléphone : badge d'étoiles collé sous la pastille réussie (pas de titre sur la carte). */
+.badgeEtoiles {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + 40px);
+  z-index: 1;
+  display: flex;
+  gap: 1px;
+  padding: 2px 6px;
+  transform: translateX(-50%);
+  border: 2px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface);
+}

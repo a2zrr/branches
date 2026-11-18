@@ -79,3 +79,22 @@ export function courbe(points: [number, number][]): string {
     return `${d} C${a[0]} ${a[1] + h} ${p[0]} ${p[1] - h} ${p[0]} ${p[1]}`;
   }, '');
 }
+
+/** Téléphone (< 1 024 px) : pastilles plus petites, sans titres, vignette de 170 px (spec § 9 bis). */
+export const MESURES_TEL: Mesures = {
+  rang: 150,
+  aire: 72,
+  haut: 24,
+  bas: 24,
+  zigzag: [0, 40, 62, 40, 0, -40, -62, -40],
+  pastille: 62,
+  pastilleEnCours: 72,
+  traitChemin: 10,
+  vignette: 170,
+  vignetteGauche: '4px',
+  sousLeMur: 80,
+  murRemonte: 96,
+  murHauteur: 450,
+  carteMurTop: 150,
+  pc: false,
+};

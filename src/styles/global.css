@@ -22,7 +22,8 @@ html[data-theme='sombre'] {
 
 body {
   margin: 0;
-  min-width: 1280px;
+  /* Pas de largeur minimale : la mise en page s'adapte de 360 à 1 920 px, sans défilement horizontal. */
+  min-width: 0;
   background: var(--color-bg);
   color: var(--color-text);
   font: var(--text-body);
