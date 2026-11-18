@@ -112,10 +112,10 @@ describe('panneau paramètres', () => {
       xp: 30,
     });
     render(<FenetreParametres />);
-    await utilisateur.click(screen.getByRole('button', { name: 'Recommencer à zéro' }));
+    await utilisateur.click(screen.getByRole('button', { name: 'Recommencer' }));
     await utilisateur.click(screen.getByRole('button', { name: 'Annuler' }));
     expect(useProgression.getState().progression['c1-m1']).toBeDefined();
-    await utilisateur.click(screen.getByRole('button', { name: 'Recommencer à zéro' }));
+    await utilisateur.click(screen.getByRole('button', { name: 'Recommencer' }));
     await utilisateur.click(screen.getByRole('button', { name: 'Oui' }));
     await utilisateur.click(screen.getByRole('button', { name: 'Tout effacer' }));
     expect(useProgression.getState().progression).toEqual({});

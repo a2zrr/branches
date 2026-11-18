@@ -42,3 +42,54 @@ test('section 1 : en 1440 × 900, le corps ne défile pas', async ({ page }) => 
   });
   expect(ok).toBe(true);
 });
+
+// Section 2 : le contenu, le thème « Auto », les flèches du clavier.
+
+async function ouvrirParametres(page: Page) {
+  await page.goto('/carte');
+  await page.getByRole('button', { name: 'Paramètres' }).click();
+  await expect(page.getByRole('dialog', { name: 'Paramètres' })).toBeVisible();
+  await page.waitForTimeout(450);
+}
+
+test('section 2 : Sombre applique data-theme immédiatement et survit à un rechargement', async ({ page }) => {
+  await neuf(page);
+  await page.goto('/carte');
+  await page.getByRole('button', { name: 'Paramètres' }).click();
+  await page.getByRole('radio', { name: 'Sombre' }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'sombre');
+  await page.reload();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'sombre');
+});
+
+test('section 2 : Auto suit le système (sombre puis clair)', async ({ page }) => {
+  await neuf(page);
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await page.goto('/carte');
+  await page.getByRole('button', { name: 'Paramètres' }).click();
+  await page.getByRole('radio', { name: 'Auto' }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'sombre');
+  await page.emulateMedia({ colorScheme: 'light' });
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'clair');
+});
+
+test('section 2 : les flèches du clavier changent de thème dans le groupe radio', async ({ page }) => {
+  await neuf(page);
+  await page.goto('/carte');
+  await page.getByRole('button', { name: 'Paramètres' }).click();
+  await page.getByRole('radio', { name: 'Clair' }).focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(page.getByRole('radio', { name: 'Sombre' })).toHaveAttribute('aria-checked', 'true');
+  await page.keyboard.press('ArrowRight');
+  await expect(page.getByRole('radio', { name: 'Auto' })).toHaveAttribute('aria-checked', 'true');
+});
+
+test('section 2 : captures clair et sombre en 1440 × 900', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await neuf(page);
+  await ouvrirParametres(page);
+  await page.screenshot({ path: 'verifications/correctif-4/parametres-clair-1440.png' });
+  await page.getByRole('radio', { name: 'Sombre' }).click();
+  await page.waitForTimeout(250);
+  await page.screenshot({ path: 'verifications/correctif-4/parametres-sombre-1440.png' });
+});

@@ -1,5 +1,5 @@
-import { useEffect, useId, useRef, useState, type ChangeEvent } from 'react';
-import { Icone } from '../ui/Icone';
+import { useEffect, useId, useRef, useState, type ChangeEvent, type KeyboardEvent } from 'react';
+import { Icone, type NomIcone } from '../ui/Icone';
 import { Mascotte } from '../mascotte/Mascotte';
 import { MISSIONS } from '../../game/missions';
 import { useProgression, type Theme } from '../../game/store';
@@ -8,16 +8,38 @@ import { estJouable, notionsTonGit } from '../../game/regles';
 import { pluriel } from '../../game/pluriel';
 import styles from './FenetreParametres.module.css';
 
-/** Panneau latéral Paramètres : se superpose à la page en cours, sans changer d'adresse. */
+/** Fenêtre Paramètres (correctif 4) : centrée, elle s'ouvre en pop par-dessus la page. */
 export function FenetreParametres() {
   const ouvert = useInterface((s) => s.parametresOuverts);
   if (!ouvert) return null;
-  return <PanneauOuvert />;
+  return <FenetreOuverte />;
 }
 
 type EtapeEfface = 0 | 1 | 2;
 
-function PanneauOuvert() {
+const THEMES: { valeur: Theme; libelle: string; icone: NomIcone }[] = [
+  { valeur: 'clair', libelle: 'Clair', icone: 'soleil' },
+  { valeur: 'sombre', libelle: 'Sombre', icone: 'lune' },
+  { valeur: 'auto', libelle: 'Auto', icone: 'ecran' },
+];
+
+/** Mini-aperçu de la carte dans chaque thème ; « Auto » = clair coupé en diagonale par sombre. */
+function Apercu({ valeur }: { valeur: Theme }) {
+  const fond =
+    valeur === 'clair'
+      ? 'var(--apercu-clair)'
+      : valeur === 'sombre'
+        ? 'var(--apercu-sombre)'
+        : 'linear-gradient(135deg, var(--apercu-clair) 50%, var(--apercu-sombre) 50%)';
+  return (
+    <span className={styles.apercu} style={{ background: fond }} aria-hidden="true">
+      <span className={styles.apercuBarre} />
+      <span className={styles.apercuPoint} />
+    </span>
+  );
+}
+
+function FenetreOuverte() {
   const fermer = useInterface((s) => s.fermerParametres);
   const theme = useProgression((s) => s.theme);
   const definirTheme = useProgression((s) => s.definirTheme);
@@ -38,7 +60,7 @@ function PanneauOuvert() {
   const maitrisees = notions.filter((n) => n.etat === 'maitrisee').length;
   const xp = Object.values(progression).reduce((s, r) => s + r.etoiles * 10, 0);
 
-  // Fermeture avec la sortie animée, puis démontage. Le focus revient sur la roue dentée.
+  // Fermeture avec la sortie animée (160 ms), puis démontage.
   const fermerAvecSortie = () => {
     if (sortie) return;
     setSortie(true);
@@ -59,9 +81,9 @@ function PanneauOuvert() {
     };
   }, []);
 
-  // Échap ferme ; Tab reste dans le panneau.
+  // Échap ferme ; Tab reste dans la fenêtre.
   useEffect(() => {
-    const clavier = (e: KeyboardEvent) => {
+    const clavier = (e: globalThis.KeyboardEvent) => {
       if (e.key === 'Escape') {
         fermerAvecSortie();
         return;
@@ -92,6 +114,19 @@ function PanneauOuvert() {
       window.removeEventListener('keydown', clavier);
     };
   });
+
+  // Groupe radio : les flèches changent de thème et déplacent le focus.
+  const naviguerThemes = (e: KeyboardEvent<HTMLDivElement>) => {
+    const index = THEMES.findIndex((t) => t.valeur === theme);
+    const pas = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
+    if (pas === 0) return;
+    e.preventDefault();
+    const suivant = THEMES[(index + pas + THEMES.length) % THEMES.length];
+    if (suivant === undefined) return;
+    definirTheme(suivant.valeur);
+    const boutons = e.currentTarget.querySelectorAll<HTMLElement>('[role="radio"]');
+    boutons[THEMES.indexOf(suivant)]?.focus();
+  };
 
   const telecharger = () => {
     const blob = new Blob([exporter()], { type: 'application/json' });
@@ -128,9 +163,15 @@ function PanneauOuvert() {
         className={`${styles.panneau} ${sortie ? styles.panneauSortie : ''}`}
       >
         <header className={styles.entete}>
-          <h2 id={idTitre} className={styles.titre}>
-            Paramètres
-          </h2>
+          <div className={styles.hedi}>
+            <Mascotte expression="accueillant" taille={78} />
+          </div>
+          <div className={styles.titres}>
+            <h2 id={idTitre} className={styles.titre}>
+              Paramètres
+            </h2>
+            <p className={styles.sousTitre}>Ton thème, ta partie, tes sauvegardes.</p>
+          </div>
           <button
             type="button"
             className={styles.fermer}
@@ -154,29 +195,38 @@ function PanneauOuvert() {
             <h3 id={`${idTitre}-apparence`} className={styles.etiquette}>
               Apparence
             </h3>
-            <div className={styles.cartes} role="radiogroup" aria-labelledby={`${idTitre}-apparence`}>
-              {(['clair', 'sombre'] as const).map((t: Theme) => (
-                <button
-                  key={t}
-                  type="button"
-                  role="radio"
-                  aria-checked={theme === t}
-                  className={`${styles.carteTheme} ${theme === t ? styles.choisie : ''}`}
-                  onClick={() => {
-                    definirTheme(t);
-                  }}
-                >
-                  <span className={styles.pastilleIcone}>
-                    <Icone
-                      nom={t === 'clair' ? 'soleil' : 'lune'}
-                      taille={22}
-                      trait={2.4}
-                      couleur="var(--color-hint-text)"
-                    />
-                  </span>
-                  <span className={styles.nomTheme}>{t === 'clair' ? 'Clair' : 'Sombre'}</span>
-                </button>
-              ))}
+            <div
+              className={styles.cartes}
+              role="radiogroup"
+              tabIndex={-1}
+              aria-labelledby={`${idTitre}-apparence`}
+              onKeyDown={naviguerThemes}
+            >
+              {THEMES.map((t) => {
+                const choisi = theme === t.valeur;
+                return (
+                  <button
+                    key={t.valeur}
+                    type="button"
+                    role="radio"
+                    aria-checked={choisi}
+                    tabIndex={choisi ? 0 : -1}
+                    className={`${styles.carteTheme} ${choisi ? styles.choisie : ''}`}
+                    onClick={() => {
+                      definirTheme(t.valeur);
+                    }}
+                  >
+                    <Apercu valeur={t.valeur} />
+                    <span className={styles.ligneTheme}>
+                      <span className={styles.rond} aria-hidden="true">
+                        {choisi && <Icone nom="coche" taille={14} trait={3} couleur="var(--color-on-primary)" />}
+                      </span>
+                      <span className={styles.nomTheme}>{t.libelle}</span>
+                      <Icone nom={t.icone} taille={20} trait={2.2} couleur="var(--color-text-muted)" />
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           </section>
 
@@ -186,45 +236,71 @@ function PanneauOuvert() {
             </h3>
             <div className={styles.tuiles}>
               <div className={styles.tuile}>
-                <strong className={styles.valeurBleue}>
-                  {reussies} / {jouables}
-                </strong>
-                <span className={styles.legende}>missions réussies</span>
-              </div>
-              <div className={styles.tuile}>
-                <strong className={styles.valeurOr}>{etoiles}</strong>
-                <span className={styles.legende}>{pluriel(etoiles, 'étoile', 'étoiles')}</span>
-              </div>
-              <div className={styles.tuile}>
-                <strong className={styles.valeurVerte}>
-                  {maitrisees} / {notions.length}
-                </strong>
-                <span className={styles.legende}>
-                  {pluriel(maitrisees, 'notion maîtrisée', 'notions maîtrisées')}
+                <span className={`${styles.pastilleIcone} ${styles.pInfo}`} aria-hidden="true">
+                  <Icone nom="drapeau" taille={20} trait={2.4} couleur="var(--color-info)" />
                 </span>
+                <span className={styles.valeur}>
+                  {reussies} / {jouables}
+                </span>
+                <span className={styles.libelle}>missions</span>
               </div>
               <div className={styles.tuile}>
-                <strong className={styles.valeurTexte}>{xp}</strong>
-                <span className={styles.legende}>XP</span>
+                <span className={`${styles.pastilleIcone} ${styles.pOr}`} aria-hidden="true">
+                  <Icone nom="etoile" taille={20} trait={1.5} remplie couleur="var(--color-hint)" />
+                </span>
+                <span className={styles.valeur}>{etoiles}</span>
+                <span className={styles.libelle}>{pluriel(etoiles, 'étoile', 'étoiles')}</span>
+              </div>
+              <div className={styles.tuile}>
+                <span className={`${styles.pastilleIcone} ${styles.pVert}`} aria-hidden="true">
+                  <Icone nom="cadreTerminal" taille={20} trait={2.4} couleur="var(--color-success-text)" />
+                </span>
+                <span className={styles.valeur}>
+                  {maitrisees} / {notions.length}
+                </span>
+                <span className={styles.libelle}>notions</span>
+              </div>
+              <div className={styles.tuile}>
+                <span className={`${styles.pastilleIcone} ${styles.pOr}`} aria-hidden="true">
+                  <Icone nom="eclair" taille={20} trait={2} remplie couleur="var(--color-hint)" />
+                </span>
+                <span className={styles.valeur}>{xp}</span>
+                <span className={styles.libelle}>XP</span>
               </div>
             </div>
-            <button type="button" className={styles.boutonContour} onClick={telecharger}>
-              <Icone nom="telecharger" taille={20} trait={2.4} couleur="currentColor" />
-              Exporter ma progression
-            </button>
-            <label className={`${styles.boutonContour} ${styles.label}`}>
-              <Icone nom="televerser" taille={20} trait={2.4} couleur="currentColor" />
-              Importer une progression
-              <input
-                type="file"
-                accept="application/json,.json"
-                className={styles.fichier}
-                onChange={lireFichier}
-              />
-            </label>
-            <p className={styles.legende}>
-              Ta partie reste dans ce navigateur. Exporte-la pour la retrouver sur un autre ordinateur.
-            </p>
+          </section>
+
+          <section className={styles.bloc} aria-labelledby={`${idTitre}-sauvegarde`}>
+            <h3 id={`${idTitre}-sauvegarde`} className={styles.etiquette}>
+              Sauvegarde
+            </h3>
+            <div className={styles.carte}>
+              <div className={styles.enteteCarte}>
+                <span className={`${styles.pastilleIcone} ${styles.pInfo}`} aria-hidden="true">
+                  <Icone nom="disquette" taille={20} trait={2.2} couleur="var(--color-info)" />
+                </span>
+                <p className={styles.texteCarte}>
+                  <strong>Ta partie reste dans ce navigateur.</strong> Exporte-la pour la retrouver sur un autre
+                  appareil.
+                </p>
+              </div>
+              <div className={styles.duo}>
+                <button type="button" className={styles.boutonContour} onClick={telecharger}>
+                  <Icone nom="telecharger" taille={20} trait={2.4} couleur="currentColor" />
+                  Exporter
+                </button>
+                <label className={`${styles.boutonContour} ${styles.label}`}>
+                  <Icone nom="televerser" taille={20} trait={2.4} couleur="currentColor" />
+                  Importer
+                  <input
+                    type="file"
+                    accept="application/json,.json"
+                    className={styles.fichier}
+                    onChange={lireFichier}
+                  />
+                </label>
+              </div>
+            </div>
             {message !== null && (
               <p role="status" className={styles.message}>
                 {message}
@@ -233,75 +309,82 @@ function PanneauOuvert() {
           </section>
 
           <section className={styles.bloc} aria-labelledby={`${idTitre}-recommencer`}>
-            <h3 id={`${idTitre}-recommencer`} className={styles.etiquette}>
-              Recommencer
-            </h3>
-            {etape === 0 && (
-              <button
-                type="button"
-                className={styles.boutonDanger}
-                onClick={() => {
-                  setEtape(1);
-                }}
-              >
-                Recommencer à zéro
-              </button>
-            )}
-            {etape > 0 && (
-              <div className={styles.confirmation}>
-                <Mascotte expression="panique" taille={72} />
-                <p className={styles.question}>
-                  {etape === 1
-                    ? 'Tu es sûr de vouloir tout recommencer ?'
-                    : 'Tout effacer ? Cette action est définitive.'}
-                </p>
-                <div className={styles.actions}>
+            <div className={`${styles.carte} ${styles.carteDanger}`}>
+              <div className={styles.enteteCarte}>
+                <span className={`${styles.pastilleIcone} ${styles.pDanger}`} aria-hidden="true">
+                  <Icone nom="refaire" taille={20} trait={2.4} couleur="var(--color-danger-text)" />
+                </span>
+                <div className={styles.texteCarte}>
+                  <h3 id={`${idTitre}-recommencer`} className={styles.titreCarte}>
+                    Recommencer à zéro
+                  </h3>
+                  <p className={styles.legende}>Efface ta progression sur cet appareil.</p>
+                </div>
+                {etape === 0 && (
                   <button
                     type="button"
-                    className={styles.boutonContour}
+                    className={styles.boutonDanger}
                     onClick={() => {
-                      setEtape(0);
+                      setEtape(1);
                     }}
                   >
-                    Annuler
+                    Recommencer
                   </button>
-                  {etape === 1 ? (
-                    <button
-                      type="button"
-                      className={styles.boutonPlein}
-                      onClick={() => {
-                        setEtape(2);
-                      }}
-                    >
-                      Oui
-                    </button>
-                  ) : (
-                    <button
-                      type="button"
-                      className={styles.boutonPlein}
-                      onClick={() => {
-                        reinitialiser();
-                        setEtape(0);
-                        setMessage('Progression effacée. Le thème est conservé.');
-                      }}
-                    >
-                      Tout effacer
-                    </button>
-                  )}
-                </div>
+                )}
               </div>
-            )}
-          </section>
-
-          <section className={styles.bloc} aria-labelledby={`${idTitre}-apropos`}>
-            <h3 id={`${idTitre}-apropos`} className={styles.etiquette}>
-              À propos
-            </h3>
-            <p className={styles.legende}>
-              Branchés t’apprend Git avec de vraies commandes. Pas de compte : rien n’est envoyé sur Internet.
-            </p>
+              {etape > 0 && (
+                <div className={styles.confirmation}>
+                  <p className={styles.question}>
+                    {etape === 1
+                      ? 'Tu es sûr de vouloir tout recommencer ?'
+                      : 'Tout effacer ? Cette action est définitive.'}
+                  </p>
+                  <div className={styles.duo}>
+                    <button
+                      type="button"
+                      className={styles.boutonContour}
+                      onClick={() => {
+                        setEtape(0);
+                      }}
+                    >
+                      Annuler
+                    </button>
+                    {etape === 1 ? (
+                      <button
+                        type="button"
+                        className={styles.boutonPlein}
+                        onClick={() => {
+                          setEtape(2);
+                        }}
+                      >
+                        Oui
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        className={styles.boutonPlein}
+                        onClick={() => {
+                          reinitialiser();
+                          setEtape(0);
+                          setMessage('Progression effacée. Le thème est conservé.');
+                        }}
+                      >
+                        Tout effacer
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
           </section>
         </div>
+
+        <footer className={styles.pied}>
+          <p className={styles.legende}>
+            Branchés t’apprend Git avec de vraies commandes. Pas de compte, rien n’est envoyé sur Internet.
+          </p>
+          <span className={styles.version}>v1.0</span>
+        </footer>
       </div>
     </div>
   );

@@ -71,7 +71,7 @@ export function Graphe() {
             {donnees !== undefined && (
               <GrapheCommits
                 donnees={donnees}
-                theme={theme}
+                theme={theme === 'sombre' ? 'sombre' : 'clair'}
                 hauteur={jeu.id === 'genere-30' ? 560 : 420}
                 onSelect={(id) => {
                   setSelection((sel) => ({ ...sel, [jeu.id]: id }));

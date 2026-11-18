@@ -6,10 +6,10 @@ import { meilleureNote, xpTotal, type Progression, type ResultatMission, etoiles
 import { CHAPITRES, MISSIONS, trouverMission } from './missions';
 import { chapitresVisibles } from './carte';
 
-export type Theme = 'clair' | 'sombre';
+export type Theme = 'clair' | 'sombre' | 'auto';
 
 export const CLE_STOCKAGE = 'branches:v1';
-export const VERSION_STOCKAGE = 2;
+export const VERSION_STOCKAGE = 3;
 
 export interface ProgressionState {
   theme: Theme;
@@ -41,9 +41,14 @@ export function chapitresVisiblesPour(progression: Progression): number[] {
 const SchemaSauvegarde = z.object({
   format: z.literal('branches-progression'),
   version: z.literal(1),
-  theme: z.enum(['clair', 'sombre']),
+  theme: z.enum(['clair', 'sombre', 'auto']),
   progression: z.record(z.string(), SchemaResultat),
 });
+
+/** Thème lu depuis une sauvegarde : « clair » par défaut ; « auto » suit le système. */
+function lireTheme(valeur: unknown): Theme {
+  return valeur === 'sombre' || valeur === 'auto' ? valeur : 'clair';
+}
 
 /**
  * Migration : version 0 = { progression: { id: étoiles } } ; version 1 = progression détaillée ;
@@ -62,7 +67,7 @@ export function migrer(persiste: unknown, version: number): Partial<ProgressionS
       }
     }
     return {
-      theme: brut['theme'] === 'sombre' ? 'sombre' : 'clair',
+      theme: lireTheme(brut['theme']),
       progression,
       xp: xpTotal(progression),
       chapitresDecouverts: chapitresVisiblesPour(progression),
@@ -71,7 +76,7 @@ export function migrer(persiste: unknown, version: number): Partial<ProgressionS
   const progression = (brut['progression'] ?? {}) as Progression;
   const decouverts = brut['chapitresDecouverts'];
   return {
-    theme: brut['theme'] === 'sombre' ? 'sombre' : 'clair',
+    theme: lireTheme(brut['theme']),
     progression,
     xp: xpTotal(progression),
     chapitresDecouverts:
