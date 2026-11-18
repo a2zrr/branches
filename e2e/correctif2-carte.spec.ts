@@ -63,24 +63,26 @@ test.describe('correctif 2 : en-tête et conteneur', () => {
 });
 
 test.describe('correctif 2 : popover de la carte', () => {
-  test('mission en cours décalée à droite (c1-m4) : le popover est à gauche', async ({ page }) => {
+  // Correctif 3 (prime sur le correctif 2) : le popover s'ouvre du côté des titres, c'est-à-dire
+  // à droite quand la pastille est décalée à droite, et à gauche sinon.
+  test('mission en cours décalée à droite (c1-m4) : le popover est à droite (côté des titres)', async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await partie(page, REUSSIES.slice(0, 3));
     await page.goto('/carte');
     const pastille = await rect(page, 'button[aria-label^="Mission 4,"]');
     const popover = await rect(page, '[role="group"][aria-label="Mission 4"]');
-    expect(popover.droite).toBeLessThanOrEqual(pastille.x + pastille.w / 2 - 60);
+    expect(popover.x).toBeGreaterThanOrEqual(pastille.x + pastille.w / 2 + 60);
     expect(Math.round(popover.w)).toBe(280);
     expect(Math.round(popover.y - pastille.y)).toBe(-6);
   });
 
-  test('mission en cours décalée à gauche (c1-m6) : le popover est à droite', async ({ page }) => {
+  test('mission en cours décalée à gauche (c1-m6) : le popover est à gauche (côté des titres)', async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await partie(page, REUSSIES);
     await page.goto('/carte');
     const pastille = await rect(page, 'button[aria-label^="Mission 6,"]');
     const popover = await rect(page, '[role="group"][aria-label="Mission 6"]');
-    expect(popover.x).toBeGreaterThanOrEqual(pastille.x + pastille.w / 2 + 60);
+    expect(popover.droite).toBeLessThanOrEqual(pastille.x + pastille.w / 2 - 60);
   });
 
   test('le popover ne chevauche aucune autre pastille ni aucun titre', async ({ page }) => {

@@ -122,7 +122,7 @@ export function Carte() {
   return (
     <div className={styles.page}>
       <h1 className={styles.visuellementCache}>Carte des missions</h1>
-      <div className={styles.entete}>
+      <div className={styles.enteteCollante}>
         <EnTeteAppli
           variante="carte"
           notionsMaitrisees={e.notionsMaitrisees}
