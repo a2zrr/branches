@@ -4,7 +4,6 @@ import { expect, test, type Page } from '@playwright/test';
 const ROUTES = [
   '/',
   '/carte',
-  '/parametres',
   '/mission/c1-m1?debug=1',
   '/mission/c1-m4?debug=1',
   '/mission/c2-m2?debug=1',

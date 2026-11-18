@@ -59,7 +59,7 @@ test.describe('étape 6 : accueil, carte, paramètres', () => {
   test('pas de défilement horizontal en 1280 px', async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 800 });
     await preparer(page, 'clair', 'vide');
-    for (const route of ['/', '/carte', '/parametres']) {
+    for (const route of ['/', '/carte']) {
       await page.goto(route);
       const { largeur, fenetre } = await page.evaluate(() => ({
         largeur: document.documentElement.scrollWidth,
@@ -69,9 +69,9 @@ test.describe('étape 6 : accueil, carte, paramètres', () => {
     }
   });
 
-  test('axe : 0 violation serious ou critical sur /, /carte et /parametres', async ({ page }) => {
+  test('axe : 0 violation serious ou critical sur / et /carte', async ({ page }) => {
     await preparer(page, 'clair', 'injectee');
-    for (const route of ['/', '/carte', '/parametres']) {
+    for (const route of ['/', '/carte']) {
       await page.goto(route);
       const resultats = await new AxeBuilder({ page }).analyze();
       const graves = resultats.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical');
@@ -102,8 +102,9 @@ test.describe('étape 6 : accueil, carte, paramètres', () => {
 
   test('paramètres : thème sombre appliqué et export produit un fichier', async ({ page }) => {
     await preparer(page, 'clair', 'vide');
-    await page.goto('/parametres');
-    await page.getByRole('button', { name: 'Sombre' }).click();
+    await page.goto('/');
+    await page.locator('#bouton-parametres').click();
+    await page.getByRole('radio', { name: 'Sombre' }).click();
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'sombre');
     const [telechargement] = await Promise.all([
       page.waitForEvent('download'),

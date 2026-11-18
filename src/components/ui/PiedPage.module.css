@@ -59,6 +59,12 @@
 }
 
 .lien {
+  /* Réinitialise le style de bouton du navigateur (le lien Paramètres ouvre le panneau). */
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
   font: var(--text-small);
   font-size: 16px;
   color: var(--color-night-text);

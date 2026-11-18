@@ -1,0 +1,308 @@
+/* Panneau latéral Paramètres : 420 px, pleine hauteur, par-dessus la page. */
+.calque {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+}
+
+.voile {
+  position: absolute;
+  inset: 0;
+  background: var(--color-voile);
+  animation: voile-entree var(--dur-base) var(--ease-out);
+}
+
+.voileSortie {
+  animation: voile-sortie 300ms var(--ease-out) forwards;
+}
+
+.panneau {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 420px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  border-left: 2px solid var(--color-border);
+  box-shadow: -8px 0 24px var(--color-ombre-panneau);
+  animation: glisse-entree 300ms var(--ease-out);
+}
+
+.panneauSortie {
+  animation: glisse-sortie 300ms var(--ease-out) forwards;
+}
+
+@keyframes glisse-entree {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes glisse-sortie {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes voile-entree {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes voile-sortie {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.entete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-5) var(--space-5) var(--space-4);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.titre {
+  margin: 0;
+  font: var(--text-h2);
+  color: var(--color-text);
+}
+
+.fermer {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  cursor: pointer;
+}
+
+.corps {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.bloc {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.etiquette {
+  margin: 0;
+  font: var(--text-label);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+}
+
+.legende {
+  margin: 0;
+  font: var(--text-small);
+  color: var(--color-text-muted);
+}
+
+.cartes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.carteTheme {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  box-shadow: var(--edge-md) var(--color-border);
+  cursor: pointer;
+  color: var(--color-text);
+}
+
+.choisie {
+  border-color: var(--color-primary);
+  box-shadow: var(--edge-md) var(--color-primary-edge);
+}
+
+.pastilleIcone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-pill);
+  background: var(--color-info-bg);
+}
+
+.nomTheme {
+  font: var(--text-body);
+  font-weight: 800;
+}
+
+.tuiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.tuile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-subtle);
+}
+
+.tuile .legende {
+  font-size: 13px;
+}
+
+.valeurBleue,
+.valeurOr,
+.valeurVerte,
+.valeurTexte {
+  font: var(--text-h3);
+}
+
+.valeurBleue {
+  color: var(--color-primary);
+}
+
+.valeurOr {
+  color: var(--color-hint-text);
+}
+
+.valeurVerte {
+  color: var(--color-success-text);
+}
+
+.valeurTexte {
+  color: var(--color-text);
+}
+
+.boutonContour,
+.boutonPlein,
+.boutonDanger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 48px;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-lg);
+  font: var(--text-label);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.boutonContour {
+  border: 2px solid var(--color-primary);
+  background: var(--color-surface);
+  color: var(--color-primary);
+  box-shadow: var(--edge-md) var(--color-border);
+}
+
+.boutonPlein {
+  border: none;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  box-shadow: var(--edge-md) var(--color-primary-edge);
+}
+
+.boutonDanger {
+  border: 2px solid var(--color-danger);
+  background: var(--color-surface);
+  color: var(--color-danger);
+  box-shadow: var(--edge-md) var(--color-danger-edge);
+}
+
+.boutonContour:focus-visible,
+.boutonPlein:focus-visible,
+.boutonDanger:focus-visible,
+.carteTheme:focus-visible,
+.fermer:focus-visible,
+.fichier:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+/* Champ de fichier caché : son libellé (label) fait office de bouton. */
+.fichier {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.label {
+  position: relative;
+}
+
+.message {
+  margin: 0;
+  font: var(--text-small);
+  color: var(--color-success-text);
+}
+
+.confirmation {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 2px solid var(--color-danger);
+  border-radius: var(--radius-xl);
+  background: var(--color-danger-bg);
+}
+
+.question {
+  margin: 0;
+  font: var(--text-body);
+  color: var(--color-text);
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panneau,
+  .panneauSortie,
+  .voile,
+  .voileSortie {
+    animation-duration: 1ms;
+  }
+}

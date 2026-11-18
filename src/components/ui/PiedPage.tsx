@@ -1,9 +1,11 @@
 import { Link } from 'react-router';
 import { Logo } from './Logo';
+import { useInterface } from '../../game/ui';
 import styles from './PiedPage.module.css';
 
 /** Pied de page bleu nuit, précédé d'une vague. Il ne contient que des liens vers des pages qui existent. */
 export function PiedPage() {
+  const ouvrirParametres = useInterface((s) => s.ouvrirParametres);
   return (
     <footer className={styles.pied}>
       <svg
@@ -34,9 +36,9 @@ export function PiedPage() {
               </div>
               <div>
                 <h3 className={styles.titre}>Réglages</h3>
-                <Link to="/parametres" className={styles.lien}>
+                <button type="button" className={styles.lien} onClick={ouvrirParametres}>
                   Paramètres
-                </Link>
+                </button>
               </div>
             </nav>
           </div>

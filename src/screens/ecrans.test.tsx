@@ -1,10 +1,11 @@
-import { act, render, screen, within } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { RouterProvider, createMemoryRouter } from 'react-router';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { Accueil } from './Accueil';
 import { Carte } from './Carte';
-import { Parametres } from './Parametres';
+import { PanneauParametres } from '../components/parametres/PanneauParametres';
+import { useInterface } from '../game/ui';
 import { useProgression } from '../game/store';
 import { MISSIONS } from '../game/missions';
 
@@ -13,7 +14,6 @@ function rendre(chemin: string, element: React.ReactElement) {
     [
       { path: '/', element },
       { path: '/carte', element: <Carte /> },
-      { path: '/parametres', element: <Parametres /> },
       { path: '/mission/:id', element: <p>Mission</p> },
     ],
     { initialEntries: [chemin] },
@@ -34,7 +34,7 @@ describe('nouveau visiteur', () => {
     expect(
       screen.getByRole('heading', { level: 1, name: 'Apprends Git en sauvant la démo de ce soir.' }),
     ).toBeInTheDocument();
-    expect(screen.getByText(`0 commandes maîtrisées sur ${NOTIONS_TOTAL}`)).toBeInTheDocument();
+    expect(screen.getByText(`0 notion maîtrisée sur ${NOTIONS_TOTAL}`)).toBeInTheDocument();
     expect(screen.getByText('Salut ! Ce soir on a une démo… et le projet est cassé.')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Commencer' })).toHaveAttribute('href', '/mission/c1-m1');
   });
@@ -81,7 +81,7 @@ describe('partie injectée (c1-m1 à c1-m3 réussies avec 3, 2 et 3 étoiles)', 
 
   it('accueil : 3 notions maîtrisées et git revert en cours', () => {
     rendre('/', <Accueil />);
-    expect(screen.getByText(`3 commandes maîtrisées sur ${NOTIONS_TOTAL}`)).toBeInTheDocument();
+    expect(screen.getByText(`3 notions maîtrisées sur ${NOTIONS_TOTAL}`)).toBeInTheDocument();
     expect(
       screen.getByText('Prochaine commande : git revert, dans la mission « La clé qui fuit ».'),
     ).toBeInTheDocument();
@@ -90,33 +90,33 @@ describe('partie injectée (c1-m1 à c1-m3 réussies avec 3, 2 et 3 étoiles)', 
   });
 });
 
-describe('paramètres', () => {
-  it('le thème se bascule et se mémorise', async () => {
-    const utilisateur = userEvent.setup();
-    rendre('/parametres', <Parametres />);
-    await utilisateur.click(screen.getByRole('button', { name: 'Sombre' }));
-    expect(useProgression.getState().theme).toBe('sombre');
-    expect(screen.getByRole('button', { name: 'Sombre' })).toHaveAttribute('aria-pressed', 'true');
+describe('panneau paramètres', () => {
+  beforeEach(() => {
+    useInterface.setState({ parametresOuverts: true });
   });
 
-  it('réinitialiser demande confirmation, puis efface la progression et garde le thème', async () => {
+  it('le thème se bascule et se mémorise', async () => {
+    const utilisateur = userEvent.setup();
+    render(<PanneauParametres />);
+    await utilisateur.click(screen.getByRole('radio', { name: 'Sombre' }));
+    expect(useProgression.getState().theme).toBe('sombre');
+    expect(screen.getByRole('radio', { name: 'Sombre' })).toHaveAttribute('aria-checked', 'true');
+  });
+
+  it('recommencer demande deux confirmations, puis efface la progression et garde le thème', async () => {
     const utilisateur = userEvent.setup();
     useProgression.setState({
       theme: 'sombre',
       progression: { 'c1-m1': { etoiles: 3, commandes: 2, reussie: true } },
       xp: 30,
     });
-    rendre('/parametres', <Parametres />);
-    await utilisateur.click(screen.getByRole('button', { name: 'Réinitialiser' }));
-    expect(screen.getByRole('dialog')).toBeInTheDocument();
-    await act(async () => {
-      await utilisateur.click(screen.getByRole('button', { name: 'Annuler' }));
-    });
+    render(<PanneauParametres />);
+    await utilisateur.click(screen.getByRole('button', { name: 'Recommencer à zéro' }));
+    await utilisateur.click(screen.getByRole('button', { name: 'Annuler' }));
     expect(useProgression.getState().progression['c1-m1']).toBeDefined();
-    await utilisateur.click(screen.getByRole('button', { name: 'Réinitialiser' }));
-    await act(async () => {
-      await utilisateur.click(screen.getAllByRole('button', { name: 'Réinitialiser' }).at(-1) as HTMLElement);
-    });
+    await utilisateur.click(screen.getByRole('button', { name: 'Recommencer à zéro' }));
+    await utilisateur.click(screen.getByRole('button', { name: 'Oui' }));
+    await utilisateur.click(screen.getByRole('button', { name: 'Tout effacer' }));
     expect(useProgression.getState().progression).toEqual({});
     expect(useProgression.getState().theme).toBe('sombre');
   });

@@ -6,7 +6,6 @@ const ROUTES: { route: string; h1: string }[] = [
   { route: '/carte', h1: 'Carte des missions' },
   { route: '/mission/c1-m1', h1: 'Ton premier commit' },
   { route: '/mission/c1-m1/fin', h1: 'Carte des missions' },
-  { route: '/parametres', h1: 'Paramètres' },
   { route: '/dev/design-system', h1: 'Introuvable' },
   { route: '/dev/graphe', h1: 'Introuvable' },
   { route: '/inexistante', h1: 'Introuvable' },
@@ -28,9 +27,10 @@ test.describe('étape 1 : socle', () => {
   });
 
   test('le mode sombre met data-theme="sombre" et survit à un rechargement', async ({ page }) => {
-    await page.goto('/parametres');
+    await page.goto('/');
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'clair');
-    await page.getByRole('button', { name: 'Sombre' }).click();
+    await page.locator('#bouton-parametres').click();
+    await page.getByRole('radio', { name: 'Sombre' }).click();
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'sombre');
     await page.reload();
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'sombre');
