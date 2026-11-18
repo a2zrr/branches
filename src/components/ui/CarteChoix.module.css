@@ -77,3 +77,45 @@
 .carte[data-selectionnee] .description {
   color: var(--color-primary);
 }
+
+/* Textes d'une carte : titre au-dessus de la description, en colonne. */
+.textes {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+/* Aperçu du code dans la carte : fond gris, police mono. */
+.apercu {
+  display: block;
+  width: 100%;
+  margin-top: var(--space-2);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-subtle);
+  color: var(--color-text);
+  font: var(--text-code);
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+  min-width: 0;
+  overflow: hidden;
+  text-align: left;
+  font-variant-ligatures: none;
+}
+
+/* Présentation en ligne (« Garder les deux ») : raccourci, titre et description côte à côte. */
+.ligne {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+}
+
+.ligne .textes {
+  flex-direction: row;
+  align-items: baseline;
+  gap: var(--space-3);
+}

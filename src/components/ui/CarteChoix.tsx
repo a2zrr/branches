@@ -8,6 +8,10 @@ export interface CarteChoixProps {
   selectionnee: boolean;
   desactivee?: boolean;
   onSelect: () => void;
+  /** Aperçu du code affiché sous la description (maquette Conflit.png). */
+  apercu?: ReactNode;
+  /** Présentation en ligne : raccourci, titre et description sur une seule ligne. */
+  pleineLigne?: boolean;
 }
 
 export function CarteChoix({
@@ -17,11 +21,13 @@ export function CarteChoix({
   selectionnee,
   desactivee = false,
   onSelect,
+  apercu,
+  pleineLigne = false,
 }: CarteChoixProps) {
   return (
     <button
       type="button"
-      className={styles.carte}
+      className={`${styles.carte} ${pleineLigne ? styles.ligne : ''}`}
       aria-pressed={selectionnee}
       disabled={desactivee}
       data-selectionnee={selectionnee || undefined}
@@ -30,8 +36,11 @@ export function CarteChoix({
       <span className={styles.raccourci} aria-hidden="true">
         {raccourci}
       </span>
-      <strong className={styles.titre}>{titre}</strong>
-      {description !== undefined && <span className={styles.description}>{description}</span>}
+      <span className={styles.textes}>
+        <strong className={styles.titre}>{titre}</strong>
+        {description !== undefined && <span className={styles.description}>{description}</span>}
+      </span>
+      {apercu !== undefined && <span className={styles.apercu}>{apercu}</span>}
     </button>
   );
 }

@@ -3,7 +3,7 @@
   flex-direction: column;
   height: 100vh;
   min-height: 720px;
-  background: var(--color-bg-subtle);
+  background: var(--color-bg);
 }
 
 .exercice {

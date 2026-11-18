@@ -85,3 +85,13 @@ test('capture jeu indice', async ({ page }) => {
   await page.waitForTimeout(600);
   await page.screenshot({ path: resolve(DOSSIER, 'JeuTerminalIndice-app.png'), fullPage: false });
 });
+
+test('capture conflit', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await injecter(page);
+  await page.goto('/mission/c2-m2?debug=1');
+  await page.keyboard.press('1');
+  await page.evaluate(() => document.fonts.ready);
+  await page.waitForTimeout(800);
+  await page.screenshot({ path: resolve(DOSSIER, 'Conflit-app.png'), fullPage: false });
+});

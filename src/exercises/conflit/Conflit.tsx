@@ -39,7 +39,12 @@ function apercuFichier(
   });
 }
 
-/** Exercice « conflit » : fichier avec marqueurs à gauche, choix par bloc à droite, aperçu du résultat. */
+/** Ligne de sortie : CONFLICT et « failed » en rouge, comme dans le vrai terminal. */
+function classeSortie(texte: string): string {
+  return /CONFLICT|failed/.test(texte) ? (styles.alerte ?? '') : '';
+}
+
+/** Exercice « conflit » (maquette Conflit.png) : sortie et bulle en haut, fichier à gauche, choix et résultat à droite. */
 export function Conflit({ mission, depot, setPret, choix, setChoix }: PropsExercice) {
   const exercice = mission.exercice;
   const fichier = Object.keys(depot.fusion?.fichiers ?? {})[0] ?? exercice?.fichier ?? '';
@@ -53,6 +58,10 @@ export function Conflit({ mission, depot, setPret, choix, setChoix }: PropsExerc
   const nomAutre = depot.fusion?.avec ?? 'autre';
   const nomCourant = depot.fusion?.cible ?? 'HEAD';
   const choixBloc = choix[bloc] ?? null;
+
+  // Le bloc courant : ses deux versions, pour les aperçus des cartes.
+  const blocsConflit = segments.filter((s): s is Extract<Segment, { conflit: unknown }> => 'conflit' in s);
+  const courant = blocsConflit[bloc]?.conflit;
 
   useEffect(() => {
     setPret(true);
@@ -83,23 +92,28 @@ export function Conflit({ mission, depot, setPret, choix, setChoix }: PropsExerc
   }, [acceptes, blocs, bloc, choix, setChoix]);
 
   const apercu = useMemo(() => apercuFichier(segments, choix, nomAutre), [segments, choix, nomAutre]);
+  const reaction = choixBloc !== null ? exercice?.reactions[choixBloc] : undefined;
 
   return (
     <div className={styles.zone}>
       <section className={styles.haut} aria-label="Sortie de la fusion">
+        <BulleMascotte expression="panique" ton="histoire" titre="" texte={mission.histoire} taille={72} />
         <div className={styles.sortie} role="log">
           <div className={styles.invite}>
             ~/startup-demo ({nomCourant}) $ {exercice?.commandeDeDepart}
           </div>
           {sortie.map((l, i) => (
-            <div key={i}>{l}</div>
+            <div key={i} className={classeSortie(l)}>
+              {l}
+            </div>
           ))}
         </div>
-        <BulleMascotte expression="panique" ton="histoire" texte={mission.histoire} taille={72} />
       </section>
 
       <div className={styles.corps}>
-        <FichierConflit chemin={fichier} lignes={lignes} blocActif={bloc} />
+        <div className={styles.fichierColonne}>
+          <FichierConflit chemin={fichier} lignes={lignes} blocActif={bloc} nombreConflits={blocs} />
+        </div>
 
         <aside className={styles.choix} aria-label="Que garde-t-on ?">
           <h2 className={styles.h2}>Que garde-t-on ?</h2>
@@ -132,9 +146,10 @@ export function Conflit({ mission, depot, setPret, choix, setChoix }: PropsExerc
             <CarteChoix
               raccourci={1}
               titre="Garder ma version"
-              description={`Le code de ${nomCourant}.`}
+              description={nomCourant}
               selectionnee={choixBloc === 'mienne'}
               desactivee={!acceptes.includes('mienne')}
+              apercu={courant?.ours.join('\n')}
               onSelect={() => {
                 choisir(bloc, 'mienne');
               }}
@@ -142,9 +157,10 @@ export function Conflit({ mission, depot, setPret, choix, setChoix }: PropsExerc
             <CarteChoix
               raccourci={2}
               titre="Garder l’autre"
-              description={`Le code de ${nomAutre}.`}
+              description={nomAutre}
               selectionnee={choixBloc === 'autre'}
               desactivee={!acceptes.includes('autre')}
+              apercu={courant?.theirs.join('\n')}
               onSelect={() => {
                 choisir(bloc, 'autre');
               }}
@@ -153,21 +169,25 @@ export function Conflit({ mission, depot, setPret, choix, setChoix }: PropsExerc
               <CarteChoix
                 raccourci={3}
                 titre="Garder les deux"
-                description="Les deux versions, l’une après l’autre."
+                description="Les deux blocs l’un après l’autre, sans les marqueurs."
                 selectionnee={choixBloc === 'deux'}
                 desactivee={!acceptes.includes('deux')}
+                pleineLigne
                 onSelect={() => {
                   choisir(bloc, 'deux');
                 }}
               />
             </div>
           </div>
-          <section className={styles.apercu} aria-label="Aperçu du fichier résultant">
-            <h3 className={styles.h3}>Aperçu du fichier</h3>
+          <section className={styles.resultat} aria-label="Aperçu du fichier résultant">
+            <div className={styles.resultatEntete}>
+              <h3 className={styles.etiquette}>Résultat dans le fichier</h3>
+              {reaction !== undefined && <span className={styles.reaction}>{reaction}</span>}
+            </div>
             <textarea
               className={styles.code}
               readOnly
-              rows={8}
+              rows={7}
               value={apercu.join('\n')}
               aria-label="Contenu du fichier résultant"
             />
