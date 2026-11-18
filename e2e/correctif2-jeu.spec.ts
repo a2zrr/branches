@@ -116,3 +116,14 @@ test.describe('correctif 2 : le jeu', () => {
     await expect(page.getByRole('dialog', { name: 'Indice' })).toHaveCount(0);
   });
 });
+
+test('capture : écran de jeu juste après VÉRIFIER (échec)', async ({ page }) => {
+  await neuf(page);
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/mission/c1-m4?debug=1');
+  await taper(page, 'git log --oneline');
+  await page.getByRole('button', { name: 'Vérifier' }).click();
+  await expect(page.getByRole('alert')).toBeVisible();
+  await page.waitForTimeout(300);
+  await page.screenshot({ path: 'verifications/correctif-2/jeu-apres-verifier.png' });
+});
