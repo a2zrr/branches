@@ -1,4 +1,4 @@
-/* En-tête de l'application : contenu centré dans le conteneur de 1180 px (classe « conteneur » de global.css). */
+/* En-tête de l'application : pleine largeur, marges latérales de 32 px. Logo à gauche, compteurs et roue à droite. */
 .entete {
   background: var(--color-surface);
   border-bottom: 2px solid var(--color-border);
@@ -9,8 +9,7 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
-  padding-top: var(--space-4);
-  padding-bottom: var(--space-4);
+  padding: var(--space-4) var(--space-6);
 }
 
 .logo {

@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { useProgression } from '../../game/store';
+import { useInterface } from '../../game/ui';
 import { Compteur } from './Compteur';
 import { Icone } from './Icone';
 import { Logo } from './Logo';
@@ -11,26 +11,22 @@ export interface EnTeteAppliProps {
   xp: number;
   /** Compteur d'étoiles affiché (carte uniquement). */
   etoiles?: { valeur: number };
-  /** « accueil » : XP et roue. « carte » : étoiles, XP et bouton thème. */
+  /** « accueil » : XP et roue. « carte » : étoiles, XP et roue. */
   variante?: 'accueil' | 'carte';
 }
 
-/** Bouton lune : bascule le thème clair / sombre. */
-function BoutonTheme() {
-  const theme = useProgression((s) => s.theme);
-  const definirTheme = useProgression((s) => s.definirTheme);
-  const sombre = theme === 'sombre';
+/** Roue dentée : ouvre le panneau Paramètres sur la page en cours. */
+function BoutonParametres() {
+  const ouvrir = useInterface((s) => s.ouvrirParametres);
   return (
     <button
       type="button"
+      id="bouton-parametres"
       className={styles.parametres}
-      aria-pressed={sombre}
-      aria-label={sombre ? 'Passer en mode clair' : 'Passer en mode sombre'}
-      onClick={() => {
-        definirTheme(sombre ? 'clair' : 'sombre');
-      }}
+      aria-label="Paramètres"
+      onClick={ouvrir}
     >
-      <Icone nom="lune" taille={24} trait={2.4} couleur="var(--color-text)" />
+      <Icone nom="roue" taille={24} trait={2.4} couleur="var(--color-text)" />
     </button>
   );
 }
@@ -45,7 +41,7 @@ export function EnTeteAppli({
 }: EnTeteAppliProps) {
   return (
     <header className={styles.entete}>
-      <div className={`conteneur ${styles.interieur}`}>
+      <div className={styles.interieur}>
         <Link to="/" className={styles.logo} aria-label="Branchés, accueil">
           <Logo />
         </Link>
@@ -55,14 +51,12 @@ export function EnTeteAppli({
             <>
               <Compteur type="etoiles" valeur={etoiles.valeur} />
               <Compteur type="xp" valeur={xp} />
-              <BoutonTheme />
+              <BoutonParametres />
             </>
           ) : (
             <>
               <Compteur type="xp" valeur={xp} />
-              <Link to="/parametres" className={styles.parametres} aria-label="Paramètres">
-                <Icone nom="roue" taille={24} trait={2.4} couleur="var(--color-text)" />
-              </Link>
+              <BoutonParametres />
             </>
           )}
         </div>

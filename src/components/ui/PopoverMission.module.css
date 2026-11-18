@@ -1,19 +1,60 @@
+/* Popover à côté de la pastille, jamais au-dessus : largeur 280 px, haut à −6 px,
+   à 64 px du centre de la pastille. Il ne prend aucune place dans la mise en page. */
 .popover {
   position: absolute;
-  bottom: 118px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: -6px;
   z-index: 2;
-  width: 232px;
+  width: 280px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: var(--space-1);
-  padding: var(--space-4) var(--space-4) var(--space-4);
+  padding: var(--space-4);
   border-radius: 14px;
   background: var(--color-primary);
   color: var(--color-on-primary);
   box-shadow: var(--edge-md) var(--color-primary-edge);
+  animation: apparition 450ms var(--ease-bounce);
+}
+
+/* La colonne fait 92 px et la pastille est centrée : le centre est à 50 %. */
+.droite {
+  left: calc(50% + 64px);
+  transform-origin: left center;
+}
+
+.gauche {
+  right: calc(50% + 64px);
+  transform-origin: right center;
+}
+
+/* Losange qui pointe vers la pastille. Centre à 42 px du haut du popover (36 px de pastille + 6 px). */
+.pointe {
+  position: absolute;
+  top: 35px;
+  width: 14px;
+  height: 14px;
+  background: var(--color-primary);
+  transform: rotate(45deg);
+}
+
+.droite .pointe {
+  left: -7px;
+}
+
+.gauche .pointe {
+  right: -7px;
+}
+
+@keyframes apparition {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .numero {

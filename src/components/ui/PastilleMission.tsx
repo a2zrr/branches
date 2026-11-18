@@ -41,7 +41,12 @@ export function PastilleMission({
       {etat === 'en-cours' && (
         <>
           <span className={styles.anneau} aria-hidden="true" />
-          <PopoverMission numero={numero} titre={titre} onCommencer={() => onClick?.()} />
+          <PopoverMission
+            numero={numero}
+            titre={titre}
+            cote={decalage > 0 ? 'gauche' : 'droite'}
+            onCommencer={() => onClick?.()}
+          />
         </>
       )}
       <button
