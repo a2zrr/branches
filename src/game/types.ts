@@ -11,7 +11,13 @@ export interface Chapitre {
   sousTitre: string;
   couleur?: string; // fond de l'en-tête quand le chapitre est ouvert (texte blanc dessus)
   couleurArete?: string; // bord 3D de l'en-tête
-  bientot?: boolean; // chapitre annoncé, sans mission (bordure en pointillés)
+  bientot?: boolean; // chapitre annoncé, sans mission : jamais affiché, son sousTitre sert au mur « bientôt »
+  vignette?: {
+    // illustration posée dans le creux du zigzag (spec § 9 bis)
+    expression: 'accueillant' | 'panique' | 'pensif' | 'fier';
+    accessoire: 'terminal' | 'message' | 'calendrier';
+    teinte: 'bleu' | 'violet' | 'orange'; // --vignette-<teinte> (rond) et --chemin-<teinte> (chemin fait)
+  };
 }
 
 export interface CommitDepot {

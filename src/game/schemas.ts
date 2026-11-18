@@ -8,6 +8,13 @@ export const SchemaChapitre = z.object({
   couleur: z.string().optional(),
   couleurArete: z.string().optional(),
   bientot: z.boolean().optional(),
+  vignette: z
+    .object({
+      expression: z.enum(['accueillant', 'panique', 'pensif', 'fier']),
+      accessoire: z.enum(['terminal', 'message', 'calendrier']),
+      teinte: z.enum(['bleu', 'violet', 'orange']),
+    })
+    .optional(),
 });
 
 export const SchemaCommit = z.object({

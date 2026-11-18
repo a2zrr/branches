@@ -4,21 +4,36 @@
     "titre": "La veille de la démo",
     "sousTitre": "Le projet est cassé, la démo est ce soir.",
     "couleur": "#0F72B2",
-    "couleurArete": "#0A5689"
+    "couleurArete": "#0A5689",
+    "vignette": {
+      "expression": "panique",
+      "accessoire": "terminal",
+      "teinte": "bleu"
+    }
   },
   {
     "numero": 2,
     "titre": "Le stagiaire a poussé sur main",
     "sousTitre": "Kévin est plein de bonne volonté. C'est bien le problème.",
     "couleur": "#7240C4",
-    "couleurArete": "#552E99"
+    "couleurArete": "#552E99",
+    "vignette": {
+      "expression": "pensif",
+      "accessoire": "message",
+      "teinte": "violet"
+    }
   },
   {
     "numero": 3,
     "titre": "Vendredi 17 h, mise en prod",
     "sousTitre": "Qu'est-ce qui pourrait mal se passer ?",
     "couleur": "#A85400",
-    "couleurArete": "#7A3D00"
+    "couleurArete": "#7A3D00",
+    "vignette": {
+      "expression": "fier",
+      "accessoire": "calendrier",
+      "teinte": "orange"
+    }
   },
   {
     "numero": 4,

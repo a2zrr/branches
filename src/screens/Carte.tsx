@@ -90,7 +90,7 @@ export function Carte() {
           <section className={styles.carte} aria-label="Hédi">
             <div className={styles.hedi}>
               <Mascotte expression="accueillant" taille={96} />
-              <p className={styles.bulle}>Bon. Démo à 20 h, et main est encore tout cassé. On s’y remet ?</p>
+              <p className={styles.bulle}>Bon. Démo à 20 h, et main est encore tout cassé. On s’y remet{'\u00A0'}?</p>
             </div>
             {e.enCours !== null ? (
               <Link to={`/mission/${e.enCours.id}`} className={styles.reprendre}>

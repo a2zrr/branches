@@ -3,21 +3,25 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { z } from 'zod';
 import { meilleureNote, xpTotal, type Progression, type ResultatMission, etoilesPour } from './regles';
-import { trouverMission } from './missions';
+import { CHAPITRES, MISSIONS, trouverMission } from './missions';
+import { chapitresVisibles } from './carte';
 
 export type Theme = 'clair' | 'sombre';
 
 export const CLE_STOCKAGE = 'branches:v1';
-export const VERSION_STOCKAGE = 1;
+export const VERSION_STOCKAGE = 2;
 
 export interface ProgressionState {
   theme: Theme;
   progression: Progression;
   xp: number;
+  /** Chapitres déjà montrés sur la carte (animation des nuages jouée une fois). Commence à [1]. */
+  chapitresDecouverts: number[];
   /** Mode débogage (?debug=1) : toutes les missions jouables pour la session, jamais enregistré. */
   debug: boolean;
   definirTheme: (theme: Theme) => void;
   terminerMission: (id: string, commandes: number) => ResultatMission | null;
+  marquerDecouverts: (numeros: number[]) => void;
   exporter: () => string;
   importer: (texte: string) => { ok: true } | { ok: false; message: string };
   reinitialiser: () => void;
@@ -29,6 +33,11 @@ const SchemaResultat = z.object({
   reussie: z.boolean(),
 });
 
+/** Chapitres qui sont visibles pour une progression donnée : ils sont tous « découverts ». */
+export function chapitresVisiblesPour(progression: Progression): number[] {
+  return chapitresVisibles(CHAPITRES, MISSIONS, progression).chapitres.map((c) => c.numero);
+}
+
 const SchemaSauvegarde = z.object({
   format: z.literal('branches-progression'),
   version: z.literal(1),
@@ -36,7 +45,11 @@ const SchemaSauvegarde = z.object({
   progression: z.record(z.string(), SchemaResultat),
 });
 
-/** Migration : version 0 = { progression: { id: étoiles } } ; version 1 = progression détaillée. */
+/**
+ * Migration : version 0 = { progression: { id: étoiles } } ; version 1 = progression détaillée ;
+ * version 2 = + chapitres découverts. Depuis une version antérieure, tous les chapitres déjà visibles
+ * sont marqués découverts, sans animation.
+ */
 export function migrer(persiste: unknown, version: number): Partial<ProgressionState> {
   const brut = (persiste ?? {}) as Record<string, unknown>;
   if (version < 1) {
@@ -48,13 +61,23 @@ export function migrer(persiste: unknown, version: number): Partial<ProgressionS
         progression[id] = { etoiles: etoiles as 1 | 2 | 3, commandes: 0, reussie: true };
       }
     }
-    return { theme: brut['theme'] === 'sombre' ? 'sombre' : 'clair', progression, xp: xpTotal(progression) };
+    return {
+      theme: brut['theme'] === 'sombre' ? 'sombre' : 'clair',
+      progression,
+      xp: xpTotal(progression),
+      chapitresDecouverts: chapitresVisiblesPour(progression),
+    };
   }
   const progression = (brut['progression'] ?? {}) as Progression;
+  const decouverts = brut['chapitresDecouverts'];
   return {
     theme: brut['theme'] === 'sombre' ? 'sombre' : 'clair',
     progression,
     xp: xpTotal(progression),
+    chapitresDecouverts:
+      version < 2 || !Array.isArray(decouverts)
+        ? chapitresVisiblesPour(progression)
+        : decouverts.filter((n): n is number => typeof n === 'number'),
   };
 }
 
@@ -72,6 +95,7 @@ export const useProgression = create<ProgressionState>()(
       theme: 'clair',
       progression: {},
       xp: 0,
+      chapitresDecouverts: [1],
       debug: debugDemande(),
       definirTheme: (theme) => {
         set({ theme });
@@ -90,6 +114,10 @@ export const useProgression = create<ProgressionState>()(
         };
         set({ progression, xp: xpTotal(progression) });
         return progression[id] ?? null;
+      },
+      marquerDecouverts: (numeros) => {
+        const tous = new Set([...get().chapitresDecouverts, ...numeros]);
+        set({ chapitresDecouverts: [...tous].sort((a, b) => a - b) });
       },
       exporter: () => {
         const { theme, progression } = get();
@@ -114,18 +142,28 @@ export const useProgression = create<ProgressionState>()(
           };
         }
         const progression = r.data.progression as Progression;
-        set({ theme: r.data.theme, progression, xp: xpTotal(progression) });
+        set({
+          theme: r.data.theme,
+          progression,
+          xp: xpTotal(progression),
+          chapitresDecouverts: chapitresVisiblesPour(progression),
+        });
         return { ok: true };
       },
       reinitialiser: () => {
-        set({ progression: {}, xp: 0 });
+        set({ progression: {}, xp: 0, chapitresDecouverts: [1] });
       },
     }),
     {
       name: CLE_STOCKAGE,
       version: VERSION_STOCKAGE,
       migrate: (persiste, version) => ({ ...migrer(persiste, version) }) as ProgressionState,
-      partialize: (etat) => ({ theme: etat.theme, progression: etat.progression, xp: etat.xp }),
+      partialize: (etat) => ({
+        theme: etat.theme,
+        progression: etat.progression,
+        xp: etat.xp,
+        chapitresDecouverts: etat.chapitresDecouverts,
+      }),
     },
   ),
 );
