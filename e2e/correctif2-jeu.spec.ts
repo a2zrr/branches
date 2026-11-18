@@ -33,7 +33,7 @@ async function rectangles(page: Page) {
     const r = (el: Element | null) => {
       if (!el) return null;
       const b = el.getBoundingClientRect();
-      return [b.x, b.y, b.width, b.height].map((v) => Math.round(v));
+      return [b.x, b.y + window.scrollY, b.width, b.height].map((v) => Math.round(v));
     };
     return {
       entete: r(document.querySelector('header')),

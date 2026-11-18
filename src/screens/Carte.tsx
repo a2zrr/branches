@@ -6,6 +6,7 @@ import { BarreProgression } from '../components/ui/BarreProgression';
 import { PuceNotion } from '../components/ui/PuceNotion';
 import { Mascotte } from '../components/mascotte/Mascotte';
 import { CHAPITRES, MISSIONS } from '../game/missions';
+import { compter } from '../game/pluriel';
 import { estJouable, progressionChapitre } from '../game/regles';
 import { useEtatJeu } from '../game/useEtatJeu';
 import styles from './Carte.module.css';
@@ -106,7 +107,7 @@ export function Carte() {
                 Ton Git
               </h2>
               <span className={styles.compte}>
-                {e.notionsMaitrisees} / {e.notionsTotal} commandes
+                {compter(e.notionsMaitrisees, 'notion maîtrisée', 'notions maîtrisées')} sur {e.notionsTotal}
               </span>
             </div>
             <ul className={styles.puces}>

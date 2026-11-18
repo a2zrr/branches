@@ -56,7 +56,7 @@ test.describe('étape 9 : fin de mission et boucle de progression', () => {
     await expect(page.getByRole('img', { name: '2 étoiles sur 3' })).toBeVisible();
     await expect(page.getByText('3 commandes — optimal : 2')).toBeVisible();
     await expect(
-      page.getByText('+20 XP · git revert rejoint ton Git : 4 commandes maîtrisées sur 15'),
+      page.getByText('+20 XP · git revert rejoint ton Git : 4 notions maîtrisées sur 15'),
     ).toBeVisible();
     await expect(page.getByText('4 / 15').first()).toBeVisible();
     await expect(page.getByRole('link', { name: 'Mission suivante' })).toHaveAttribute(
@@ -117,7 +117,8 @@ test.describe('étape 9 : fin de mission et boucle de progression', () => {
     await page.reload();
     await expect(page.getByRole('img', { name: '3 étoiles sur 3' })).toBeVisible();
 
-    await page.goto('/parametres');
+    await page.goto('/');
+    await page.locator('#bouton-parametres').click();
     const [telechargement] = await Promise.all([
       page.waitForEvent('download'),
       page.getByRole('button', { name: 'Exporter' }).click(),
@@ -125,12 +126,14 @@ test.describe('étape 9 : fin de mission et boucle de progression', () => {
     const chemin = resolve(DOSSIER, 'branches-progression.json');
     await telechargement.saveAs(chemin);
 
-    await page.getByRole('button', { name: 'Réinitialiser' }).click();
-    await page.getByRole('dialog').getByRole('button', { name: 'Réinitialiser' }).click();
+    await page.getByRole('button', { name: 'Recommencer à zéro' }).click();
+    await page.getByRole('button', { name: 'Oui' }).click();
+    await page.getByRole('button', { name: 'Tout effacer' }).click();
     await page.goto('/carte');
     await expect(page.getByRole('button', { name: /Mission 1, Ton premier commit, en cours/ })).toBeVisible();
 
-    await page.goto('/parametres');
+    await page.goto('/');
+    await page.locator('#bouton-parametres').click();
     await page.locator('input[type="file"]').setInputFiles(chemin);
     await expect(page.getByRole('status')).toContainText('Progression importée');
     await page.goto('/carte');

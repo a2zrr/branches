@@ -3,7 +3,7 @@ import type { CodeErreur, ErreurGit } from './types';
 /** Explication pédagogique (en français) de chaque erreur, affichée dans le bandeau rouge. */
 const EXPLICATIONS: Record<CodeErreur, (ctx: string) => string> = {
   'commande-inconnue': (ctx) =>
-    `Presque ! Git ne connaît pas « ${ctx} ». Lis la suggestion juste au-dessus : il a deviné ce que tu voulais dire.`,
+    `Presque ! Git ne connaît pas « ${ctx} ». Lis la suggestion juste au-dessus : Git a deviné ce que tu voulais dire.`,
   'commande-hors-git': (ctx) =>
     `« ${ctx} » n'est pas une commande Git. Tape les commandes Git avec le mot git devant.`,
   'revision-invalide': (ctx) =>

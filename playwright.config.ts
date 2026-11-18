@@ -7,6 +7,8 @@ export default defineConfig({
   testDir: './e2e',
   fullyParallel: true,
   retries: 0,
+  // Les audits axe sur plusieurs routes dépassent 30 s quand plusieurs workers tournent.
+  timeout: 90_000,
   reporter: [['list']],
   use: {
     viewport: { width: 1440, height: 900 },

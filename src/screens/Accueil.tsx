@@ -7,6 +7,7 @@ import { PuceNotion } from '../components/ui/PuceNotion';
 import { Icone } from '../components/ui/Icone';
 import { Mascotte } from '../components/mascotte/Mascotte';
 import { BADGES, MISSIONS } from '../game/missions';
+import { compter } from '../game/pluriel';
 import { useEtatJeu } from '../game/useEtatJeu';
 import { estJouable } from '../game/regles';
 import { cheminForme } from '../components/graphe/layout';
@@ -206,7 +207,7 @@ export function Accueil() {
                 Ton Git
               </h2>
               <span className={styles.compte}>
-                {e.notionsMaitrisees} commandes maîtrisées sur {e.notionsTotal}
+                {compter(e.notionsMaitrisees, 'notion maîtrisée', 'notions maîtrisées')} sur {e.notionsTotal}
               </span>
             </div>
             <BarreProgression

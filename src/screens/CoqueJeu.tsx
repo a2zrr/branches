@@ -8,6 +8,7 @@ import { REGISTRE, type ReponseChoix } from '../exercises/registre';
 import { depotInitial } from '../game/solution';
 import { trouverMission, MISSIONS } from '../game/missions';
 import { useProgression } from '../game/store';
+import { compter } from '../game/pluriel';
 import { estJouable, etoilesPour, progressionChapitre } from '../game/regles';
 import { useEtatJeu } from '../game/useEtatJeu';
 import { evaluerReussite } from '../game/reussite';
@@ -75,7 +76,7 @@ export function CoqueMission({ mission }: { mission: MissionJouableValidee }) {
     if (resultat.ok) {
       setBandeau({
         type: 'reussi',
-        message: reaction ?? `Tu as réussi en ${nombre} commande${nombre > 1 ? 's' : ''}.`,
+        message: reaction ?? `Tu as réussi en ${compter(nombre, 'commande', 'commandes')}.`,
       });
     } else {
       setBandeau({ type: 'rate', ...separer(resultat.messageDuPremierEchec ?? '') });

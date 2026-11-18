@@ -6,6 +6,7 @@ import { Icone } from '../components/ui/Icone';
 import { MISSIONS, trouverMission } from '../game/missions';
 import { useProgression } from '../game/store';
 import { estJouable, notionsTonGit, xpPour } from '../game/regles';
+import { compter } from '../game/pluriel';
 import styles from './FinMission.module.css';
 
 interface EtatFin {
@@ -114,7 +115,7 @@ export function FinMission() {
           <div
             className={styles.etoiles}
             role="img"
-            aria-label={`${etat.etoiles} étoile${etat.etoiles > 1 ? 's' : ''} sur 3`}
+            aria-label={`${compter(etat.etoiles, 'étoile', 'étoiles')} sur 3`}
           >
             {[1, 2, 3].map((n) => (
               <span
@@ -133,7 +134,7 @@ export function FinMission() {
             ))}
           </div>
           <p className={styles.pastille}>
-            {etat.commandes} commande{etat.commandes > 1 ? 's' : ''} — optimal : {mission.optimal}
+            {compter(etat.commandes, 'commande', 'commandes')} — optimal : {mission.optimal}
           </p>
         </section>
 
@@ -181,7 +182,8 @@ export function FinMission() {
 
       <footer className={styles.pied}>
         <span className={styles.resume}>
-          +{xp} XP · {mission.notion} rejoint ton Git : {maitrisees} commandes maîtrisées sur {notions.length}
+          +{xp} XP · {mission.notion} rejoint ton Git :{' '}
+          {compter(maitrisees, 'notion maîtrisée', 'notions maîtrisées')} sur {notions.length}
         </span>
         <div className={styles.actions}>
           {etat.etoiles < 3 && (
