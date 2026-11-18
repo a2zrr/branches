@@ -25,6 +25,7 @@
 
 /* Bouton Paramètres : carré 46 px, blanc, bordure et bord 3D, roue dentée. */
 .parametres {
+  flex: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
