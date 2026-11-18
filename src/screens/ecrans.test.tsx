@@ -4,6 +4,7 @@ import { RouterProvider, createMemoryRouter } from 'react-router';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { Accueil } from './Accueil';
 import { Carte } from './Carte';
+import { CarteAdmin } from './CarteAdmin';
 import { PanneauParametres } from '../components/parametres/PanneauParametres';
 import { useInterface } from '../game/ui';
 import { useProgression } from '../game/store';
@@ -119,5 +120,23 @@ describe('panneau paramètres', () => {
     await utilisateur.click(screen.getByRole('button', { name: 'Tout effacer' }));
     expect(useProgression.getState().progression).toEqual({});
     expect(useProgression.getState().theme).toBe('sombre');
+  });
+});
+
+describe('aperçu de design /carte/admin', () => {
+  it('affiche tous les chapitres, y compris les chapitres cachés dans le jeu', () => {
+    const routeur = createMemoryRouter(
+      [
+        { path: '/carte/admin', element: <CarteAdmin /> },
+        { path: '/mission/:id', element: <p>Mission</p> },
+      ],
+      { initialEntries: ['/carte/admin'] },
+    );
+    render(<RouterProvider router={routeur} />);
+    expect(screen.getByRole('region', { name: 'Chapitre 1' })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: 'Chapitre 2' })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: 'Chapitre 3' })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: 'Chapitre 4' })).toBeInTheDocument();
+    expect(screen.getByText('Mais qui est Kévin ?')).toBeInTheDocument();
   });
 });
