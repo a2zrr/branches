@@ -113,3 +113,15 @@ test('capture fin de mission', async ({ page }) => {
   await page.waitForTimeout(3500);
   await page.screenshot({ path: resolve(DOSSIER, 'FinMission-app.png'), fullPage: false });
 });
+
+test('capture jeu sombre', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await injecter(page, 'sombre');
+  await page.goto('/mission/c1-m4');
+  const champ = page.getByLabel('Commande Git');
+  await champ.fill('git log --oneline');
+  await champ.press('Enter');
+  await page.evaluate(() => document.fonts.ready);
+  await page.waitForTimeout(800);
+  await page.screenshot({ path: resolve(DOSSIER, 'JeuTerminalSombre-app.png'), fullPage: false });
+});
