@@ -1,0 +1,140 @@
+/* Une mission sur la carte (PC) : bloc carré absolu, pastille centrée, titre à côté. */
+
+.noeud {
+  position: absolute;
+}
+
+.pastille {
+  appearance: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  transition:
+    transform var(--dur-fast) var(--ease-bounce),
+    box-shadow var(--dur-fast) ease;
+}
+
+.pastille:hover:not(:disabled) {
+  transform: translate(-50%, calc(-50% - 2px));
+}
+
+.pastille:active:not(:disabled) {
+  transform: translate(-50%, calc(-50% + 4px));
+  transition-duration: var(--dur-press);
+}
+
+.pastille:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 4px;
+}
+
+.pastille:disabled {
+  cursor: not-allowed;
+}
+
+.verrouillee {
+  background: var(--color-disabled-bg);
+  box-shadow: var(--edge-lg) var(--color-disabled-edge);
+}
+
+.disponible,
+.encours {
+  background: var(--color-brand);
+  box-shadow: var(--edge-lg) var(--color-brand-edge);
+}
+
+.terminee {
+  background: var(--color-hint);
+  box-shadow: var(--edge-lg) var(--color-hint-edge);
+}
+
+/* Brouillon : pastille grise, bordure en pointillés, sans bord 3D. */
+.brouillon {
+  background: var(--color-bg-subtle);
+  border: 3px dashed var(--color-disabled-edge);
+  box-sizing: border-box;
+}
+
+/* Anneau jaune qui pulse, pour la mission en cours. */
+.anneau {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 92px;
+  height: 92px;
+  margin: -46px 0 0 -46px;
+  border-radius: 50%;
+  border: 5px solid var(--color-hint);
+  pointer-events: none;
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 0.35;
+  }
+}
+
+/* Légende : à 14 px de la pastille, centrée verticalement, largeur 200 px. */
+.legende {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 200px;
+}
+
+.adroite {
+  left: calc(100% + 14px);
+  align-items: flex-start;
+  text-align: left;
+}
+
+.agauche {
+  right: calc(100% + 14px);
+  align-items: flex-end;
+  text-align: right;
+}
+
+.etoiles {
+  display: flex;
+  gap: 2px;
+  height: 17px;
+}
+
+.bientot {
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--color-bg-subtle);
+  color: var(--color-text-muted);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.titre {
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--color-text);
+}
+
+.titreMuet {
+  color: var(--color-text-muted);
+}

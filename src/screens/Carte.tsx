@@ -1,18 +1,15 @@
 import { Link, useNavigate } from 'react-router';
 import { EnTeteAppli } from '../components/ui/EnTeteAppli';
-import { EnTeteChapitre } from '../components/ui/EnTeteChapitre';
-import { PastilleMission } from '../components/ui/PastilleMission';
+import { ChapitreCarte } from '../components/carte/ChapitreCarte';
 import { BarreProgression } from '../components/ui/BarreProgression';
 import { PuceNotion } from '../components/ui/PuceNotion';
 import { Mascotte } from '../components/mascotte/Mascotte';
 import { CHAPITRES, MISSIONS } from '../game/missions';
 import { compter } from '../game/pluriel';
+import { chapitresVisibles } from '../game/carte';
 import { estJouable, progressionChapitre } from '../game/regles';
 import { useEtatJeu } from '../game/useEtatJeu';
 import styles from './Carte.module.css';
-
-/** Décalages en zigzag des pastilles (spec §9). */
-const ZIGZAG = [0, 70, 105, 70, 0, -70, -105, -70];
 
 export function Carte() {
   const e = useEtatJeu();
@@ -20,6 +17,7 @@ export function Carte() {
   const chapitreCourant = e.enCours?.chapitre ?? 1;
   const progChapitre = progressionChapitre(MISSIONS, chapitreCourant, e.progression);
   const jouablesChapitre = MISSIONS.filter((m) => m.chapitre === chapitreCourant && estJouable(m)).length;
+  const vue = chapitresVisibles(CHAPITRES, MISSIONS, e.progression, e.chapitresDecouverts);
 
   return (
     <div className={styles.page}>
@@ -34,56 +32,18 @@ export function Carte() {
 
       <div className={`conteneur ${styles.corps}`}>
         <main className={styles.chemin}>
-          {CHAPITRES.map((chapitre) => {
-            const missions = MISSIONS.filter((m) => m.chapitre === chapitre.numero);
-            const prog = progressionChapitre(MISSIONS, chapitre.numero, e.progression);
-            const ouvert =
-              chapitre.bientot !== true &&
-              (chapitre.numero === 1 ||
-                missions.some((m) => e.etats[m.id] !== undefined && e.etats[m.id] !== 'verrouillee'));
-            const etat = chapitre.bientot === true ? 'bientot' : ouvert ? 'ouvert' : 'verrouille';
-            return (
-              <section
-                key={chapitre.numero}
-                className={styles.chapitre}
-                aria-label={`Chapitre ${chapitre.numero}`}
-              >
-                <EnTeteChapitre
-                  numero={chapitre.numero}
-                  titre={chapitre.titre}
-                  sousTitre={chapitre.sousTitre}
-                  etat={etat}
-                  faites={prog.faites}
-                  total={prog.total}
-                  etoiles={prog.etoiles}
-                  {...(chapitre.couleur !== undefined ? { couleur: chapitre.couleur } : {})}
-                  {...(chapitre.couleurArete !== undefined ? { couleurArete: chapitre.couleurArete } : {})}
-                />
-                {etat !== 'bientot' && (
-                  <ol className={styles.pastilles}>
-                    {missions.map((m, i) => {
-                      const etatM = e.etats[m.id] ?? 'verrouillee';
-                      return (
-                        <li key={m.id} className={styles.noeud}>
-                          <PastilleMission
-                            etat={etatM}
-                            etoiles={e.progression[m.id]?.etoiles ?? 0}
-                            numero={m.ordre}
-                            titre={m.titre}
-                            decalage={ZIGZAG[i % ZIGZAG.length] ?? 0}
-                            onClick={() => {
-                              void navigate(`/mission/${m.id}`);
-                            }}
-                          />
-                        </li>
-                      );
-                    })}
-                  </ol>
-                )}
-                {chapitre.bientot === true && <p className={styles.bientot}>{chapitre.sousTitre}</p>}
-              </section>
-            );
-          })}
+          {vue.chapitres.map((chapitre) => (
+            <ChapitreCarte
+              key={chapitre.numero}
+              chapitre={chapitre}
+              missions={vue.missions.filter((m) => m.chapitre === chapitre.numero)}
+              etats={e.etats}
+              progression={e.progression}
+              onOpen={(id) => {
+                void navigate(`/mission/${id}`);
+              }}
+            />
+          ))}
         </main>
 
         <aside className={styles.colonne} aria-label="Hédi et progression">

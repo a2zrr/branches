@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { RouterProvider, createMemoryRouter } from 'react-router';
 import { beforeEach, describe, expect, it } from 'vitest';
@@ -39,16 +39,16 @@ describe('nouveau visiteur', () => {
     expect(screen.getByRole('link', { name: 'Commencer' })).toHaveAttribute('href', '/mission/c1-m1');
   });
 
-  it('carte : c1-m1 en cours, le reste verrouillé, chapitre 4 « bientôt »', () => {
+  it('carte : c1-m1 en cours, le reste verrouillé, rien après le chapitre 1 (correctif 3 : chapitres cachés absents)', () => {
     rendre('/carte', <Carte />);
     expect(screen.getByRole('button', { name: /Mission 1, Ton premier commit, en cours/ })).toBeEnabled();
     expect(screen.getByRole('button', { name: 'Commencer' })).toBeInTheDocument();
     expect(
       screen.getByRole('button', { name: /Mission 2, Qui a cassé quoi \?, verrouillée/ }),
     ).toBeDisabled();
-    const chapitre4 = screen.getByRole('region', { name: 'Chapitre 4' });
-    expect(within(chapitre4).getByText('Patience')).toBeInTheDocument();
-    expect(within(chapitre4).getAllByText(/Hédi prépare déjà ses excuses/).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole('region', { name: 'Chapitre 1' }).length).toBeGreaterThan(0);
+    expect(screen.queryByRole('region', { name: 'Chapitre 2' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('region', { name: 'Chapitre 4' })).not.toBeInTheDocument();
   });
 });
 

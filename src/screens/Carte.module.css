@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: var(--color-bg-subtle);
+  background: var(--color-bg);
   padding-bottom: var(--space-7);
 }
 
@@ -28,7 +28,7 @@
 .chemin {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: 40px;
 }
 
 .chapitre {
@@ -61,6 +61,9 @@
 }
 
 .colonne {
+  position: sticky;
+  top: 24px;
+  align-self: start;
   display: flex;
   flex-direction: column;
   gap: var(--space-5);

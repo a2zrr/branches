@@ -113,6 +113,12 @@
   --dur-fast: 150ms;
   --dur-base: 250ms;
   --dur-slow: 450ms;
+
+  /* ---- Carte : vignettes, chemin, nuages ---- */
+  --vignette-bleu: #E8F7FF; --vignette-violet: #F1EAFE; --vignette-orange: #FFF1DC;  /* rond derrière Hédi */
+  --chemin-bleu: #BDE3FA; --chemin-violet: #D9C8FA; --chemin-orange: #FFD3A3;  /* partie faite du chemin */
+  --chemin-a-venir: #E5E5E5;
+  --nuage-face: #FFFFFF; --nuage-bord: #CFE4F3; --nuage-arriere: #DDEEFA;
 }
 
 /* ---- Mode sombre : seules les couleurs changent ---- */
@@ -154,6 +160,12 @@
   --term-bg: #0B1317;
   --term-edge: #05090B;
   --term-bar: #142027;
+
+  /* ---- Carte : vignettes, chemin, nuages ---- */
+  --vignette-bleu: #17323F; --vignette-violet: #2A2342; --vignette-orange: #3A2B1B;  /* rond derrière Hédi */
+  --chemin-bleu: #2C5A75; --chemin-violet: #4A3B7A; --chemin-orange: #6E4A25;  /* partie faite du chemin */
+  --chemin-a-venir: #2E3E46;
+  --nuage-face: #22333C; --nuage-bord: #35505E; --nuage-arriere: #1B2A31;
 }
 
 @media (prefers-reduced-motion: reduce) {

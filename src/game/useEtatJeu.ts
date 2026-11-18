@@ -14,6 +14,7 @@ import {
 export function useEtatJeu() {
   const progression = useProgression((s) => s.progression);
   const debug = useProgression((s) => s.debug);
+  const chapitresDecouverts = useProgression((s) => s.chapitresDecouverts);
   return useMemo(() => {
     const etats: Record<string, EtatMission> = etatsMissions(MISSIONS, progression, debug);
     const enCours = missionEnCours(MISSIONS, progression);
@@ -30,6 +31,7 @@ export function useEtatJeu() {
       xp: xpTotal(progression),
       etoiles: Object.values(progression).reduce((s, r) => s + r.etoiles, 0),
       premiereVisite: Object.keys(progression).length === 0,
+      chapitresDecouverts,
     };
-  }, [progression, debug]);
+  }, [progression, debug, chapitresDecouverts]);
 }

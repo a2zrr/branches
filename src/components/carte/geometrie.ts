@@ -1,0 +1,55 @@
+// Géométrie de la carte des missions (spec § 9 bis) : positions en zigzag et courbe du chemin.
+// Fonctions pures.
+
+export interface Mesures {
+  /** Hauteur d'un rang (une mission), en px. */
+  rang: number;
+  /** Côté du bloc carré qui contient une pastille : son centre est à `aire / 2`. */
+  aire: number;
+  haut: number;
+  bas: number;
+  /** Décalages en zigzag, en px, par rapport au centre de la colonne. */
+  zigzag: readonly number[];
+  /** Diamètre des pastilles (et de la pastille en cours). */
+  pastille: number;
+  pastilleEnCours: number;
+  /** Largeur du trait du chemin. */
+  traitChemin: number;
+}
+
+export const MESURES_PC: Mesures = {
+  rang: 160,
+  aire: 84,
+  haut: 24,
+  bas: 24,
+  zigzag: [0, 70, 105, 70, 0, -70, -105, -70],
+  pastille: 72,
+  pastilleEnCours: 84,
+  traitChemin: 12,
+};
+
+/** Décalage d'une mission dans le zigzag (il se répète tous les 8). */
+export function decalage(mesures: Mesures, index: number): number {
+  return mesures.zigzag[index % mesures.zigzag.length] ?? 0;
+}
+
+/** Haut du bloc d'une mission, relatif à la zone du chapitre. */
+export function hautDuRang(mesures: Mesures, index: number): number {
+  return mesures.haut + index * mesures.rang;
+}
+
+/** Centre d'une mission : (décalage, y). */
+export function centre(mesures: Mesures, index: number): [number, number] {
+  return [decalage(mesures, index), hautDuRang(mesures, index) + mesures.aire / 2];
+}
+
+/** Courbe en S entre des points successifs (spec § 9 bis, « Le chemin »). */
+export function courbe(points: [number, number][]): string {
+  return points.reduce((d, p, i) => {
+    if (i === 0) return `M${p[0]} ${p[1]}`;
+    const a = points[i - 1];
+    if (a === undefined) return d;
+    const h = (p[1] - a[1]) / 2;
+    return `${d} C${a[0]} ${a[1] + h} ${p[0]} ${p[1] - h} ${p[0]} ${p[1]}`;
+  }, '');
+}

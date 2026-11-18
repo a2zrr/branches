@@ -1,0 +1,12 @@
+/* Un chapitre sur la carte : en-tête puis zone du chemin, sans fond ni cadre. */
+
+.chapitre {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.zone {
+  position: relative;
+  width: 100%;
+}
