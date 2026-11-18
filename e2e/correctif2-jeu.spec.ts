@@ -93,7 +93,7 @@ test.describe('correctif 2 : le jeu', () => {
     expect(await decalages(page)).toBe(base);
   });
 
-  test('indice : bascule, suivant, compteur, Échap et clic extérieur', async ({ page }) => {
+  test('indice : bascule, suivant, compteur, reste ouvert après Échap et clic extérieur', async ({ page }) => {
     await neuf(page);
     await page.goto('/mission/c1-m4?debug=1');
     const bouton = page.getByRole('button', { name: /^Indice \d/ });
@@ -109,10 +109,12 @@ test.describe('correctif 2 : le jeu', () => {
     await expect(page.getByRole('dialog', { name: 'Indice' })).toHaveCount(0);
     await expect(bouton).toHaveAttribute('aria-expanded', 'false');
     await bouton.click();
+    // L'indice reste à l'écran : Échap et un clic ailleurs ne le ferment pas (on peut le copier).
     await page.keyboard.press('Escape');
-    await expect(page.getByRole('dialog', { name: 'Indice' })).toHaveCount(0);
-    await bouton.click();
+    await expect(page.getByRole('dialog', { name: 'Indice' })).toBeVisible();
     await page.mouse.click(700, 500);
+    await expect(page.getByRole('dialog', { name: 'Indice' })).toBeVisible();
+    await page.getByRole('button', { name: 'Masquer l’indice' }).click();
     await expect(page.getByRole('dialog', { name: 'Indice' })).toHaveCount(0);
   });
 });

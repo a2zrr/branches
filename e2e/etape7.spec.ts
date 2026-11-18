@@ -55,7 +55,7 @@ test.describe('étape 7 : coque de jeu et terminal + graphe', () => {
     await expect(page.getByRole('dialog', { name: 'Indice' })).toBeVisible();
     await page.getByRole('button', { name: 'Indice suivant' }).click();
     await etat('3-indice');
-    await page.getByRole('button', { name: 'Fermer' }).click();
+    await page.getByRole('button', { name: 'Masquer l’indice' }).click();
 
     await taper(page, 'git revert a3f9c2e');
     await expect(page.locator('[data-noeud="f0e1d2c"]')).toHaveAttribute('data-etat', 'nouveau');

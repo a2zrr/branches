@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Mascotte } from '../mascotte/Mascotte';
 import { Bouton } from './Bouton';
 import styles from './PanneauIndice.module.css';
@@ -13,29 +12,12 @@ export interface PanneauIndiceProps {
 
 /**
  * Carte jaune ancrée sous le bouton INDICE (maquette JeuTerminalIndice.png) : Hédi pensif,
- * le dernier indice révélé, et les boutons INDICE SUIVANT / OK, J'ESSAIE. Pas de voile : le jeu reste visible.
+ * le dernier indice révélé, et les boutons INDICE SUIVANT / MASQUER L’INDICE. Pas de voile : le jeu reste visible.
+ * L'indice reste à l'écran (pour le copier) : il ne se ferme qu'avec son bouton INDICE ou « Masquer l’indice ».
  */
 export function PanneauIndice({ indices, index, onSuivant, onFermer }: PanneauIndiceProps) {
   const courant = indices[Math.max(0, index - 1)] ?? '';
   const restants = indices.length - index;
-
-  // Échap et clic en dehors ferment le panneau. Le bouton INDICE, lui, bascule seul.
-  useEffect(() => {
-    const touche = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onFermer();
-    };
-    const souris = (e: MouseEvent) => {
-      const cible = e.target as Element | null;
-      if (cible?.closest('#panneau-indice') || cible?.closest('[data-indice-bouton]')) return;
-      onFermer();
-    };
-    window.addEventListener('keydown', touche);
-    window.addEventListener('mousedown', souris);
-    return () => {
-      window.removeEventListener('keydown', touche);
-      window.removeEventListener('mousedown', souris);
-    };
-  }, [onFermer]);
 
   return (
     <div id="panneau-indice" className={styles.panneau} role="dialog" aria-label="Indice">
@@ -53,7 +35,7 @@ export function PanneauIndice({ indices, index, onSuivant, onFermer }: PanneauIn
             </Bouton>
           )}
           <Bouton variante="secondaire" onClick={onFermer}>
-            Fermer
+            Masquer l’indice
           </Bouton>
         </div>
       </div>

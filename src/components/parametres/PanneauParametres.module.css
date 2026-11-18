@@ -1,4 +1,4 @@
-/* Panneau latéral Paramètres : 420 px, pleine hauteur, par-dessus la page. */
+/* Paramètres : popup centré par-dessus la page (pas de tiroir latéral). */
 .calque {
   position: fixed;
   inset: 0;
@@ -18,38 +18,45 @@
 
 .panneau {
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 420px;
-  max-width: 100%;
+  top: 50%;
+  left: 50%;
+  width: 460px;
+  max-width: calc(100% - 32px);
+  max-height: calc(100vh - 48px);
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  border: 2px solid var(--color-border);
+  border-radius: 24px;
   background: var(--color-surface);
-  border-left: 2px solid var(--color-border);
-  box-shadow: -8px 0 24px var(--color-ombre-panneau);
-  animation: glisse-entree 300ms var(--ease-out);
+  box-shadow: 0 6px 0 var(--color-border), 0 18px 40px var(--color-ombre-panneau);
+  transform: translate(-50%, -50%);
+  animation: popup-entree 220ms var(--ease-out) both;
 }
 
 .panneauSortie {
-  animation: glisse-sortie 300ms var(--ease-out) forwards;
+  animation: popup-sortie 200ms var(--ease-out) forwards;
 }
 
-@keyframes glisse-entree {
+@keyframes popup-entree {
   from {
-    transform: translateX(100%);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.92);
   }
   to {
-    transform: translateX(0);
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
   }
 }
 
-@keyframes glisse-sortie {
+@keyframes popup-sortie {
   from {
-    transform: translateX(0);
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
   }
   to {
-    transform: translateX(100%);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.94);
   }
 }
 
@@ -307,9 +314,3 @@
   }
 }
 
-/* Sous 480 px, le panneau prend toute la largeur. */
-@media (max-width: 479px) {
-  .panneau {
-    width: 100%;
-  }
-}
