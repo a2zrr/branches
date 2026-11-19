@@ -32,11 +32,6 @@
 | **Une mission : terminal et graphe** | **Conflit de merge** |
 | ![Écran de jeu](docs/captures/jeu.png) | ![Conflit de merge](docs/captures/conflit.png) |
 
-<p align="center">
-  <img src="docs/captures/nuages.gif" alt="Les nuages s'écartent et révèlent le chapitre suivant" width="380">
-  &nbsp;&nbsp;
-  <img src="docs/captures/telephone.png" alt="La carte sur téléphone" width="260">
-</p>
 
 ## Ce que fait le jeu
 
