@@ -18,6 +18,13 @@ async function partie(page: Page, reussies: string[]) {
   );
 }
 
+// Attend la fin de l'apparition du popover (scale 0,85 → 1) avant de mesurer sa taille.
+async function attendreFinAnimation(page: Page, selecteur: string) {
+  await page.locator(selecteur).evaluate(async (el) => {
+    await Promise.all(el.getAnimations().map((a) => a.finished));
+  });
+}
+
 async function rect(page: Page, selecteur: string) {
   return page
     .locator(selecteur)
@@ -70,6 +77,7 @@ test.describe('correctif 2 : popover de la carte', () => {
     await partie(page, REUSSIES.slice(0, 3));
     await page.goto('/carte');
     const pastille = await rect(page, 'button[aria-label^="Mission 4,"]');
+    await attendreFinAnimation(page, '[role="group"][aria-label="Mission 4"]');
     const popover = await rect(page, '[role="group"][aria-label="Mission 4"]');
     expect(popover.x).toBeGreaterThanOrEqual(pastille.x + pastille.w / 2 + 60);
     expect(Math.round(popover.w)).toBe(280);
@@ -81,6 +89,7 @@ test.describe('correctif 2 : popover de la carte', () => {
     await partie(page, REUSSIES);
     await page.goto('/carte');
     const pastille = await rect(page, 'button[aria-label^="Mission 6,"]');
+    await attendreFinAnimation(page, '[role="group"][aria-label="Mission 6"]');
     const popover = await rect(page, '[role="group"][aria-label="Mission 6"]');
     expect(popover.droite).toBeLessThanOrEqual(pastille.x + pastille.w / 2 - 60);
   });
