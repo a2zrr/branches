@@ -54,7 +54,8 @@ export function CoqueMission({ mission }: { mission: MissionJouableValidee }) {
   const Exercice = REGISTRE[mission.type].Composant;
   const Resume = REGISTRE[mission.type].ResumeBarre;
   const chapitre = progressionChapitre(MISSIONS, mission.chapitre, progression);
-  const total = MISSIONS.filter((m) => m.chapitre === mission.chapitre && estJouable(m)).length;
+  // Le numéro vient de l'ordre du jeu, brouillons compris : le total compte donc toutes les missions du chapitre.
+  const total = MISSIONS.filter((m) => m.chapitre === mission.chapitre).length;
 
   const verifier = () => {
     const definition = REGISTRE[mission.type];
