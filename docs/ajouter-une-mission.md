@@ -1,99 +1,121 @@
 # Ajouter une mission
 
-Une mission est **un fichier JSON** dans `src/data/missions/`. Aucun écran n'est modifié.
+Une mission est un **fichier JSON** dans `src/data/missions/`, nommé `cN-mM.json` (N : chapitre, M : ordre). Rien d'autre à coder : la fiche est validée au chargement avec zod (`src/game/schemas.ts`), et un test automatique la rejoue avec sa solution.
 
-## Pas-à-pas
+Les chapitres sont dans `src/data/missions/chapitres.json`, les badges dans `badges.json`.
 
-1. **Choisir l'identifiant** `cN-mM` : `c` pour le chapitre, `m` pour l'ordre. Exemple : `c2-m3`.
-2. **Créer le fichier** `src/data/missions/c2-m3.json` à partir du modèle ci-dessous.
-3. **Décrire le dépôt de départ** : branches, commits (du plus ancien au plus récent), HEAD, et éventuellement tags,
-   fichiers modifiés non commités (`travail`), `prochainsHash` (hash imposés aux prochains commits).
-4. **Écrire les conditions de réussite** (`reussite`). Toutes doivent être vraies à VÉRIFIER. Le `message` s'affiche
-   dans le bandeau rouge si la condition est fausse. Les conditions d'interdit (`historiqueIntact`, `pointeInchangee`)
-   sont vérifiées en premier.
-5. **Écrire la solution** : la liste exacte des commandes qui réussissent, une par ligne. `optimal` doit valoir le nombre
-   de lignes de `solution`.
-6. **Vérifier** : `npm run verif`. Le test des missions contrôle que la fiche est valide, que l'état initial ne réussit
-   pas, et que la solution réussit avec exactement `optimal` commandes.
+## Champs d'une mission jouable
 
-Une mission **brouillon** se déclare avec `"brouillon": true` et seulement `id`, `chapitre`, `ordre`, `titre`, `notion`.
-Elle apparaît sur la carte, verrouillée (« Bientôt »), et elle est sautée dans l'ordre de déblocage.
+| Champ | Rôle |
+|---|---|
+| `id` | identifiant de la forme `cN-mM`, unique |
+| `chapitre` | numéro du chapitre (entier positif) |
+| `ordre` | place dans le chapitre (entier positif) ; le couple (`chapitre`, `ordre`) est unique |
+| `titre` | le nom affiché sur la carte |
+| `notion` | ce que la mission enseigne : alimente « Ton Git » et les badges |
+| `type` | `terminal-graphe` (on tape des commandes) ou `conflit` (on résout un conflit de merge) |
+| `histoire` | la réplique de Hédi au début de la mission |
+| `objectif` | ce qu'il faut réussir, en une phrase |
+| `depot` | l'état de départ du dépôt (voir ci-dessous) |
+| `indices` | la liste des indices, révélés un par un |
+| `reussite` | au moins une condition, toutes doivent être vraies (voir plus bas) |
+| `optimal` | le nombre de commandes de la solution de référence |
+| `appris` | ce que le joueur retient, affiché en fin de mission |
+| `solution` | les commandes de la solution de référence ; sa longueur est **égale** à `optimal` |
+| `exercice` | requis pour `type: "conflit"` (fichier, choix acceptés, réactions) |
 
-## Modèle commenté
+## État de départ : `depot`
 
-JSON ne permet pas les commentaires : les annotations ci-dessous sont à retirer dans le fichier réel.
+- `branches` : `[{ "nom": "main", "pointe": "<id>" }]`, dans l'ordre des colonnes du graphe.
+- `commits` : du plus ancien au plus récent. Chaque commit a `id`, `message`, `branche`, `parents` (`[]` pour la racine, un parent, ou deux pour une fusion) et, facultatif, `fichiers` (contenu complet des fichiers).
+- `head` : `{ "branche": "main" }`, ou `{ "commit": "<id>" }` pour un HEAD détaché.
+- `travail` (facultatif) : fichiers modifiés non enregistrés.
+- `prochainsHash` (facultatif) : identifiants imposés aux prochains commits créés.
+- `tags`, `testeur` (facultatifs) : pour les étiquettes et la recherche de bug.
 
-```jsonc
-{
-  "id": "c2-m3",                       // cN-mM, unique
-  "chapitre": 2,                       // doit exister dans chapitres.json
-  "ordre": 3,                          // unique dans le chapitre
-  "titre": "Rends-moi ma branche",     // affiché sur la carte et dans la coque
-  "type": "terminal-graphe",           // ou "conflit" (voir l'exercice conflit)
-  "notion": "git reflog",              // ajoutée à « Ton Git », débloque les badges liés
-  "histoire": "Bon. Kévin a supprimé une branche…", // réplique de Hédi, expression « panique »
-  "objectif": "Retrouve la branche supprimée grâce à git reflog.",
-  "depot": {
-    "branches": [{ "nom": "main", "pointe": "a1b2c3d" }],
-    "commits": [
-      {
-        "id": "1a2b3c4",               // 7 caractères hexadécimaux
-        "message": "init: premier commit",
-        "branche": "main",             // colonne du graphe
-        "parents": [],                 // [] racine, [p] normal, [p1, p2] fusion
-        "fichiers": { "README.md": ["# Projet"] }   // contenu complet des fichiers modifiés
-      },
-      {
-        "id": "a1b2c3d",
-        "message": "ajoute la page",
-        "branche": "main",
-        "parents": ["1a2b3c4"],
-        "fichiers": { "src/page.js": ["export const page = 1;"] }
-        // "supprimes": ["ancien.js"]    // fichiers supprimés par ce commit
-      }
-    ],
-    "head": { "branche": "main" },   // ou { "commit": "1a2b3c4" } pour un HEAD détaché
-    // "tags": [{ "nom": "v1", "commit": "1a2b3c4" }],
-    // "travail": { "src/page.js": ["modifié"] },   // modifications non commitées
-    // "prochainsHash": ["d7e8f90"],                 // hash imposés aux prochains commits
-    // "testeur": { "commande": "npm run test:x", "fautif": "a1b2c3d", "sortieOk": "✔ ok", "sortieKo": "✘ ko" }
-  },
-  "indices": [
-    "Premier indice, révélé au premier clic sur INDICE.",
-    "Deuxième indice, plus précis."
-  ],
-  "reussite": [
-    {
-      "type": "brancheExiste",         // voir la liste des types ci-dessous
-      "nom": "demo",
-      "message": "La branche demo n'existe pas encore."
-    }
-  ],
-  "optimal": 2,                        // = solution.length
-  "appris": [
-    "Ce que la mission enseigne, affiché en fin de mission."
-  ],
-  "solution": [
-    "git branch demo",
-    "git switch demo"
-  ]
-}
-```
+## Conditions de réussite : `reussite`
 
-## Types de condition (`reussite`)
+Toutes les conditions doivent être vraies quand le joueur clique sur VÉRIFIER. Chaque condition a un `message`, affiché si elle est fausse.
 
-| Type | Vrai quand |
+| `type` | Vérifie que… |
 |---|---|
 | `commitAnnule` | un commit de revert de `cible` est sur `branche` |
-| `historiqueIntact` | tous les commits initiaux de `branche` sont encore ses ancêtres |
-| `pointeInchangee` | `branche` pointe toujours sur son commit de départ |
+| `historiqueIntact` | les commits initiaux de `branche` sont encore ses ancêtres |
+| `pointeInchangee` | `branche` pointe toujours au même commit qu'au départ |
 | `brancheExiste` | la branche `nom` existe |
 | `headSur` | HEAD est sur `branche` |
 | `headDetacheSur` | HEAD est détaché sur `commit` |
-| `commitsDepuis` | `branche` a au moins `min` commits nouveaux depuis `depuis` |
-| `contient` | `commit` est un ancêtre de `branche` |
-| `fusionTerminee` | `branche` pointe sur un commit de fusion qui contient `avec` |
-| `aucunConflit` | aucun marqueur de conflit dans l'espace de travail |
-| `bisectTrouve` | `git bisect` a trouvé `commit` comme premier mauvais commit |
+| `commitsDepuis` | `branche` a au moins `min` commits après `depuis` |
+| `contient` | `commit` est un ancêtre de la pointe de `branche` |
+| `fusionTerminee` | la pointe de `branche` est une fusion qui contient `avec` |
+| `aucunConflit` | aucun marqueur de conflit n'est resté |
+| `bisectTrouve` | le commit fautif `commit` est identifié |
 | `fichierContient` | `fichier` contient `ligne` sur `branche` |
-| `fichierPropre` | aucune modification en attente |
+| `fichierPropre` | aucune modification n'est en attente |
+
+## Exemple de fiche jouable minimale
+
+Inspirée de `c1-m1`, avec un chapitre fictif `c9` pour ne pas toucher au jeu. Le joueur doit enregistrer une modification en un commit.
+
+```json
+{
+  "id": "c9-m1",
+  "chapitre": 9,
+  "ordre": 1,
+  "titre": "Ton premier commit",
+  "notion": "git commit",
+  "type": "terminal-graphe",
+  "histoire": "Enregistre la correction du titre avant que je l'oublie. Moi, j'oublie tout.",
+  "objectif": "Enregistre la modification de src/Accueil.jsx dans un nouveau commit sur main.",
+  "depot": {
+    "branches": [{ "nom": "main", "pointe": "1a2b3c4" }],
+    "commits": [
+      {
+        "id": "1a2b3c4",
+        "message": "init: premier commit",
+        "branche": "main",
+        "parents": [],
+        "fichiers": { "src/Accueil.jsx": ["export function Accueil() {", "  return <h1>Pivot & Co</h1>;", "}"] }
+      }
+    ],
+    "head": { "branche": "main" },
+    "travail": { "src/Accueil.jsx": ["export function Accueil() {", "  return <h1>Pivot & Co !</h1>;", "}"] },
+    "prochainsHash": ["c0d1e2f"]
+  },
+  "indices": [
+    "Un commit se fait en deux temps : on choisit les fichiers avec git add, puis on les enregistre avec git commit."
+  ],
+  "reussite": [
+    {
+      "type": "commitsDepuis",
+      "branche": "main",
+      "depuis": "1a2b3c4",
+      "min": 1,
+      "message": "Aucun nouveau commit sur main pour l'instant."
+    },
+    {
+      "type": "fichierPropre",
+      "message": "Il reste des modifications non enregistrées. Pense à git add."
+    }
+  ],
+  "optimal": 2,
+  "appris": [
+    "git add prépare les fichiers à enregistrer.",
+    "git commit -m \"…\" enregistre une photo du projet avec un message."
+  ],
+  "solution": ["git add src/Accueil.jsx", "git commit -m \"fix: corrige le titre de l'accueil\""]
+}
+```
+
+## Fiches « brouillon »
+
+Une fiche avec `"brouillon": true` apparaît sur la carte, avec la mention « Bientôt », mais elle n'est pas jouable. Elle n'a besoin que de `id`, `chapitre`, `ordre`, `titre`, `notion` et `brouillon`. Elle est ignorée par la règle de déblocage.
+
+## Comment la mission est testée
+
+`src/game/missions.test.ts` vérifie, pour chaque mission jouable :
+1. l'état de départ **ne réussit pas** encore ;
+2. exécuter la `solution` **réussit** ;
+3. `solution` a exactement `optimal` éléments.
+
+Les fiches invalides font échouer le chargement avec le nom du fichier et le champ fautif.

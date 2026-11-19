@@ -87,9 +87,11 @@ src/
 ├── engine/      moteur Git simulé : TypeScript pur, sans React ni DOM
 ├── game/        règles du jeu : déblocage, étoiles, XP, notions, chapitres visibles
 ├── data/        chapitres, missions et badges en JSON
-├── components/  composants d'interface (graphe, terminal, mascotte…)
+├── components/  composants d'interface (graphe, terminal, carte, mascotte…)
+├── exercises/   exercices de conflit de merge
 ├── screens/     accueil, carte, mission, fin de mission
-└── styles/      tokens et styles globaux
+├── styles/      tokens et styles globaux
+└── test/        utilitaires de test
 ```
 
 **Le moteur Git** reproduit le comportement de Git sur un dépôt en mémoire : commits, branches, HEAD détaché, merge (avance rapide et commit de fusion), conflits, revert, bisect… Il est **immuable** : chaque commande renvoie un nouveau dépôt et une liste d'**événements** (`commitCree`, `headDeplace`, `fusion`…). L'interface se contente de les animer. Le moteur n'a aucune dépendance à React, ce qui permet de le tester entièrement en isolation.
@@ -105,7 +107,7 @@ Une mission, c'est **un fichier JSON** dans `src/data/missions/` : l'histoire, l
 - Tests unitaires du moteur, commande par commande, et des règles de jeu.
 - Chaque mission est rejouée automatiquement avec sa solution de référence.
 - Tests de bout en bout sur les parcours principaux, en clair et en sombre, sur PC et sur téléphone.
-- Audit d'accessibilité axe sur chaque écran.
+- Audit d'accessibilité axe sur les écrans principaux (carte, paramètres, mission).
 - Intégration continue GitHub Actions à chaque push.
 
 ## Licence
