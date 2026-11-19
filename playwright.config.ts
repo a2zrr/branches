@@ -15,7 +15,8 @@ export default defineConfig({
     colorScheme: 'light',
     trace: 'retain-on-failure',
     // Chrome système (Chromium) : le téléchargement du navigateur groupé est bloqué ici. Surcharge : PW_CHANNEL.
-    channel: process.env.PW_CHANNEL ?? 'chrome',
+    // En CI : le Chromium installé par Playwright. En local : le Chrome du système. Surcharge : PW_CHANNEL.
+    channel: process.env.PW_CHANNEL ?? (process.env.CI ? undefined : 'chrome'),
   },
   projects: [
     // Build de production : les routes /dev/* n'existent pas.
