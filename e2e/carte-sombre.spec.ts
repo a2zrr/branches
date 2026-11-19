@@ -1,6 +1,17 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 
+/** Attend la fin des animations finies (apparitions, transitions) : axe ne mesure pas les contrastes en cours de fondu. */
+async function attendreAnimations(page: Page) {
+  await page.evaluate(async () => {
+    const finies = document
+      .getAnimations()
+      .filter((a) => a.effect?.getComputedTiming().iterations !== Infinity)
+      .map((a) => a.finished.catch(() => undefined));
+    await Promise.all(finies);
+  });
+}
+
 // Correctif 3, étape 7 : mode sombre, accessibilité (axe) et captures.
 
 const CHAPITRE_1_FINI = Object.fromEntries(
@@ -23,7 +34,7 @@ test('étape 7 : axe, aucune violation grave sur la carte, clair et sombre', asy
     await page.setViewportSize({ width: 1440, height: 900 });
     await partie(page, theme, {});
     await page.goto('/carte');
-    const resultat = await new AxeBuilder({ page }).analyze();
+    const resultat = await (await attendreAnimations(page), new AxeBuilder({ page }).analyze());
     const graves = resultat.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical');
     expect(graves.map((v) => v.id), `thème ${theme}`).toEqual([]);
   }
@@ -33,7 +44,7 @@ test('étape 7 : axe sur téléphone 390 px, thème sombre', async ({ page }) =>
   await page.setViewportSize({ width: 390, height: 844 });
   await partie(page, 'sombre', CHAPITRE_1_FINI);
   await page.goto('/carte');
-  const resultat = await new AxeBuilder({ page }).analyze();
+  const resultat = await (await attendreAnimations(page), new AxeBuilder({ page }).analyze());
   const graves = resultat.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical');
   expect(graves.map((v) => v.id)).toEqual([]);
 });

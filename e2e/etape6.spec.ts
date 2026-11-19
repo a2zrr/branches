@@ -3,6 +3,17 @@ import { resolve } from 'node:path';
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 
+/** Attend la fin des animations finies (apparitions, transitions) : axe ne mesure pas les contrastes en cours de fondu. */
+async function attendreAnimations(page: Page) {
+  await page.evaluate(async () => {
+    const finies = document
+      .getAnimations()
+      .filter((a) => a.effect?.getComputedTiming().iterations !== Infinity)
+      .map((a) => a.finished.catch(() => undefined));
+    await Promise.all(finies);
+  });
+}
+
 const DOSSIER = resolve(import.meta.dirname, '../verifications/etape-6');
 mkdirSync(DOSSIER, { recursive: true });
 
@@ -73,7 +84,7 @@ test.describe('étape 6 : accueil, carte, paramètres', () => {
     await preparer(page, 'clair', 'injectee');
     for (const route of ['/', '/carte']) {
       await page.goto(route);
-      const resultats = await new AxeBuilder({ page }).analyze();
+      const resultats = await (await attendreAnimations(page), new AxeBuilder({ page }).analyze());
       const graves = resultats.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical');
       expect(
         graves.map((v) => `${v.id} : ${v.help}`),
